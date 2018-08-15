@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Scraping NBA</title>
-      <link>/2018/08/15/scraping-nba/</link>
+      <title>Scraping datos de la NBA </title>
+      <link>/2018/08/15/scraping-datos-de-la-nba/</link>
       <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/08/15/scraping-nba/</guid>
+      <guid>/2018/08/15/scraping-datos-de-la-nba/</guid>
       <description>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
 La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</description>
     </item>
@@ -40,15 +40,6 @@ La NBA también fue pionera en el tema de liberar estadísticas, y todos los equ
       <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
 summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>Algo nada todo</title>
-      <link>/2015/01/01/algo-nada-todo/</link>
-      <pubDate>Thu, 01 Jan 2015 13:09:13 -0600</pubDate>
-      
-      <guid>/2015/01/01/algo-nada-todo/</guid>
-      <description>Funca!</description>
     </item>
     
   </channel>
