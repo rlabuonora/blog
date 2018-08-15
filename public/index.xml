@@ -12,6 +12,16 @@
     
     
     <item>
+      <title>Hola R Markdown</title>
+      <link>/2018/08/15/hola-r-markdown/</link>
+      <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/15/hola-r-markdown/</guid>
+      <description>Hola!
+str(mtcars) ## &amp;#39;data.frame&amp;#39;: 32 obs. of 11 variables: ## $ mpg : num 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ... ## $ cyl : num 6 6 4 6 8 6 8 4 4 6 ... ## $ disp: num 160 160 108 258 360 ... ## $ hp : num 110 110 93 110 175 105 245 62 95 123 ... ## $ drat: num 3.</description>
+    </item>
+    
+    <item>
       <title>Scraping datos de la NBA </title>
       <link>/2018/08/15/scraping-datos-de-la-nba/</link>
       <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
