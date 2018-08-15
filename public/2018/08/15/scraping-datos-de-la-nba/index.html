@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.46" />
+
+
+<title>Scraping datos de la NBA  - rlabuonora</title>
+<meta property="og:title" content="Scraping datos de la NBA  - rlabuonora">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://www.rlabuonora.com">Página Web</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Scraping datos de la NBA </h1>
+
+    
+    <span class="article-date">2018/08/15</span>
+    
+
+    <div class="article-content">
+      <p>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.</p>
+<p>La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</p>
+<p>En este post explico como bajar datos de jugadores de la NBA usando un paquete de R para scrapear datos.</p>
+<pre class="r"><code>library(glue)
+library(purrr)
+library(dplyr)
+library(rvest)
+
+# Download data table from basketball reference
+get_player_data &lt;- function(year) {
+  
+  base_nba_url &lt;- &quot;https://www.basketball-reference.com/leagues/NBA_{year}_per_game.html&quot;
+  
+  glue(base_nba_url) %&gt;% 
+    read_html(nba_url) %&gt;% 
+    html_table() %&gt;% 
+    as.data.frame() %&gt;% 
+    as_tibble %&gt;% 
+    mutate(Year = year)
+}
+
+data &lt;- as.list(2000:2018) %&gt;% 
+  purrr::map(get_player_data) %&gt;% 
+  purrr::reduce(bind_rows)  %&gt;% 
+  mutate_at(vars(G:PS.G, Age), as.numeric) %&gt;% 
+  mutate_at(vars(Tm, Pos), factor) 
+
+saveRDS(data, file=&quot;nba_data_00_18.rds&quot;)</code></pre>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

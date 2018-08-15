@@ -1,0 +1,16 @@
+---
+title: Hola R Markdown
+author: Rafa
+date: '2018-08-15'
+slug: hola-r-markdown
+categories: []
+tags: []
+---
+
+
+Hola!
+
+```{r}
+str(mtcars)
+```
+
