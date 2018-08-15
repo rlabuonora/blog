@@ -17,7 +17,7 @@ La NBA también fue pionera en el tema de liberar estadísticas, y todos los equ
 En este post explico como bajar datos de jugadores de la NBA usando un paquete de R para scrapear datos.
 
 
-```{r setup, eval = FALSE, include=FALSE}
+```{r script, eval = FALSE, include=FALSE}
 library(glue)
 library(purrr)
 library(dplyr)
