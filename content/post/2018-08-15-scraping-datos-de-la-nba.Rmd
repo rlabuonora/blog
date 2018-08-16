@@ -1,8 +1,8 @@
 ---
-title: 'Scraping datos de la NBA '
+title: 'Cirlces & Parabolas with ggplot'
 author: "rafa"
-date: '2018-08-15'
-slug: scraping-datos-de-la-nba
+date: '2017-08-15 '
+slug: conic-sections
 tags: []
 categories: []
 ---
