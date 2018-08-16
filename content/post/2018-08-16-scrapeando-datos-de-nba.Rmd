@@ -1,7 +1,7 @@
 ---
-title: "Scrapeando datos de NBA"
-author: "rafa"
-date: '2018-08-16'
+title: Scrapeando datos de NBA
+author: rafa
+date: 2018-08-16
 slug: scrapeando-datos-de-nba
 tags: []
 categories: []
