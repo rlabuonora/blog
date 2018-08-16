@@ -6,20 +6,10 @@
     <description>Recent content on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Wed, 15 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 May 2016 21:48:51 -0700</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Scraping datos de la NBA </title>
-      <link>/2018/08/15/scraping-datos-de-la-nba/</link>
-      <pubDate>Wed, 15 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/15/scraping-datos-de-la-nba/</guid>
-      <description>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
-La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</description>
-    </item>
     
     <item>
       <title>Sobre</title>
@@ -28,6 +18,24 @@ La NBA también fue pionera en el tema de liberar estadísticas, y todos los equ
       
       <guid>/about/</guid>
       <description>Este es el blog de Rafael La Buonora.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/</guid>
+      <description>Cirlces &amp;amp; Parabolas with ggplot       code{white-space: pre;} pre:not([class]) { background-color: white; }  if (window.hljs) { hljs.configure({languages: []}); hljs.initHighlightingOnLoad(); if (document.readyState &amp;&amp; document.readyState === &#34;complete&#34;) { window.setTimeout(function() { hljs.initHighlighting(); }, 0); } }  h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } .</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/</guid>
+      <description>Conic Sections       code{white-space: pre;} pre:not([class]) { background-color: white; }  if (window.hljs) { hljs.configure({languages: []}); hljs.initHighlightingOnLoad(); if (document.readyState &amp;&amp; document.readyState === &#34;complete&#34;) { window.setTimeout(function() { hljs.initHighlighting(); }, 0); } }  h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } .</description>
     </item>
     
   </channel>

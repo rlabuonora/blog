@@ -1,5 +1,5 @@
 ---
-title: 'Cirlces & Parabolas with ggplot'
+title: "Cirlces & Parabolas with ggplot"
 author: "rafa"
 date: '2017-08-15 '
 slug: conic-sections
