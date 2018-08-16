@@ -1,17 +1,14 @@
 ---
-title: Hola
-author: rafa
+title: "Scrapeando datos de NBA"
+author: "rafa"
 date: '2018-08-16'
-slug: conic-section
-categories: []
+slug: scrapeando-datos-de-nba
 tags: []
+categories: []
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
-
-
 
 La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
 
