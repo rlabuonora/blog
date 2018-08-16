@@ -1,11 +1,10 @@
 ---
-title: Conic Sections
-author: Rafa
+title: "Conic Sections"
+author: "Rafa"
 date: '2018-08-16'
 slug: conic-sections
-categories:
-  - math
 tags: []
+categories: math
 ---
 ---
 title: 'Cirlces & Parabolas with ggplot'
