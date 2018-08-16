@@ -19,8 +19,7 @@
       <guid>/2018/08/16/conic-sections-con-ggplot/</guid>
       <description>Circle The set of all points equidistant from a fixed point (h, k), called the center of the circle.
 \[(x-h)^2 + (y-k)^2 = r^2\]
-r ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + geom_segment(aes(x=0, xend=0, y=-1, yend=1.2), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + NULL
- Problem The point (1, 4) is on a circle whose center is at (-2, -3).</description>
+ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + geom_segment(aes(x=0, xend=0, y=-1, yend=1.2), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + NULL  Problem The point (1, 4) is on a circle whose center is at (-2, -3).</description>
     </item>
     
     <item>
