@@ -6,22 +6,10 @@
     <description>Recent content in Posts on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Cirlces &amp; Parabolas with ggplot</title>
-      <link>/2018/09/15/conic-sections/</link>
-      <pubDate>Sat, 15 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/09/15/conic-sections/</guid>
-      <description>Circle The set of all points equidistant from a fixed point (h, k), called the center of the circle.
-\[(x-h)^2 + (y-k)^2 = r^2\]
- Problem The point (1, 4) is on a circle whose center is at (-2, -3). Write the standard form of the cirlce.
-# find the euclidean distance btw two points my_dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } center &amp;lt;- c(-2, -3) center ## [1] -2 -3 point &amp;lt;- c(1, 4) point ## [1] 1 4 # the radius is distance btw point and center radius &amp;lt;- my_dist(center, point) radius ## [1] 7.</description>
-    </item>
     
     <item>
       <title>Scraping datos de la NBA </title>
