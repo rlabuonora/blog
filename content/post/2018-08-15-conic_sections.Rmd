@@ -6,8 +6,12 @@ slug: conic-sections
 tags: []
 categories: []
 ---
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+```{r scrap, include=FALSE}
 library(ggplot2)
 library(tidyverse)
 library(latex2exp)
