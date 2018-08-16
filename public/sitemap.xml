@@ -3,11 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/2018/08/16/conic-sections-con-ggplot/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/2018/08/16/scrapeando-datos-de-la-nba/</loc>
     <lastmod>2018-08-16T00:00:00+00:00</lastmod>
   </url>
@@ -15,6 +10,10 @@
   <url>
     <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/</loc>
   </url>
   
   <url>
