@@ -6,10 +6,30 @@
     <description>Recent content on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mapas</title>
+      <link>/2018/08/17/mapas/</link>
+      <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/17/mapas/</guid>
+      <description>Un mapa de Montevideo con Leaflet:</description>
+    </item>
+    
+    <item>
+      <title>Visualizaciones</title>
+      <link>/2018/08/17/visualizaciones/</link>
+      <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/17/visualizaciones/</guid>
+      <description> Visualizaciones interesantes. Borrador!
+Hay un montón de visualizaciones (sobre todo para datos cualitativos) que me interesaría explorar.
+Sunburst Sankey Networks </description>
+    </item>
     
     <item>
       <title>Conic sections con ggplot</title>
