@@ -17,8 +17,8 @@
       <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/17/mapas/</guid>
-      <description>Un mapa de Montevideo con Leaflet:
-## Loading required package: sp ## Checking rgeos availability: TRUE ## ## Attaching package: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union ## rgdal: version: 1.2-20, (SVN revision 725) ## Geospatial Data Abstraction Library extensions to R successfully loaded ## Loaded GDAL runtime: GDAL 2.1.0, released 2016/04/25 ## Path to GDAL shared files: /usr/share/gdal/2.</description>
+      <description>Cargar librerías y datos del mapa:
+library(maptools) library(leaflet) #library(sf) library(dplyr) library(rgdal) library(shiny) library(leaflet) crswgs84 &amp;lt;- CRS(&amp;quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&amp;quot;) # proyeccion ine prj &amp;lt;- CRS(&amp;quot;+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs&amp;quot;) # leer shapefile states &amp;lt;- readOGR(&amp;quot;../../static/shps/ine_barrios_mvd_nbi85.shp&amp;quot;, layer = &amp;quot;ine_barrios_mvd_nbi85&amp;quot;, GDAL1_integer64_policy = TRUE) states@data$barrio &amp;lt;- states@data$NOMBBARR %&amp;gt;% as.character # asignar proy proj4string(states) &amp;lt;- prj # transformar st &amp;lt;- spTransform(states, crswgs84) Un mapa de Montevideo con Leaflet.</description>
     </item>
     
   </channel>
