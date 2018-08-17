@@ -57,12 +57,12 @@ radius
 ```
 $$(x+2)^2 + (y+3)^2 = 58$$
   
-  ## Complete the square to find a circle
+## Complete the square to find a circle
   
-  $$x^2-6x+y^2-2y+6$$ is really
+$$x^2-6x+y^2-2y+6$$ is really
 $$(x-3)^2+(y-1)^2 = 4$$ 
   
-  Plot it per [this stackoverflow question](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2)
+Plot it per [this stackoverflow question](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2)
 ```{r}
 center <- c(x=3, y=1)
 pt1 <- c(x=1, y=1)
@@ -97,10 +97,9 @@ g <- ggplot() +
 g
 ```
 
-
-
 ## Parabola
 The set of point equidistante from a point (focus) and a line (directrix).
+
 ### Equation
 
 $(x-h)^2=4p(y-k), p \neq 0$
@@ -165,14 +164,13 @@ p_equipoints <- p_annotated + geom_point(data = pt, aes(x=x, y=y)) +
            x = 5, y= -2) + 
   annotate("text")
 p_equipoints
-# TODO: choose an x and get the point in
-# the parabola and draw segments to focus and to directrix
 ```
 
 
 
 You can plot it with annotate using parametric equations:
-  ```{r, warning = FALSE}
+
+```{r, warning = FALSE}
 t <- seq(-5, 5, length.out = 100)
 g <- ggplot() + 
   annotate("path", 
@@ -198,7 +196,7 @@ g
 Or stat_fun:
   
   
-  ```{r}
+```{r}
 library(latex2exp)
 
 fun.1 <- function(x) { x^2 }
@@ -218,8 +216,6 @@ p +
   ) +
   NULL
 ```
-
-## Reflecting incoming rays
 
 ## Another Example
 Complete the
@@ -241,7 +237,7 @@ y_2 &=-3 - \sqrt{-8(x+2)}\\
 
 Graph those $y1$ and $y2$:
   
-  ```{r}
+```{r}
 x <- seq(-5, 0, length.out=1e3)
 lbs <- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!
             bquote(-3 - sqrt(-8*(x+2))))
