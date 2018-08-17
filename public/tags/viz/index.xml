@@ -17,8 +17,9 @@
       <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/17/mapas/</guid>
-      <description>Cargar librerías y datos del mapa:
-library(maptools) library(leaflet) #library(sf) library(dplyr) library(rgdal) library(shiny) library(leaflet) crswgs84 &amp;lt;- CRS(&amp;quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&amp;quot;) # proyeccion ine prj &amp;lt;- CRS(&amp;quot;+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs&amp;quot;) # leer shapefile states &amp;lt;- readOGR(&amp;quot;../../static/shps/ine_barrios_mvd_nbi85.shp&amp;quot;, layer = &amp;quot;ine_barrios_mvd_nbi85&amp;quot;, GDAL1_integer64_policy = TRUE) states@data$barrio &amp;lt;- states@data$NOMBBARR %&amp;gt;% as.character # asignar proy proj4string(states) &amp;lt;- prj # transformar st &amp;lt;- spTransform(states, crswgs84) Un mapa de Montevideo con Leaflet.</description>
+      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
+Por el lado del Software hay un libro que parece bastante definitivo ().
+Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
     </item>
     
   </channel>

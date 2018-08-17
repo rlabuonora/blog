@@ -9,15 +9,31 @@ tags:
   - Viz
 ---
 
+Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando. 
+
+Por el lado del Software hay un libro que parece bastante definitivo (). 
+
+
+## Geografía
+
+La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.
+
+## Leaflet
+
+Leaflet permite para hacer mapas interactivos. Trae los datos del mapa de una API (podemos elegir varias: StreetView, etc.) y genera un html widget. Después es fácil incluir el widget en una app de Shiny o en un blog generado por Hugo.
+
+## Sf
+
+También están los viejos y queridos shapefiles. Un mapa shapefile viene en varios archivos (con formato shx, dbf, sbx, sbn) que contienen información de polígonos. 
+
+El INE publica shapefiles con la información cartográfica que dispone para Uruguay. Tuve que trabajar bastante para instalar los paquetes (en especial RGDAL que es a nivel de sistema operativo). Pero después hacer el mapa es simple.
 
 Cargar librerías y datos del mapa:
 ```{r setup, message=FALSE, results = "hide"}
 library(maptools)
 library(leaflet)
-#library(sf)
 library(dplyr)
 library(rgdal)
-
 library(shiny)
 library(leaflet)
 
@@ -25,15 +41,14 @@ crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 # proyeccion ine
 prj <- CRS("+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 
-# leer shapefile
-
+# leer shapefile (cuidado que incluyen los shpx, dbf, etc.)
 states <- readOGR("../../static/shps/ine_barrios_mvd_nbi85.shp",
                   layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
 
 states@data$barrio <- states@data$NOMBBARR %>% as.character
 # asignar proy
 proj4string(states) <- prj
-# transformar
+# transformar la proyección
 st <- spTransform(states, crswgs84)
 
 ```
@@ -59,3 +74,9 @@ leaflet(st) %>%
   )
 ```
 
+
+El código sigue las convenciones del tidyverse y es similar a un gráfico de ggplot, porque organiza el gráfico en capas (layers). La primera call a la función `leaflet` lleva el objeto como argumento. La primera es `addPolygons` que agrega los polígonos en la layer `NROBARRIO`. El `fill` viene dado por el `AREA_KM` que es una columna en un data frame interno que viene con los datos (está en el archivo dbf).
+
+`addTiles` usa la API (por defecto StreetView) para traer el mapa con las features del terreno. El grupo `Google` permite agrupar esta capa del mapa para invocarla después (con los checkboxes).
+
+`addLayerControl` es una capa de controles (dos checkboxes que permiten prender y apagar las otras dos capas del mapa.)
