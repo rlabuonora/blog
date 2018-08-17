@@ -4,6 +4,7 @@ author: Rafa
 date: '2018-08-17'
 slug: visualizaciones
 categories:
+draft: true
 tags: []
 ---
 
