@@ -62,7 +62,7 @@ $$(x+2)^2 + (y+3)^2 = 58$$
 $$x^2-6x+y^2-2y+6$$ is really
 $$(x-3)^2+(y-1)^2 = 4$$ 
   
-Plot it per [this stackoverflow  question](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2)
+Plot it per [this stackoverflow question](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2)
 ```{r}
 center <- c(x=3, y=1)
 pt1 <- c(x=1, y=1)
@@ -96,8 +96,6 @@ g <- ggplot() +
   coord_fixed()
 g
 ```
-
-
 
 ## Parabola
 
@@ -218,8 +216,6 @@ p +
   ) +
   NULL
 ```
-
-## Reflecting incoming rays
 
 ## Another Example
 Complete the

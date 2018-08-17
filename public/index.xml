@@ -32,24 +32,13 @@ Sunburst Sankey Networks </description>
     </item>
     
     <item>
-      <title>Conic sections con ggplot</title>
-      <link>/2018/08/16/conic-sections-con-ggplot/</link>
+      <title>Trigonometric Funs</title>
+      <link>/2018/08/16/trigonometric-funs/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/08/16/conic-sections-con-ggplot/</guid>
-      <description>Circle The set of all points equidistant from a fixed point (h, k), called the center of the circle.
-\[(x-h)^2 + (y-k)^2 = r^2\]
-ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + geom_segment(aes(x=0, xend=0, y=-1, yend=1.2), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + NULL  Problem The point (1, 4) is on a circle whose center is at (-2, -3).</description>
-    </item>
-    
-    <item>
-      <title>Scrapeando datos de la NBA</title>
-      <link>/2018/08/16/scrapeando-datos-de-la-nba/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/scrapeando-datos-de-la-nba/</guid>
-      <description>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
-La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</description>
+      <guid>/2018/08/16/trigonometric-funs/</guid>
+      <description>Dos Funciones trigonométricas:
+library(tidyverse) ggplot(data_frame(x = c(-5, 5)), aes(x = x)) + stat_function(fun = function(x) { sin(x) }, geom = &amp;quot;line&amp;quot;, linetype = &amp;quot;dashed&amp;quot;, size = 1, aes(colour = &amp;quot;sin(x)&amp;quot;)) + stat_function(fun = function(x) { cos(x) }, linetype = &amp;quot;dashed&amp;quot;, size = 1, aes(colour = &amp;quot;cos(x)&amp;quot;) ) + labs(x = &amp;quot;x&amp;quot;, y = &amp;quot;y&amp;quot;) + # annotate(&amp;quot;text&amp;quot;, x = 0, # y = 1, # label = &amp;quot;sin(x)&amp;quot;) + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.</description>
     </item>
     
     <item>
