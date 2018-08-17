@@ -17,7 +17,8 @@
       <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/17/mapas/</guid>
-      <description>Un mapa de Montevideo con Leaflet:</description>
+      <description>Un mapa de Montevideo con Leaflet:
+## Loading required package: sp ## Checking rgeos availability: TRUE ## ## Attaching package: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union ## rgdal: version: 1.2-20, (SVN revision 725) ## Geospatial Data Abstraction Library extensions to R successfully loaded ## Loaded GDAL runtime: GDAL 2.1.0, released 2016/04/25 ## Path to GDAL shared files: /usr/share/gdal/2.</description>
     </item>
     
   </channel>

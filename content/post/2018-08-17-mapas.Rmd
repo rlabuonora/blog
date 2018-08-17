@@ -9,5 +9,53 @@ tags:
   - Viz
 ---
 
-Un mapa de Montevideo con Leaflet:
+
+Cargar librerías y datos del mapa:
+```{r setup, message=FALSE, results = "hide"}
+library(maptools)
+library(leaflet)
+#library(sf)
+library(dplyr)
+library(rgdal)
+
+library(shiny)
+library(leaflet)
+
+crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# proyeccion ine
+prj <- CRS("+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
+
+# leer shapefile
+
+states <- readOGR("../../static/shps/ine_barrios_mvd_nbi85.shp",
+                  layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
+
+states@data$barrio <- states@data$NOMBBARR %>% as.character
+# asignar proy
+proj4string(states) <- prj
+# transformar
+st <- spTransform(states, crswgs84)
+
+```
+Un mapa de Montevideo con Leaflet. Las capas pueden ser las de StreetView o la del Shapefile publicado por INE.
+
+```{r}
+
+mvd <- c(-56.164532, -34.901112)
+mvd1 <- mvd  + 0.0071
+mvd2 <- mvd  - 0.0071
+
+
+leaflet(st) %>%
+  addPolygons(layerId=~NROBARRIO, color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.5,
+              fillColor = ~colorQuantile("YlOrRd", AREA_KM)(AREA_KM),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE), group="INE") %>%
+  addTiles(group="Google") %>%
+  addLayersControl(
+    overlayGroups = c("INE", "Google"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
 
