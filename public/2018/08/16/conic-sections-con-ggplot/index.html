@@ -223,9 +223,7 @@ y_2 &amp;=-3 - \sqrt{-8(x+2)}\\
 \end{align}\]</span>
 <p>Graph those <span class="math inline">\(y1\)</span> and <span class="math inline">\(y2\)</span>:</p>
 <p>```r x &lt;- seq(-5, 0, length.out=1e3) lbs &lt;- list(bquote(-3 + sqrt(-8<em>(x+2))), # investigar bquote! bquote(-3 - sqrt(-8</em>(x+2))))</p>
-<p>g &lt;- ggplot(data_frame(x=x), aes(x=x, color = color)) + stat_function(data = data_frame(x=x, color = factor(1)), fun = function(x) { -3 + sqrt(-8<em>(x+2)) }) + stat_function(data = data_frame(x=x, color = factor(2)), fun = function(x) { -3 - sqrt(-8</em>(x+2)) }) + scale_color_manual(labels = lbs, name = “”, values = c(scales::hue_pal()(2)[1], scales::hue_pal()(2)[2])) + geom_hline(yintercept = 0) + geom_vline(xintercept = 0) g ## Warning in sqrt(-8 * (x + 2)): NaNs produced</p>
-<p>## Warning in sqrt(-8 * (x + 2)): NaNs produced ## Warning: Removed 40 rows containing missing values (geom_path).</p>
-<p>## Warning: Removed 40 rows containing missing values (geom_path). ```</p>
+<p>g &lt;- ggplot(data_frame(x=x), aes(x=x, color = color)) + stat_function(data = data_frame(x=x, color = factor(1)), fun = function(x) { -3 + sqrt(-8<em>(x+2)) }) + stat_function(data = data_frame(x=x, color = factor(2)), fun = function(x) { -3 - sqrt(-8</em>(x+2)) }) + scale_color_manual(labels = lbs, name = “”, values = c(scales::hue_pal()(2)[1], scales::hue_pal()(2)[2])) + geom_hline(yintercept = 0) + geom_vline(xintercept = 0) g ```</p>
 <p><img src="/post/2018-08-16-conic-sections-con-ggplot_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 
