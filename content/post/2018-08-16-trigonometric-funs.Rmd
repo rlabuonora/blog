@@ -7,20 +7,21 @@ categories: []
 tags: []
 ---
 
-Dos Funciones trigonométricas:
+En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
 
+El código no es muy complejo. Uso `stat_function` para dibujar las dos funciones, `geom_segment` para los ejes y `scale_x_continuous` para especificar la posición y etiqueta de los ticks.
 
-Como poner letras griegas en los ticks de los ejes:
+Un detalle interesante es como ggplot hace la leyenda. En `stat_function` especifico `aes(colour = "sin(x)")`. Eso hace que el color de ese geom quede ligado al texto `"sin(x)"` en la leyenda.
 
-https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2
+Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre [como poner letras griegas en ggplot]
+(https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2) fue de bastante utilidad, pero me parece que la solución que encontré es demasiado *verbose*.
 
 
 ```{r, warning = FALSE, message= FALSE}
-
-
 library(tidyverse)
-library(latex2exp)
+library(ggplot2)
 
+# Crear etiquetas para eje x
 lbls <- c( expression(-2 * pi),
            expression(-3 * pi / 2),
            expression(- pi),
@@ -32,7 +33,9 @@ lbls <- c( expression(-2 * pi),
            expression(2 * pi)
            )
 
-ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
+
+# Gráfico
+ggplot(data_frame(x = c(-7, 7)), aes(x = x)) +
   stat_function(fun = function(x) { sin(x) }, 
                 geom = "line", 
                 linetype = "dashed", 
@@ -45,7 +48,7 @@ ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
                 ) +
   scale_x_continuous(
     breaks = seq(-2 * pi, 2*pi, pi/2),
-    labels = lbls #rep(expression(pi),9)
+    labels = lbls
   ) + 
   labs(x = "x", y = "y") + 
   geom_segment(aes(x=-7, xend = 7, y=0, yend=0), 
@@ -55,13 +58,12 @@ ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
                size = 0.5,
                lineend = "butt",
                arrow = arrow(length = unit(0.2, "cm"))) + 
-  labs(title = "Trigonometric functions") + 
+  labs(title = "Funciones Trigonométricas") + 
   theme_minimal() + 
   theme(
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank(),
-  ) +
-  NULL
+  ) 
 ```
  
  
