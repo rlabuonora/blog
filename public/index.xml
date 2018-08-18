@@ -45,13 +45,15 @@ ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 
     </item>
     
     <item>
-      <title>Scrapeando datos de la NBA</title>
-      <link>/2018/08/16/scrapeando-datos-de-la-nba/</link>
+      <title>Scraping NBA data</title>
+      <link>/2018/08/16/scraping-nba-data/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/08/16/scrapeando-datos-de-la-nba/</guid>
-      <description>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
-La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</description>
+      <guid>/2018/08/16/scraping-nba-data/</guid>
+      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers
+NBA Reference This website has statistics on every player
+La versión final del script:
+library(glue) library(purrr) library(dplyr) library(rvest) # Download data table from basketball reference get_player_data &amp;lt;- function(year) { base_nba_url &amp;lt;- &amp;quot;https://www.basketball-reference.com/leagues/NBA_{year}_per_game.html&amp;quot; glue(base_nba_url) %&amp;gt;% read_html(nba_url) %&amp;gt;% html_table() %&amp;gt;% as.data.frame() %&amp;gt;% as_tibble %&amp;gt;% mutate(Year = year) } data &amp;lt;- as.</description>
     </item>
     
     <item>
