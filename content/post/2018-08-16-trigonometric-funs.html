@@ -10,8 +10,21 @@ tags: []
 
 
 <p>Dos Funciones trigonométricas:</p>
+<p>Como poner letras griegas en los ticks de los ejes:</p>
+<p><a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2" class="uri">https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2</a></p>
 <pre class="r"><code>library(tidyverse)
+library(latex2exp)
 
+lbls &lt;- c( expression(-2 * pi),
+           expression(-3 * pi / 2),
+           expression(- pi),
+           expression(-pi/2),
+           0,
+           expression(pi/ 2),
+           expression(pi),
+           expression(3 * pi /2),
+           expression(2 * pi)
+           )
 
 ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
   stat_function(fun = function(x) { sin(x) }, 
@@ -24,11 +37,12 @@ ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
                 size = 1,
                 aes(colour = &quot;cos(x)&quot;)
                 ) +
+  scale_x_continuous(
+    breaks = seq(-2 * pi, 2*pi, pi/2),
+    labels = lbls #rep(expression(pi),9)
+  ) + 
   labs(x = &quot;x&quot;, y = &quot;y&quot;) + 
-  # annotate(&quot;text&quot;, x = 0, 
-  #                  y = 1, 
-  #                  label = &quot;sin(x)&quot;) + 
-  geom_segment(aes(x=-5, xend = 5, y=0, yend=0), 
+  geom_segment(aes(x=-7, xend = 7, y=0, yend=0), 
                size = 0.5,
                arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + 
   geom_segment(aes(x=0, xend=0, y=-1, yend=1.2),
