@@ -24,7 +24,7 @@ $(x-h)^2=4p(y-k), p \neq 0$
 El vértice de la parábola está en $(h,k)$ y la directriz $y=k-p$. El foco está en $(h, k+p)$ si la parábola es abierta hacia arriba.
 
 ## Gráfico de un Parábola en ggplot
-Definiendo una función y usando `stat_fun`:
+Si podemos escribir la parábola como una función, podemos graficarla usando `stat_fun`. Para graficar $y=f(x)$:
 
 ```{r}
 library(latex2exp)
@@ -108,11 +108,11 @@ p_equipoints <- p_annotated + geom_point(data = pt, aes(x=x, y=y)) +
 p_equipoints
 ```
 
-En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco.
+En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco. TODO: una versión interactiva de este gráfico.
 
 
 ## Una parábola con eje horziontal
-Si completamos el cuadrado, vemos que $y^2+6y+8x+25 &= 0$ es la ecuación de una parábola:
+Si completamos el cuadrado, vemos que $y^2+6y+8x+25 = 0$ es la ecuación de una parábola:
 
 \begin{align}
 y^2+6y+8x+25 &= 0\\

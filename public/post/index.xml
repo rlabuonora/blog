@@ -20,8 +20,7 @@
       <description>Parábola Una parábola es un conjunto de puntos que equidista de una línea (directrix) y un foco. Estos puntos satisfacen:
 \((x-h)^2=4p(y-k), p \neq 0\)
 El vértice de la parábola está en \((h,k)\) y la directriz \(y=k-p\). El foco está en \((h, k+p)\) si la parábola es abierta hacia arriba.
- Gráfico de un Parábola en ggplot Definiendo una función y usando stat_fun:
-library(latex2exp) fun.1 &amp;lt;- function(x) { x^2 } g_2 &amp;lt;- ggplot(data_frame(x=0), aes(x=x)) g_2 + stat_function(fun = fun.</description>
+ Gráfico de un Parábola en ggplot Si podemos escribir la parábola como una función, podemos graficarla usando stat_fun. Para graficar \(y=f(x)\):</description>
     </item>
     
     <item>

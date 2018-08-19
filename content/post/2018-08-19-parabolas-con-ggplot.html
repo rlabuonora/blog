@@ -17,7 +17,7 @@ tags: []
 </div>
 <div id="grafico-de-un-parabola-en-ggplot" class="section level2">
 <h2>Gráfico de un Parábola en ggplot</h2>
-<p>Definiendo una función y usando <code>stat_fun</code>:</p>
+<p>Si podemos escribir la parábola como una función, podemos graficarla usando <code>stat_fun</code>. Para graficar <span class="math inline">\(y=f(x)\)</span>:</p>
 <pre class="r"><code>library(latex2exp)
 
 fun.1 &lt;- function(x) { x^2 }
@@ -94,12 +94,12 @@ p_equipoints &lt;- p_annotated + geom_point(data = pt, aes(x=x, y=y)) +
            x = 5, y= -2)
 p_equipoints</code></pre>
 <p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco.</p>
+<p>En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco. TODO: una versión interactiva de este gráfico.</p>
 </div>
 </div>
 <div id="una-parabola-con-eje-horziontal" class="section level2">
 <h2>Una parábola con eje horziontal</h2>
-<p>Si completamos el cuadrado, vemos que <span class="math inline">\(y^2+6y+8x+25 &amp;= 0\)</span> es la ecuación de una parábola:</p>
+<p>Si completamos el cuadrado, vemos que <span class="math inline">\(y^2+6y+8x+25 = 0\)</span> es la ecuación de una parábola:</p>
 <span class="math display">\[\begin{align}
 y^2+6y+8x+25 &amp;= 0\\
 y^2+6y+9+8x+25-9  &amp;= 0\\
