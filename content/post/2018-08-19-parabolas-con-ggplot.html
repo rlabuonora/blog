@@ -11,7 +11,7 @@ tags: []
 
 <div id="parabola" class="section level2">
 <h2>Parábola</h2>
-<p>Una parábola es un conjunto de puntos que equidista de una línea (directrix) y un foco. Estos puntos satisfacen:</p>
+<p>Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:</p>
 <p><span class="math inline">\((x-h)^2=4p(y-k), p \neq 0\)</span></p>
 <p>El vértice de la parábola está en <span class="math inline">\((h,k)\)</span> y la directriz <span class="math inline">\(y=k-p\)</span>. El foco está en <span class="math inline">\((h, k+p)\)</span> si la parábola es abierta hacia arriba.</p>
 </div>
@@ -68,7 +68,7 @@ p_annotated &lt;- p +
             aes(label = paste0(lab, &quot;\n(&quot;, x, &quot;,&quot;, y, &quot;)&quot;), 
                 x = x, y = y)) + 
   geom_hline(yintercept = -4, linetype = &quot;dashed&quot;) + 
-  annotate(&quot;text&quot;, x= 3, y= -3.3, label = &quot;Directrix&quot;, size = 3) +
+  annotate(&quot;text&quot;, x= 3, y= -3.3, label = &quot;Directriz&quot;, size = 3) +
   
   ggtitle(TeX(&#39;$y=x^2/16$&#39;)) + 
   theme(

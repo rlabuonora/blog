@@ -1,15 +1,75 @@
----
-title: Scraping NBA data
-author: Rafa
-date: '2018-08-01'
-slug: scraping-nba-data
-categories: []
-tags: []
----
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.46" />
+
+
+<title>Scraping NBA data - rlabuonora</title>
+<meta property="og:title" content="Scraping NBA data - rlabuonora">
 
 
 
-<p>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.</p>
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">48 min read</span>
+    
+
+    <h1 class="article-title">Scraping NBA data</h1>
+
+    
+    <span class="article-date">2018/08/01</span>
+    
+
+    <div class="article-content">
+      <p>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.</p>
 <p>In this post I go through the process of scraping data from <a href="https://www.basketball-reference.com/">basketball-reference.com</a> using the R package <code>rvest</code>. We also do some data munging with <code>purrr</code> and string interpolation with <code>glue</code>.</p>
 <div id="nba-reference" class="section level1">
 <h1>NBA Reference</h1>
@@ -976,3 +1036,47 @@ data &lt;- as.list(2000:2018) %&gt;%
 
 #saveRDS(data, file=&quot;nba_data_00_18.rds&quot;)</code></pre>
 </div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -1,7 +1,7 @@
 ---
 title: Scraping NBA data
 author: Rafa
-date: '2018-08-16'
+date: '2018-08-01'
 slug: scraping-nba-data
 categories: []
 tags: []

@@ -17,21 +17,10 @@
       <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/19/parabolas-con-ggplot/</guid>
-      <description>Parábola Una parábola es un conjunto de puntos que equidista de una línea (directrix) y un foco. Estos puntos satisfacen:
+      <description>Parábola Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
 \((x-h)^2=4p(y-k), p \neq 0\)
 El vértice de la parábola está en \((h,k)\) y la directriz \(y=k-p\). El foco está en \((h, k+p)\) si la parábola es abierta hacia arriba.
  Gráfico de un Parábola en ggplot Si podemos escribir la parábola como una función, podemos graficarla usando stat_fun. Para graficar \(y=f(x)\):</description>
-    </item>
-    
-    <item>
-      <title>Mapas</title>
-      <link>/2018/08/17/mapas/</link>
-      <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/17/mapas/</guid>
-      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
-Por el lado del Software hay un libro que parece bastante definitivo ().
-Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
     </item>
     
     <item>
@@ -60,17 +49,6 @@ Un círculo que pasa por (1, 4) con centro en (-2, -3).
     </item>
     
     <item>
-      <title>Scraping NBA data</title>
-      <link>/2018/08/16/scraping-nba-data/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/scraping-nba-data/</guid>
-      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
-In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
-NBA Reference This website has statistics on every aspect of the game for a long time.</description>
-    </item>
-    
-    <item>
       <title>Trigonometric Funs</title>
       <link>/2018/08/16/trigonometric-funs/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
@@ -79,6 +57,28 @@ NBA Reference This website has statistics on every aspect of the game for a long
       <description>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
 El código no es muy complejo. Uso stat_function para dibujar las dos funciones, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de los ticks.
 Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas.</description>
+    </item>
+    
+    <item>
+      <title>Scraping NBA data</title>
+      <link>/2018/08/01/scraping-nba-data/</link>
+      <pubDate>Wed, 01 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/01/scraping-nba-data/</guid>
+      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
+In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
+NBA Reference This website has statistics on every aspect of the game for a long time.</description>
+    </item>
+    
+    <item>
+      <title>Mapas</title>
+      <link>/2018/07/17/mapas/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/17/mapas/</guid>
+      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
+Por el lado del Software hay un libro que parece bastante definitivo ().
+Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
     </item>
     
   </channel>

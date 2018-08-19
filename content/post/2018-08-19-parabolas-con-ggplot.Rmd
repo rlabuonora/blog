@@ -17,7 +17,7 @@ theme_set(my_theme)
 
 
 ## Parábola
-Una parábola es un conjunto de puntos que equidista de una línea (directrix) y un foco. Estos puntos satisfacen:
+Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
 
 $(x-h)^2=4p(y-k), p \neq 0$
 
@@ -81,7 +81,7 @@ p_annotated <- p +
             aes(label = paste0(lab, "\n(", x, ",", y, ")"), 
                 x = x, y = y)) + 
   geom_hline(yintercept = -4, linetype = "dashed") + 
-  annotate("text", x= 3, y= -3.3, label = "Directrix", size = 3) +
+  annotate("text", x= 3, y= -3.3, label = "Directriz", size = 3) +
   
   ggtitle(TeX('$y=x^2/16$')) + 
   theme(
