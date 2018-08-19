@@ -133,10 +133,9 @@ $(document).ready(function () {
 <p>This website has statistics on every aspect of the game for a long time. In this post, I’ll focus on individual player stats (Field Goal Percentage, Average Minutes, etc.) from the 2000/2001 season up to 2017/2018.</p>
 <p>If you follow <a href="https://www.basketball-reference.com/leagues/NBA_2017_per_game.html">this link</a>, you can find the data for the 2017 season in an html table.</p>
 <p>Html uses a special markup language to format the tables so that your browser can render it properly. Typically, an html table has this structure:</p>
-<pre class="html"><code>&lt;table&gt;
-  &lt;th&gt;Player&lt;/th&gt;
-  &lt;td&gt;Data&lt;td&gt;
-&lt;/table&gt;</code></pre>
+</div>
+<div id="html-eval-false-table-thplayerth-tddatatd-table" class="section level1">
+<h1><code>{html, eval = FALSE} # &lt;table&gt; #   &lt;th&gt;Player&lt;/th&gt; #   &lt;td&gt;Data&lt;td&gt; # &lt;/table&gt; #</code></h1>
 <p>To get this into an R data frame, you can use rvest. The first step is to get all the html from the page using read_html.</p>
 <pre class="r"><code>library(rvest)
 nba_url &lt;- &quot;https://www.basketball-reference.com/leagues/NBA_2017_per_game.html&quot;
