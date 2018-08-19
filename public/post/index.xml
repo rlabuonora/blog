@@ -50,6 +50,26 @@ ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/16/scraping-nba-data/</guid>
+      <description> Scraping NBA data  </description>
+    </item>
+    
+    <item>
+      <title>Scraping NBA data</title>
+      <link>/2018/08/16/scraping-nba-data/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/16/scraping-nba-data/</guid>
+      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
+In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
+NBA Reference This website has statistics on every aspect of the game for a long time.</description>
+    </item>
+    
+    <item>
+      <title>Scraping NBA data</title>
+      <link>/2018/08/16/scraping-nba-data/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/16/scraping-nba-data/</guid>
       <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
 In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
 NBA Reference This website has statistics on every aspect of the game for a long time.</description>
@@ -63,7 +83,7 @@ NBA Reference This website has statistics on every aspect of the game for a long
       <guid>/2018/08/16/trigonometric-funs/</guid>
       <description>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
 El código no es muy complejo. Uso stat_function para dibujar las dos funciones, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de los ticks.
-Un detalle interesante es como ggplot hace la leyenda. En stat_function especifico aes(colour = &amp;quot;sin(x)&amp;quot;).</description>
+Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas.</description>
     </item>
     
   </channel>

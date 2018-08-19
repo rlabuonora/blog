@@ -26,12 +26,12 @@ If you follow [this link](https://www.basketball-reference.com/leagues/NBA_2017_
 
 Html uses a special markup language to format the tables so that your browser can render it properly. Typically, an html table has this structure:
 
-# ```{html, eval = FALSE}
-# <table>
-#   <th>Player</th>
-#   <td>Data<td>
-# </table>
-# ```
+```{html, eval = FALSE}
+<table>
+  <th>Player</th>
+  <td>Data<td>
+</table>
+```
 
 To get this into an R data frame, you can use rvest. The first step is to get all the html from the page using read_html.
 
