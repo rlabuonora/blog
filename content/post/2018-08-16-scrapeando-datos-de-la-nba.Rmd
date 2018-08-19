@@ -7,7 +7,6 @@ categories: []
 tags: []
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
@@ -25,12 +24,12 @@ If you follow [this link](https://www.basketball-reference.com/leagues/NBA_2017_
 
 Html uses a special markup language to format the tables so that your browser can render it properly. Typically, an html table has this structure:
 
-# ```{html, eval = FALSE}
-# <table>
-#   <th>Player</th>
-#   <td>Data<td>
-# </table>
-# ```
+```{html, eval = FALSE}
+<table>
+  <th>Player</th>
+  <td>Data<td>
+</table>
+```
 
 To get this into an R data frame, you can use rvest. The first step is to get all the html from the page using read_html.
 
@@ -38,13 +37,13 @@ To get this into an R data frame, you can use rvest. The first step is to get al
 library(rvest)
 nba_url <- "https://www.basketball-reference.com/leagues/NBA_2017_per_game.html"
 web_page <- read_html(nba_url)
+
 ```
 
 Now we need to get the actual data from the table. `html_table` does just that:
 
 ```{r}
 data <- html_table(web_page)
-str(data)
 head(data[[1]])
 ```
 
@@ -60,7 +59,11 @@ Let's inspect the data:
 ```{r}
 str(data)
 ```
-Ok, so all the columns are read as text. That's natural, since all html pages are text, so we need to convert the data to the correct data types. So, most columns seem to be numeric, except Player Name which is a character, Player Position and  Team which are factors. One approach to correcting the data types is to use dplyr's mutate:
+Ok, so all the columns are read in as text. That's natural, since all html pages are text, so we need to convert the data to the correct data types. 
+
+Most columns seem to be `numeric`, except `Player Name` which is a `character` vector, `Player Position` and `Team` which are `factors`.
+
+One approach to correcting the data types is to use dplyr's mutate:
 
 ```{r, message=FALSE}
 library(dplyr)
@@ -70,10 +73,10 @@ data_1 <- data %>%
          Age = as.numeric(Age))
 #       ...
 
-str(data_1)
+str(select(data_1, Rk, Pos, Age))
 ```
 
-But there's a better way:
+But there's a better way. `mutate_at` applies a function to a list of columns.
 
 ```{r}
 data_2 <- data %>% 
@@ -82,9 +85,9 @@ data_2 <- data %>%
 str(data_2)
 ```
 
-`mutate_at` applies a function to a list of columns. The Columns need to be specified as a list of variables: `vars(Tm, Pos)`. In this case, the function applied is `factor`.
+ The Columns need to be specified as a list of variables: `vars(Tm, Pos)`. In this case, the function applied is `factor`.
 
-Now we do the same thing for the numeric variables using the `:` notation to select all the columns from G to PS.G.
+Now we do the same thing for the numeric variables using the `:` notation to select all the columns from `G` to `PS.G`.
 
 ```{r, eval = FALSE}
 data_3 <- data %>% 
@@ -92,11 +95,10 @@ data_3 <- data %>%
 str(data_3)
 ```
 
-And now we have a data frame ready to use for analysis. But, what about the rest of the years? 
+But wait, what about the rest of the years? You probably heard about the DRY principe: Don't Repeat Yourself. It'd be silly to write a whole script just to download data from another season, because most of the code would be the same. So we need to *reuse* our code to get data from the rest of the seasons.
 
 
-
-The first thing we need to do is build the url to get the html. We'll use a super cool package called `glue` for that. It does what programmer's call *string interpolation*:
+To make our code more reusable, the first thing we need to do is build the url to get the html. We'll use a super cool package called `glue` for that. It does what programmer's call *string interpolation*:
 
 ```{r}
 library(glue)
@@ -105,11 +107,8 @@ glue("Hello, {name}")
 ```
 
 I'm sure you get the idea. 
-  
-    
-You probably heard about the DRY principe: Don't repeat yourself. It'd be silly to write a whole script just to download data from another season, because most of the code would be the same. So we need to *reuse* our code to get data from the rest of the seasons.
 
-For loops are used to *iterate* over collections, so we can repeat some process without copying the code. We can generate a vector with urls for every season we're interested in:
+For loops are used to *iterate* over collections, so we can repeat some process without copying the code. With a for loop, we can generate a vector with urls for every season we're interested in:
   
 ```{r}
 base_url <- "https://www.basketball-reference.com/leagues/"
@@ -121,7 +120,7 @@ for (year in 2000:2017) {
 head(urls)
 ```
 
-Awesome! We can also iterate over the seasons and get the data we want. We now have to put the resulting data frames in a list instead of a vector.
+Awesome! Now instead of creating a vector of urls, we'll create a list of data frames, one for every season.
   
 ```{r cache = TRUE}
 base_url <- "https://www.basketball-reference.com/leagues/"
@@ -138,19 +137,20 @@ str(data)
 ```
 
 # Better iteration with map
-Ok, so now our script does everything we want it to do. But there's a wrinkle I'd like to iron out. A lot of programming is about iteration, and every programming language supports for loops.
+Now our script does everything we want it to do. But there's a wrinkle we have to iron out. 
 
-But R has a great way to make iteration cleaner with the `purrr` package. There's a whole chapter on iteration in [R for Data Science](http://r4ds.had.co.nz/iteration.html), which is a must read for anyone interested in R.
+A lot of programming is about iteration, and every programming language supports for loops. R has a great way to make iteration cleaner with the `purrr` package. There's a whole chapter on iteration in [R for Data Science](http://r4ds.had.co.nz/iteration.html), which is a must read for anyone interested in R.
 
-We need to do the same thing for every year from 2000 to 2017. That's a job for `map`!
+Our script has to repeat the same steps for every year from 2000 to 2017. That's a job for `map`! `map` takes a `list` and applies a function to every element of the list. 
 
-`map` takes a `list` and applies a function to every element of the list. Here, we apply the `head` function to a list of data frames to get the first 6 lines of each:
+For example, here we apply the `head` function to a list of data frames to get the first 6 lines of each one:
   
 ```{r}
 my_list <- list(mtcars, iris)
 purrr::map(my_list, head)
 ```
-Instead of `head`, you can use your own function:
+
+Instead of `head`, which is a predefined function, you can use your own functions:
   
 ```{r}
 my_list <- list(mtcars, iris)
@@ -158,13 +158,10 @@ my_func <- function(data_frame) { print("Hello from my fun!")}
 purrr::map(my_list, my_func)
 ```
 
-So now we need to figure out our initial list, and the function we want to apply to it's elements. The first part is easy:
-  
-```{r}
-seasons <- as.list(2000:2017)
-```
+When applying map, you need to figure out our initial list to iterate over, and the function we want to apply to it's elements in every iteration. The first part is easy, to get a list of seasons, we convert a numeric vector into a list like: `as.list(2000:2017)`.
 
-But now we need our script to fit into a function that takes one year and does the job for that year. Something like:
+
+Now we need a function that takes one year and does the job for that year. Something like:
   
 ```{r}
 get_player_data <- function(year) {
@@ -184,23 +181,24 @@ head(data.14)
 ```
 
 # Pipes
-Pipes are a well known feature in the `tidyverse`, so I won't go into detail of how the work. We could turn our function into a set of pipes easily except for this line: `data <- html_table(web_page)[[1]]`. We need the name of the function, but what function are we calling in that line? We're actually calling two functions: `html_table` with the `we_page` argument and `[[` with `1` as an argument.
+Pipes are a well known feature in the `tidyverse`, so I won't go into detail of how they work. We could turn our function into a set of pipes easily except for this line: `data <- html_table(web_page)[[1]]`. 
 
-So we could do:
+We're actually calling two functions in that line: `html_table` with the `web_page` argument and `[[` with `1` as an argument. 
 ```{r}
 web_page <- read_html(nba_url)
 tbl_lst <- html_table(web_page)
 df <- `[[`(tbl_lst, 1)
 ```
   
-Or piping it like:
-  
+So we can pipe it like this:
+
 ```{r}
 df_2 <- web_page %>% 
  html_table %>% 
  `[[`(1)
 ```
-We can re-write our get_player_data function as:
+
+Finally, we re-write our get_player_data function as:
   
 ```{r}
 get_player_data <- function(year) {
@@ -216,16 +214,18 @@ get_player_data <- function(year) {
 df.14 <- get_player_data(2014)
 head(df.14)
 ```
-Good, now we have everything we need for map:
+
+Good, now we're all set for using `map`:
 
 ```{r, cache = TRUE}
-list_of_data_frames <- as.list(2015:2017) %>% 
+list_of_data_frames <- as.list(2000:2017) %>% 
   purrr::map(get_player_data)
   
 str(list_of_data_frames)
 ```
 
 # Another functional idiom: Reduce
+
 Map takes list and returns a list. In our script, it takes a list of numbers as input and returns a list of data frames. We now need to roll all those data frames into a single data frame.
 
 That's what reduce does. It takes a list and applies a function to consequtive pairs. accumulating the results. 
@@ -255,7 +255,7 @@ list(mtcars, iris) %>%
 
 In our case, what we need it to use `reduce` with bind_rows, so we accumulate all the rows in our data_frame into a single one.
 
-Ok, we're all set now, we put all our pieces together in the final script:
+Putting all the pieces together in the final script:
 ```{r script, eval = FALSE}
 library(glue)
 library(purrr)
