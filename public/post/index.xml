@@ -6,10 +6,20 @@
     <description>Recent content in Posts on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Parábolas con ggplot</title>
+      <link>/2018/08/19/parabolas-con-ggplot/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/19/parabolas-con-ggplot/</guid>
+      <description>Gráfico de un Parábola en ggplot Hay dos formas de graficar una función en ggplot: usando stat_function y usando annotate.
+t &amp;lt;- seq(-5, 5, length.out = 100) g &amp;lt;- ggplot() + annotate(&amp;quot;path&amp;quot;, x= t, y = t^2) + xlim(-5, 5) + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + # Eje X geom_segment(aes(x=0, xend=0, y=-1, yend=25), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.</description>
+    </item>
     
     <item>
       <title>Mapas</title>
@@ -34,14 +44,17 @@ Sunburst Sankey Networks </description>
     </item>
     
     <item>
-      <title>Conic sections con ggplot</title>
+      <title>Círculos con ggplot</title>
       <link>/2018/08/16/conic-sections-con-ggplot/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/16/conic-sections-con-ggplot/</guid>
-      <description>Circle The set of all points equidistant from a fixed point (h, k), called the center of the circle.
-\[(x-h)^2 + (y-k)^2 = r^2\]
-ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + geom_segment(aes(x=0, xend=0, y=-1, yend=1.2), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + NULL  Problem The point (1, 4) is on a circle whose center is at (-2, -3).</description>
+      <description>En este post exploro un poco algunas secciones cónicas usando ggplot y LaTeX.
+Círculo La ecuación genérico de un círculo es
+\[ (x-h)^2+(y-k)^2=r^2 \]
+donde \((h, k)\) es el centro y \(r\) el radio.
+Un círculo que pasa por (1, 4) con centro en (-2, -3).
+# distancia euclideana my_dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } center &amp;lt;- c(-2, -3) point &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radius &amp;lt;- my_dist(center, point) radius^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
     </item>
     
     <item>
