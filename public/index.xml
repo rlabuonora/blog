@@ -65,6 +65,17 @@ library(tidyverse) ggplot(data_frame(x = c(-5, 5)), aes(x = x)) + stat_function(
     </item>
     
     <item>
+      <title>Hamlet</title>
+      <link>/2018/01/20/hamlet/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/20/hamlet/</guid>
+      <description>In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We’ll get the chance to use dplyr and some regular expression. Let’s dive in!
+Getting the text of the plays The text of Shakespeare’s plays is available from the gutenberg package. I downloaded the text and made it available as a data frame here so you don’t have to.
+library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;.</description>
+    </item>
+    
+    <item>
       <title>Sobre</title>
       <link>/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
