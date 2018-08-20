@@ -1,7 +1,7 @@
 ---
 title: Mining Hamlet
 author: Rafa
-date: '2018-08-20'
+date: '2018-01-20'
 slug: mining-hamlet
 categories: []
 tags: []
@@ -22,7 +22,6 @@ hamlet_title <- "Hamlet, Prince of Denmark"
 hamlet <- books %>%  
   filter(title == hamlet_title)
 
-
 # ACT
 # ACT I.
 ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
@@ -40,8 +39,7 @@ CHAR_REGEX <- regex("^([A-Z][a-z]*)\\.")
 # [Enter Horatio and Marcellus.]
 STAGEDIR_REGEX <- regex("(\\[.+\\])")
 
-
-
+# Helpers
 add_act_index <- function(df) {
   df %>% 
     mutate(act_num = str_match(text, ACT_REGEX)[,2],
@@ -78,6 +76,7 @@ speeches_df <- hamlet_2 %>%
   group_by(char_name) %>% 
   mutate(cum_lines = as.integer(cumsum(speech_length)))
 
+
 # keep only the main 6 characters
 top_n_speakers <- function(df, n) {
   df %>% 
@@ -93,12 +92,7 @@ speeches_df_main <- speeches_df %>%
   filter(char_name %in% speakers$char_name) %>% 
   filter(!is.na(char_name))
   
-
-
-# Data for grid
-
 # colors
-
 col.pal <- RColorBrewer::brewer.pal(8, "Set2")
 
 

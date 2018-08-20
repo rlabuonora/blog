@@ -80,7 +80,6 @@ hamlet_title &lt;- &quot;Hamlet, Prince of Denmark&quot;
 hamlet &lt;- books %&gt;%  
   filter(title == hamlet_title)
 
-
 # ACT
 # ACT I.
 ACT_REGEX &lt;- regex(&quot;ACT ([IVX]+)\\.&quot;, ignore_case = TRUE)
@@ -98,8 +97,7 @@ CHAR_REGEX &lt;- regex(&quot;^([A-Z][a-z]*)\\.&quot;)
 # [Enter Horatio and Marcellus.]
 STAGEDIR_REGEX &lt;- regex(&quot;(\\[.+\\])&quot;)
 
-
-
+# Helpers
 add_act_index &lt;- function(df) {
   df %&gt;% 
     mutate(act_num = str_match(text, ACT_REGEX)[,2],
@@ -136,6 +134,7 @@ speeches_df &lt;- hamlet_2 %&gt;%
   group_by(char_name) %&gt;% 
   mutate(cum_lines = as.integer(cumsum(speech_length)))
 
+
 # keep only the main 6 characters
 top_n_speakers &lt;- function(df, n) {
   df %&gt;% 
@@ -151,12 +150,7 @@ speeches_df_main &lt;- speeches_df %&gt;%
   filter(char_name %in% speakers$char_name) %&gt;% 
   filter(!is.na(char_name))
   
-
-
-# Data for grid
-
 # colors
-
 col.pal &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)
 
 

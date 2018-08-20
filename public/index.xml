@@ -6,19 +6,10 @@
     <description>Recent content on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Mon, 20 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Mining Hamlet</title>
-      <link>/2018/08/20/mining-hamlet/</link>
-      <pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/20/mining-hamlet/</guid>
-      <description>library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;../../static/data/shakespeare_plays.rds&amp;#39;) hamlet_title &amp;lt;- &amp;quot;Hamlet, Prince of Denmark&amp;quot; hamlet &amp;lt;- books %&amp;gt;% filter(title == hamlet_title) # ACT # ACT I. ACT_REGEX &amp;lt;- regex(&amp;quot;ACT ([IVX]+)\\.&amp;quot;, ignore_case = TRUE) # SCENE # Scene I. Elsinore. A platform before the Castle. SCENE_REGEX &amp;lt;- regex(&amp;quot;Scene ([IVX]+)\\.&amp;quot;) # CHAR # Fran. # Ham. Pol. CHAR_REGEX &amp;lt;- regex(&amp;quot;^([A-Z][a-z]*)\\.&amp;quot;) # Stage Dir # [Enter Horatio and Marcellus.] STAGEDIR_REGEX &amp;lt;- regex(&amp;quot;(\\[.+\\])&amp;quot;) add_act_index &amp;lt;- function(df) { df %&amp;gt;% mutate(act_num = str_match(text, ACT_REGEX)[,2], act_num = act_num %&amp;gt;% as.</description>
-    </item>
     
     <item>
       <title>Parábolas con ggplot</title>
@@ -88,6 +79,15 @@ NBA Reference This website has statistics on every aspect of the game for a long
       <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
 Por el lado del Software hay un libro que parece bastante definitivo ().
 Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
+    </item>
+    
+    <item>
+      <title>Mining Hamlet</title>
+      <link>/2018/01/20/mining-hamlet/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/20/mining-hamlet/</guid>
+      <description>library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;../../static/data/shakespeare_plays.rds&amp;#39;) hamlet_title &amp;lt;- &amp;quot;Hamlet, Prince of Denmark&amp;quot; hamlet &amp;lt;- books %&amp;gt;% filter(title == hamlet_title) # ACT # ACT I. ACT_REGEX &amp;lt;- regex(&amp;quot;ACT ([IVX]+)\\.&amp;quot;, ignore_case = TRUE) # SCENE # Scene I. Elsinore. A platform before the Castle. SCENE_REGEX &amp;lt;- regex(&amp;quot;Scene ([IVX]+)\\.&amp;quot;) # CHAR # Fran. # Ham. Pol. CHAR_REGEX &amp;lt;- regex(&amp;quot;^([A-Z][a-z]*)\\.&amp;quot;) # Stage Dir # [Enter Horatio and Marcellus.] STAGEDIR_REGEX &amp;lt;- regex(&amp;quot;(\\[.+\\])&amp;quot;) # Helpers add_act_index &amp;lt;- function(df) { df %&amp;gt;% mutate(act_num = str_match(text, ACT_REGEX)[,2], act_num = act_num %&amp;gt;% as.</description>
     </item>
     
     <item>
