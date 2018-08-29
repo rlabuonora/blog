@@ -96,3 +96,9 @@ g <- ggplot() +
 g
 ```
 
+Muchos gráficos en un con gridExtra
+
+```{r}
+library(gridExtra)
+```
+

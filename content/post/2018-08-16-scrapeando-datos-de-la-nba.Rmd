@@ -10,7 +10,8 @@ tags: []
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       warning = FALSE,
-                      message = FALSE)
+                      message = FALSE, 
+                      cache = TRUE)
 ```
 
 
@@ -26,7 +27,7 @@ If you follow [this link](https://www.basketball-reference.com/leagues/NBA_2017_
 
 Html uses a special markup language to format the tables so that your browser can render it properly. Typically, an html table has this structure:
 
-```{html, eval = FALSE}
+```{html html, eval = FALSE}
 <table>
   <th>Player</th>
   <td>Data<td>
@@ -35,7 +36,7 @@ Html uses a special markup language to format the tables so that your browser ca
 
 To get this into an R data frame, you can use rvest. The first step is to get all the html from the page using read_html.
 
-```{r}
+```{r get_webpage}
 library(rvest)
 nba_url <- "https://www.basketball-reference.com/leagues/NBA_2017_per_game.html"
 web_page <- read_html(nba_url)
@@ -44,7 +45,7 @@ web_page <- read_html(nba_url)
 
 Now we need to get the actual data from the table. `html_table` does just that:
 
-```{r}
+```{r page_to_table}
 data <- html_table(web_page)
 head(data[[1]])
 ```
@@ -67,7 +68,7 @@ Most columns seem to be `numeric`, except `Player Name` which is a `character` v
 
 One approach to correcting the data types is to use dplyr's mutate:
 
-```{r, message=FALSE}
+```{r convert_types, message=FALSE}
 library(dplyr)
 data_1 <- data %>% 
   mutate(Rk = as.numeric(Rk),
@@ -80,39 +81,39 @@ str(select(data_1, Rk, Pos, Age))
 
 But there's a better way. `mutate_at` applies a function to a list of columns.
 
-```{r}
+```{r convert_types_2}
 data_2 <- data %>% 
   mutate_at(vars(Tm, Pos), factor)
 
-str(data_2)
+str(select(data_2, Tm, Pos))
 ```
 
  The Columns need to be specified as a list of variables: `vars(Tm, Pos)`. In this case, the function applied is `factor`.
 
-Now we do the same thing for the numeric variables using the `:` notation to select all the columns from `G` to `PS.G`.
+Repeat for all the numeric variables using the `:` notation to select all the columns from `G` to `PS.G`.
 
-```{r, eval = FALSE}
-data_3 <- data %>% 
-  mutate_at(vars(G:PS.G, Age), as.numeric)
-str(data_3)
+```{r convert_type_3}
+data_3 <- data %>%
+  mutate_at(vars(G:`PS/G`, Age), as.numeric)
+str(select(data_3, G:`PS/G`, Age))
 ```
 
 But wait, what about the rest of the years? You probably heard about the DRY principe: Don't Repeat Yourself. It'd be silly to write a whole script just to download data from another season, because most of the code would be the same. So we need to *reuse* our code to get data from the rest of the seasons.
 
 
-To make our code more reusable, the first thing we need to do is build the url to get the html. We'll use a super cool package called `glue` for that. It does what programmer's call *string interpolation*:
+To make our code more reusable, the first thing we need to do is build the url to get the html. We'll use a super cool package called `glue` for that. 
 
-```{r}
+```{r glue}
 library(glue)
 name <- "Rafa"
 glue("Hello, {name}")
 ```
 
-I'm sure you get the idea. 
+I'm sure you get the idea. It's what programmer's call *string interpolation*.
 
-For loops are used to *iterate* over collections, so we can repeat some process without copying the code. With a for loop, we can generate a vector with urls for every season we're interested in:
+For loops are used to *iterate* over collections, so we can repeat some process without copying the code. With a for loop, we can generate a vector of urls for every season we're interested in:
   
-```{r}
+```{r for_loop}
 base_url <- "https://www.basketball-reference.com/leagues/"
 page <- "NBA_{year}_per_game.html"
 urls <- vector("double", length(2000:2017))
@@ -124,7 +125,7 @@ head(urls)
 
 Awesome! Now instead of creating a vector of urls, we'll create a list of data frames, one for every season.
   
-```{r cache = TRUE}
+```{r for_loop_2, cache = TRUE}
 base_url <- "https://www.basketball-reference.com/leagues/"
 page <- "NBA_{year}_per_game.html"
 data <- list()
@@ -147,7 +148,7 @@ Our script has to repeat the same steps for every year from 2000 to 2017. That's
 
 For example, here we apply the `head` function to a list of data frames to get the first 6 lines of each one:
   
-```{r}
+```{r purrr}
 my_list <- list(mtcars, iris)
 purrr::map(my_list, head)
 ```
@@ -270,7 +271,7 @@ get_player_data <- function(year) {
   base_nba_url <- "https://www.basketball-reference.com/leagues/NBA_{year}_per_game.html"
   
   glue(base_nba_url) %>% 
-    read_html(nba_url) %>% 
+    read_html() %>% 
     html_table() %>% 
     `[[`(1) %>% 
     mutate(Year = year)
@@ -278,15 +279,20 @@ get_player_data <- function(year) {
 
 data <- as.list(2000:2018) %>% 
   purrr::map(get_player_data) %>% 
-  purrr::reduce(bind_rows)  %>% 
-  mutate_at(vars(G:PS.G, Age), as.numeric) %>% 
-  mutate_at(vars(Tm, Pos), factor) 
+  purrr::reduce(bind_rows) %>% 
+  mutate_at(vars(G:`PS/G`, Age), as.numeric) %>% 
+  mutate_at(vars(Tm, Pos), factor)
 
-#saveRDS(data, file="nba_data_00_18.rds")
+#saveRDS(data, file="~/Desktop/data_science/nba_data_00_18.rds")
 ```
 
-Ideas para análisis:
-# https://fastbreakdata.com/classifying-the-modern-nba-player-with-machine-learning-539da03bb824
-# https://www.reddit.com/r/nba/comments/6pp8jo/ocrethinking_basketball_positions_with_machine/
-# http://cs229.stanford.edu/proj2012/Wheeler-PredictingNBAPlayerPerformance.pdf
-
+# What to do with the data
+  - https://fastbreakdata.com/classifying-the-modern-nba-player-with-machine-learning-539da03bb824
+  - https://www.reddit.com/r/nba/comments/6pp8jo/ocrethinking_basketball_positions_with_machine/
+  - http://cs229.stanford.edu/proj2012/Wheeler-PredictingNBAPlayerPerformance.pdf
+  
+  + Effect of injury
+  + Regression candidates in a team
+  + PCA
+  + player stats predict team offense and defense rating?
+  + predict wins based on offense and defense rating
