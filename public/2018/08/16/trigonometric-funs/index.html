@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Trigonometric Funs</h1>
@@ -69,11 +69,28 @@
     
 
     <div class="article-content">
-      <p>Dos Funciones trigonométricas:</p>
+      <p>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.</p>
+<p>El código no es muy complejo. Uso <code>stat_function</code> para dibujar las dos funciones, <code>geom_segment</code> para los ejes y <code>scale_x_continuous</code> para especificar la posición y etiqueta de los ticks.</p>
+<p>Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas. En <code>stat_function</code> especifico <code>aes(colour = &quot;sin(x)&quot;)</code>. Eso hace que el color de ese geom quede ligado al texto <code>&quot;sin(x)&quot;</code> en la leyenda.</p>
+<p>Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> fue de bastante utilidad, pero me parece que la solución que encontré es demasiado <em>verbose</em>.</p>
 <pre class="r"><code>library(tidyverse)
+library(ggplot2)
+
+# Crear etiquetas para eje x
+lbls &lt;- c( expression(-2 * pi),
+           expression(-3 * pi / 2),
+           expression(- pi),
+           expression(-pi/2),
+           0,
+           expression(pi/ 2),
+           expression(pi),
+           expression(3 * pi /2),
+           expression(2 * pi)
+           )
 
 
-ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
+# Gráfico
+ggplot(data_frame(x = c(-7, 7)), aes(x = x)) +
   stat_function(fun = function(x) { sin(x) }, 
                 geom = &quot;line&quot;, 
                 linetype = &quot;dashed&quot;, 
@@ -84,24 +101,24 @@ ggplot(data_frame(x = c(-5, 5)), aes(x = x)) +
                 size = 1,
                 aes(colour = &quot;cos(x)&quot;)
                 ) +
+  scale_x_continuous(
+    breaks = seq(-2 * pi, 2*pi, pi/2),
+    labels = lbls
+  ) + 
   labs(x = &quot;x&quot;, y = &quot;y&quot;) + 
-  # annotate(&quot;text&quot;, x = 0, 
-  #                  y = 1, 
-  #                  label = &quot;sin(x)&quot;) + 
-  geom_segment(aes(x=-5, xend = 5, y=0, yend=0), 
+  geom_segment(aes(x=-7, xend = 7, y=0, yend=0), 
                size = 0.5,
                arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + 
   geom_segment(aes(x=0, xend=0, y=-1, yend=1.2),
                size = 0.5,
                lineend = &quot;butt&quot;,
                arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + 
-  labs(title = &quot;Trigonometric functions&quot;) + 
+  labs(title = &quot;Funciones Trigonométricas&quot;) + 
   theme_minimal() + 
   theme(
     plot.title = element_text(hjust = 0.5),
     legend.title = element_blank(),
-  ) +
-  NULL</code></pre>
+  ) </code></pre>
 <p><img src="/post/2018-08-16-trigonometric-funs_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 
     </div>

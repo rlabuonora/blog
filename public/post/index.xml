@@ -6,20 +6,21 @@
     <description>Recent content in Posts on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Mapas</title>
-      <link>/2018/08/17/mapas/</link>
-      <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
+      <title>Parábolas con ggplot</title>
+      <link>/2018/08/19/parabolas-con-ggplot/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2018/08/17/mapas/</guid>
-      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
-Por el lado del Software hay un libro que parece bastante definitivo ().
-Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
+      <guid>/2018/08/19/parabolas-con-ggplot/</guid>
+      <description>Parábola Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
+\((x-h)^2=4p(y-k), p \neq 0\)
+El vértice de la parábola está en \((h,k)\) y la directriz \(y=k-p\). El foco está en \((h, k+p)\) si la parábola es abierta hacia arriba.
+ Gráfico de un Parábola en ggplot Si podemos escribir la parábola como una función, podemos graficarla usando stat_fun. Para graficar \(y=f(x)\):</description>
     </item>
     
     <item>
@@ -34,24 +35,17 @@ Sunburst Sankey Networks </description>
     </item>
     
     <item>
-      <title>Conic sections con ggplot</title>
+      <title>Círculos con ggplot</title>
       <link>/2018/08/16/conic-sections-con-ggplot/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/16/conic-sections-con-ggplot/</guid>
-      <description>Circle The set of all points equidistant from a fixed point (h, k), called the center of the circle.
-\[(x-h)^2 + (y-k)^2 = r^2\]
-ejes &amp;lt;- ggplot() + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.5, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + geom_segment(aes(x=0, xend=0, y=-1, yend=1.2), size = 0.5, lineend = &amp;quot;butt&amp;quot;, arrow = arrow(length = unit(0.2, &amp;quot;cm&amp;quot;))) + NULL  Problem The point (1, 4) is on a circle whose center is at (-2, -3).</description>
-    </item>
-    
-    <item>
-      <title>Scrapeando datos de la NBA</title>
-      <link>/2018/08/16/scrapeando-datos-de-la-nba/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/scrapeando-datos-de-la-nba/</guid>
-      <description>La NBA tiene un eco-sistema alrededor que enriquece muchísimo el producto. En Youtube hay técnicos que analizan la estrategia de los equipos (bballreakdown, coach daniel), gente especializada en analizar los salarios y los contratos y un montón de cosas.
-La NBA también fue pionera en el tema de liberar estadísticas, y todos los equipos tienen gente en analytics. De hecho, algunos de los técnicos más exitosos de los últimos años son los que incorporaron los insights de los analytics (Steve Kerr y Brad Stevens por mencionar alguno).</description>
+      <description>En este post exploro un poco algunas secciones cónicas usando ggplot y LaTeX.
+Círculo La ecuación genérico de un círculo es
+\[ (x-h)^2+(y-k)^2=r^2 \]
+donde \((h, k)\) es el centro y \(r\) el radio.
+Un círculo que pasa por (1, 4) con centro en (-2, -3).
+# distancia euclideana my_dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } center &amp;lt;- c(-2, -3) point &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radius &amp;lt;- my_dist(center, point) radius^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
     </item>
     
     <item>
@@ -60,8 +54,40 @@ La NBA también fue pionera en el tema de liberar estadísticas, y todos los equ
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/16/trigonometric-funs/</guid>
-      <description>Dos Funciones trigonométricas:
-library(tidyverse) ggplot(data_frame(x = c(-5, 5)), aes(x = x)) + stat_function(fun = function(x) { sin(x) }, geom = &amp;quot;line&amp;quot;, linetype = &amp;quot;dashed&amp;quot;, size = 1, aes(colour = &amp;quot;sin(x)&amp;quot;)) + stat_function(fun = function(x) { cos(x) }, linetype = &amp;quot;dashed&amp;quot;, size = 1, aes(colour = &amp;quot;cos(x)&amp;quot;) ) + labs(x = &amp;quot;x&amp;quot;, y = &amp;quot;y&amp;quot;) + # annotate(&amp;quot;text&amp;quot;, x = 0, # y = 1, # label = &amp;quot;sin(x)&amp;quot;) + geom_segment(aes(x=-5, xend = 5, y=0, yend=0), size = 0.</description>
+      <description>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
+El código no es muy complejo. Uso stat_function para dibujar las dos funciones, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de los ticks.
+Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas.</description>
+    </item>
+    
+    <item>
+      <title>Scraping NBA data</title>
+      <link>/2018/08/01/scraping-nba-data/</link>
+      <pubDate>Wed, 01 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/01/scraping-nba-data/</guid>
+      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
+In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
+NBA Reference This website has statistics on every aspect of the game for a long time.</description>
+    </item>
+    
+    <item>
+      <title>Un mapa de Montevideo con leaflet</title>
+      <link>/2018/07/17/mapas/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/17/mapas/</guid>
+      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
+Por el lado del Software hay un libro que parece bastante definitivo ().
+Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
+    </item>
+    
+    <item>
+      <title>Mining Hamlet</title>
+      <link>/2018/01/20/mining-hamlet/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/20/mining-hamlet/</guid>
+      <description>library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;../../static/data/shakespeare_plays.rds&amp;#39;) hamlet_title &amp;lt;- &amp;quot;Hamlet, Prince of Denmark&amp;quot; hamlet &amp;lt;- books %&amp;gt;% filter(title == hamlet_title) # ACT # ACT I. ACT_REGEX &amp;lt;- regex(&amp;quot;ACT ([IVX]+)\\.&amp;quot;, ignore_case = TRUE) # SCENE # Scene I. Elsinore. A platform before the Castle. SCENE_REGEX &amp;lt;- regex(&amp;quot;Scene ([IVX]+)\\.&amp;quot;) # CHAR # Fran. # Ham. Pol. CHAR_REGEX &amp;lt;- regex(&amp;quot;^([A-Z][a-z]*)\\.&amp;quot;) # Stage Dir # [Enter Horatio and Marcellus.] STAGEDIR_REGEX &amp;lt;- regex(&amp;quot;(\\[.+\\])&amp;quot;) # Helpers add_act_index &amp;lt;- function(df) { df %&amp;gt;% mutate(act_num = str_match(text, ACT_REGEX)[,2], act_num = act_num %&amp;gt;% as.</description>
     </item>
     
     <item>

@@ -1,18 +1,14 @@
 ---
-title: Conic sections con ggplot
-author: Rafa
+title: "Círculos con ggplot"
+author: "Rafa"
 date: '2018-08-16'
 slug: conic-sections-con-ggplot
-categories: []
 tags: []
+categories: []
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, warning = FALSE)
-```
-
-```{r scrap, include=FALSE}
 library(ggplot2)
 library(tidyverse)
 library(latex2exp)
@@ -20,239 +16,89 @@ my_theme <- theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 theme_set(my_theme)
 ```
-## Circle
-The set of all points equidistant from a fixed point (h, k), called the center of the circle. 
 
-$$(x-h)^2 + (y-k)^2 = r^2$$
-  
-```{r}
-ejes <-  ggplot() + 
-  geom_segment(aes(x=-5, xend = 5, y=0, yend=0),
-               size = 0.5,
-               arrow = arrow(length = unit(0.2, "cm"))) +
-  geom_segment(aes(x=0, xend=0, y=-1, yend=1.2),
-               size = 0.5,
-               lineend = "butt",
-               arrow = arrow(length = unit(0.2, "cm"))) +
-  NULL
 
-```
 
-## Problem
-The point `(1, 4)` is on a circle whose center is at `(-2, -3)`. Write the standard form of the cirlce.
+En este post exploro un poco algunas secciones cónicas usando `ggplot` y LaTeX.
+
+## Círculo
+
+La ecuación genérico de un círculo es 
+
+$$ (x-h)^2+(y-k)^2=r^2 $$
+
+donde $(h, k)$ es el centro y $r$ el radio.
+
+Un círculo que pasa por `(1, 4)` con centro en `(-2, -3)`. 
+
 ```{r, echo = TRUE, eval = TRUE, results  = "markup"}
-# find the euclidean distance btw two points
+# distancia euclideana
 my_dist <- function(x, y) { sqrt(sum((x-y)^2)) }
 ```
 
 ```{r, echo = TRUE, eval = TRUE, results  = "markup"}
-
 center <- c(-2, -3)
-center
 point <- c(1, 4)
-point
-#  the radius is distance btw point and center
+#  Hallar el radio como la distancia entre el punto y el centro
 radius <- my_dist(center, point)
-radius
+radius^2
 ```
+La ecuación del círculo es:
 $$(x+2)^2 + (y+3)^2 = 58$$
   
-## Complete the square to find a circle
+## Completar el cuadrado y encontrar la ecuación del círculo
   
-$$x^2-6x+y^2-2y+6$$ is really
+$$x^2-6x+y^2-2y+6$$ es
 $$(x-3)^2+(y-1)^2 = 4$$ 
   
-Plot it per [this stackoverflow question](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2)
+Graficarlo [este post en Stack Overflow](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2). Los primeros `geom_segment` son para dibujar los ejes. Luego uso `annotate` para graficar las curvas en su forma paramétrica.
+
+Para dibujar la capa con puntos, primero hice un data frame con las coordenadas, una *layer* `geom_point` para marcar los puntos y una *layer* geom_text para las etiquetas de los puntos. El problema es que hay dos puntos que quedan superpuestos con el círculo.
+
+Así que esos dos puntos ($(1,1)$ y $(5, 1)$) los dibujo aparte con `annotate`.
+
 ```{r}
+library(ggplot2)
+library(latex2exp)
+
 center <- c(x=3, y=1)
-pt1 <- c(x=1, y=1)
-pt2 <- c(x=5, y=1)
+#pt1 <- c(x=1, y=1)
+#pt2 <- c(x=5, y=1)
 pt3 <- c(x=3, y=3)
 pt4 <- c(x=3, y=-1)
-pts <- bind_rows(center, pt1, pt2, pt3, pt4)
+pts <- dplyr::bind_rows(center,pt3, pt4)
 radius <- 2
 t <- seq(0, 2*pi, length.out = 100)
-
-
 
 g <- ggplot() + 
   geom_segment(aes(x=-1, xend = 6, y=0, yend=0),
                size = 0.5,
-               arrow = arrow(length = unit(0.2, "cm"))) +
+               arrow = arrow(length = unit(0.2, "cm"))) + # Eje X
   geom_segment(aes(x=0, xend=0, y=-1, yend=4),
                size = 0.5,
                lineend = "butt",
-               arrow = arrow(length = unit(0.2, "cm"))) +
+               arrow = arrow(length = unit(0.2, "cm"))) + # Eje Y
   annotate("path", 
            x = center[1] + radius * cos(t),
            y = center[2] + radius * sin(t)) + 
   geom_point(data = pts, aes(x=x, y =y)) + 
   geom_text(data = pts,
             parse = TRUE,
-            nudge_y = 0.3,
+            nudge_y = 0.2,
             aes(x=x, y=y, label = paste0("list(", x ,",", y, ")"))) +
+  annotate("point", x=1, y=1) + 
+  annotate("text", x=1.75, y=1, label="1,1") + 
+  annotate("point", x=5, y=1) + 
+  annotate("text", x=4.75, y=1, label="5, 1") + 
   labs(x="", y="") + 
   ggtitle(TeX("(x-3)^2+(y-1)^2=4")) + 
   coord_fixed()
 g
 ```
 
-## Parabola
-
-The set of point equidistante from a point (focus) and a line (directrix).
-
-### Equation
-
-$(x-h)^2=4p(y-k), p \neq 0$
-  With vertex at $(h,k)$ vertical axis and directrix $y=k-p$.
-
-### Example
-$x^2=16y$ is a parabola with vertex at $(0,0)$, $p = 4$ and focus in $(0,4)$.
+Muchos gráficos en un con gridExtra
 
 ```{r}
-focus <- list(x=0, y=4, lab = "Focus")
-vertex <- list(x=0, y=0, lab = "Vertex")
-notable_points <- bind_rows(focus, 
-                            vertex)
-
-pt <- data_frame(x=5, y=round(5^2/16, 2))
-
-p <- ggplot(data_frame(x=0), aes(x=x)) +
-  geom_segment(aes(x=-9, xend = 9, y=0, yend=0),
-               size = 0.5,
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje X
-  geom_segment(aes(x=0, xend=0, y=-5, yend=10),
-               size = 0.5,
-               lineend = "butt",
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje Y
-  stat_function(fun = function(x) { x^2 / 16}) + 
-  xlim(-9, 9) + 
-  ylim(-5, 10)
-
-p_annotated <- p +
-  geom_point(data = notable_points, aes(x=x, y=y)) + 
-  geom_text(data=notable_points, 
-            size = 3,
-            nudge_y = 1.25,
-            nudge_x = 1.25,
-            aes(label = paste0(lab, "\n(", x, ",", y, ")"), 
-                x = x, y = y)) + 
-  geom_hline(yintercept = -4, linetype = "dashed") + 
-  annotate("text", x= 3, y= -3.3, label = "Directrix", size = 3) +
-  
-  ggtitle(TeX('$y=x^2/16$')) + 
-  theme(
-    plot.title = element_text(hjust = 0.5)
-  ) +
-  NULL
-
-x <- 5
-p_equipoints <- p_annotated + geom_point(data = pt, aes(x=x, y=y)) + 
-  geom_segment(aes(x= focus$x, y=focus$y, xend=pt$x, yend=pt$y),
-               linetype = "dashed") + 
-  geom_segment(aes(x=pt$x, y=pt$y, xend=pt$x, yend = -4),
-               linetype = "dashed") + 
-  annotate("text", 
-           label = "phantom(0) == phantom(0)", 
-           parse = TRUE,
-           angle = 60,
-           size = 5,
-           x = 2.5, y= 2.85) + 
-  annotate("text", 
-           label = "phantom(0) == phantom(0)", 
-           parse = TRUE,
-           size = 5,
-           x = 5, y= -2) + 
-  annotate("text")
-p_equipoints
+library(gridExtra)
 ```
 
-
-You can plot it with annotate using parametric equations:
-
-```{r, warning = FALSE}
-t <- seq(-5, 5, length.out = 100)
-g <- ggplot() + 
-  annotate("path", 
-           x=  t,
-           y =  t^2) + 
-  xlim(-5, 5) +
-  geom_segment(aes(x=-5, xend = 5, y=0, yend=0),
-               size = 0.5,
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje X
-  geom_segment(aes(x=0, xend=0, y=-1, yend=25),
-               size = 0.5,
-               lineend = "butt",
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje Y 
-  ggtitle(TeX('$y=x^2$')) + 
-  theme(
-    plot.title = element_text(hjust = 0.5)
-  ) +
-  NULL
-g
-```
-
-
-Or stat_fun:
-  
-  
-```{r}
-library(latex2exp)
-
-fun.1 <- function(x) { x^2 }
-p <- ggplot(data_frame(x=0), aes(x=x))
-p + 
-  stat_function(fun = fun.1) + xlim(-5, 5) + 
-  geom_segment(aes(x=-5, xend = 5, y=0, yend=0),
-               size = 0.5,
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje X
-  geom_segment(aes(x=0, xend=0, y=-1, yend=25),
-               size = 0.5,
-               lineend = "butt",
-               arrow = arrow(length = unit(0.2, "cm"))) + # Eje Y 
-  ggtitle(TeX('$y=x^2$')) + 
-  theme(
-    plot.title = element_text(hjust = 0.5)
-  ) +
-  NULL
-```
-
-## Another Example
-Complete the
-\begin{align}
-y^2+6y+8x+25 &= 0\\
-y^2+6y+9+8x+25-9  &= 0\\
-(y+3)^2 &= -16-8x\\
-(y+3)^2 &= 4(-2)(x+2)
-\end{align}
-
-Vertex is $(-2, -3)$, p is $-2$, focus is $(-4,-3)$ directrix is $x=0$. But this parabola is not a function. How do we plot it?
-  Break it in two pieces.
-\begin{align}
-(y+3)^2 &= (-8)(x+2)\\
-y     &= -3 \pm \sqrt{-8(x+2)}\\
-y_1  &=-3 + \sqrt{-8(x+2)}\\
-y_2 &=-3 - \sqrt{-8(x+2)}\\
-\end{align}
-
-Graph those $y1$ and $y2$:
-  
-```{r}
-x <- seq(-5, 0, length.out=1e3)
-lbs <- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!
-            bquote(-3 - sqrt(-8*(x+2))))
-
-g <- ggplot(data_frame(x=x), 
-            aes(x=x, color = color)) + 
-  stat_function(data = data_frame(x=x, color = factor(1)),
-                fun = function(x) { -3 + sqrt(-8*(x+2)) }) + 
-  stat_function(data = data_frame(x=x, color = factor(2)),
-                fun = function(x) { -3 - sqrt(-8*(x+2)) }) + 
-  scale_color_manual(labels = lbs,
-                     name = "",
-                     values = c(scales::hue_pal()(2)[1], 
-                                scales::hue_pal()(2)[2])) + 
-  geom_hline(yintercept = 0) + 
-  geom_vline(xintercept = 0)
-g
-```

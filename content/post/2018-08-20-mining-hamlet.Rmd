@@ -1,0 +1,119 @@
+---
+title: Mining Hamlet
+author: Rafa
+date: '2018-01-20'
+slug: mining-hamlet
+categories: []
+tags: []
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+
+books <- readRDS('../../static/data/shakespeare_plays.rds')
+hamlet_title <- "Hamlet, Prince of Denmark"
+
+hamlet <- books %>%  
+  filter(title == hamlet_title)
+
+# ACT
+# ACT I.
+ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
+
+# SCENE
+# Scene I. Elsinore. A platform before the Castle.
+SCENE_REGEX <- regex("Scene ([IVX]+)\\.")
+
+# CHAR
+# Fran.
+# Ham. Pol.
+CHAR_REGEX <- regex("^([A-Z][a-z]*)\\.")
+
+# Stage Dir
+# [Enter Horatio and Marcellus.]
+STAGEDIR_REGEX <- regex("(\\[.+\\])")
+
+# Helpers
+add_act_index <- function(df) {
+  df %>% 
+    mutate(act_num = str_match(text, ACT_REGEX)[,2],
+           act_num = act_num %>% as.roman %>% as.integer) %>% 
+    fill(act_num)
+}
+
+add_scene_index <- function(df) {
+  df %>% 
+    mutate(scene_num = str_match(text, SCENE_REGEX)[,2] %>% as.roman %>% as.integer) %>% 
+    group_by(act_num) %>% 
+    fill(scene_num) %>% 
+    ungroup
+}
+
+hamlet_2 <- hamlet %>% 
+  add_act_index %>% 
+  add_scene_index %>%
+  mutate(char_name = str_match(text, CHAR_REGEX)[,2]) %>% 
+  mutate(start_speech = !is.na(char_name) & lag(text) == "") %>% 
+  mutate(speech_idx = cumsum(start_speech)) %>% 
+  mutate(stage_dir = str_match(text, STAGEDIR_REGEX)[,2]) %>% 
+  filter(!is.na(scene_num)) %>% 
+  mutate(line = row_number()) %>% 
+  select(text, act_num, scene_num, char_name, start_speech, speech_idx, line)
+
+
+# Build a df with speech, start line, length char
+speeches_df <- hamlet_2 %>% 
+  group_by(speech_idx) %>% 
+  summarise(act = first(act_num), scene = first(scene_num), 
+            char_name = first(char_name), line = first(line),
+            speech_length = as.integer(n()-2)) %>% 
+  group_by(char_name) %>% 
+  mutate(cum_lines = as.integer(cumsum(speech_length)))
+
+
+# keep only the main 6 characters
+top_n_speakers <- function(df, n) {
+  df %>% 
+    group_by(char_name) %>% 
+    summarize(lines = n()) %>% 
+    arrange(-lines) %>% 
+    head(n)
+}
+
+speakers <- top_n_speakers(hamlet_2, 8)
+
+speeches_df_main <- speeches_df %>% 
+  filter(char_name %in% speakers$char_name) %>% 
+  filter(!is.na(char_name))
+  
+# colors
+col.pal <- RColorBrewer::brewer.pal(8, "Set2")
+
+
+ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) + 
+  # geom_vline(data = scene_grid, aes(xintercept = line, color = "Scenes"),
+  #                         linetype = "dashed", size = 0.4) +
+  # geom_vline(data = act_grid, aes(xintercept = line, color = "Acts"),
+  #                         linetype = "dashed", size = 0.5) +
+  scale_color_manual(values = c( "Acts" = col.pal[1] , "Scenes" = col.pal[2])) +
+  guides(colour = guide_legend(title = NULL)) +
+  geom_area(alpha = 0.8) + 
+  guides(fill = guide_legend(title = NULL)) +
+  scale_fill_brewer(palette = "Set2") + 
+  labs(title = hamlet, subtitle = "Lines by Character") + 
+  xlab("Line") + 
+  ylab("Spoken Lines") +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5),
+        panel.border = element_blank()) +
+  scale_x_continuous(expand = c(0, 0)) + 
+  scale_y_continuous(expand = c(0, 0))
+```
+

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.46" />
+
+
+<title>Parábolas con ggplot - rlabuonora</title>
+<meta property="og:title" content="Parábolas con ggplot - rlabuonora">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Parábolas con ggplot</h1>
+
+    
+    <span class="article-date">2018/08/19</span>
+    
+
+    <div class="article-content">
+      <div id="parabola" class="section level2">
+<h2>Parábola</h2>
+<p>Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:</p>
+<p><span class="math inline">\((x-h)^2=4p(y-k), p \neq 0\)</span></p>
+<p>El vértice de la parábola está en <span class="math inline">\((h,k)\)</span> y la directriz <span class="math inline">\(y=k-p\)</span>. El foco está en <span class="math inline">\((h, k+p)\)</span> si la parábola es abierta hacia arriba.</p>
+</div>
+<div id="grafico-de-un-parabola-en-ggplot" class="section level2">
+<h2>Gráfico de un Parábola en ggplot</h2>
+<p>Si podemos escribir la parábola como una función, podemos graficarla usando <code>stat_fun</code>. Para graficar <span class="math inline">\(y=f(x)\)</span>:</p>
+<pre class="r"><code>library(latex2exp)
+
+fun.1 &lt;- function(x) { x^2 }
+g_2 &lt;- ggplot(data_frame(x=0), aes(x=x))
+g_2 + 
+  stat_function(fun = fun.1) + xlim(-5, 5) + 
+  geom_segment(aes(x=-5, xend = 5, y=0, yend=0),
+               size = 0.5,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + # Eje X
+  geom_segment(aes(x=0, xend=0, y=-1, yend=25),
+               size = 0.5,
+               lineend = &quot;butt&quot;,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + # Eje Y 
+  ggtitle(TeX(&#39;$y=x^2$&#39;)) + 
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  ) +
+  NULL</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<div id="ejemplo" class="section level3">
+<h3>Ejemplo</h3>
+<p><span class="math inline">\(x^2=16y\)</span> es una parábola con vértice en <span class="math inline">\((0,0)\)</span>, <span class="math inline">\(p = 4\)</span> y foco en <span class="math inline">\((0,4)\)</span>.</p>
+<pre class="r"><code>focus &lt;- list(x=0, y=4, lab = &quot;Foco&quot;)
+vertex &lt;- list(x=0, y=0, lab = &quot;Vértice&quot;)
+notable_points &lt;- bind_rows(focus, 
+                            vertex)
+
+pt &lt;- data_frame(x=5, y=round(5^2/16, 2))
+
+p &lt;- ggplot(data_frame(x=0), aes(x=x)) +
+  geom_segment(aes(x=-9, xend = 9, y=0, yend=0),
+               size = 0.5,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + # Eje X
+  geom_segment(aes(x=0, xend=0, y=-5, yend=10),
+               size = 0.5,
+               lineend = &quot;butt&quot;,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + # Eje Y
+  stat_function(fun = function(x) { x^2 / 16}) + 
+  xlim(-9, 9) + 
+  ylim(-5, 10)
+
+p_annotated &lt;- p +
+  geom_point(data = notable_points, aes(x=x, y=y)) + 
+  geom_text(data=notable_points, 
+            size = 3,
+            nudge_y = 1.25,
+            nudge_x = 1.25,
+            aes(label = paste0(lab, &quot;\n(&quot;, x, &quot;,&quot;, y, &quot;)&quot;), 
+                x = x, y = y)) + 
+  geom_hline(yintercept = -4, linetype = &quot;dashed&quot;) + 
+  annotate(&quot;text&quot;, x= 3, y= -3.3, label = &quot;Directriz&quot;, size = 3) +
+  
+  ggtitle(TeX(&#39;$y=x^2/16$&#39;)) + 
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+
+x &lt;- 5
+p_equipoints &lt;- p_annotated + geom_point(data = pt, aes(x=x, y=y)) + 
+  geom_segment(aes(x= focus$x, y=focus$y, xend=pt$x, yend=pt$y),
+               linetype = &quot;dashed&quot;) + 
+  geom_segment(aes(x=pt$x, y=pt$y, xend=pt$x, yend = -4),
+               linetype = &quot;dashed&quot;) + 
+  annotate(&quot;text&quot;, 
+           label = &quot;phantom(0) == phantom(0)&quot;, 
+           parse = TRUE,
+           angle = 60,
+           size = 5,
+           x = 2.5, y= 2.85) + 
+  annotate(&quot;text&quot;, 
+           label = &quot;phantom(0) == phantom(0)&quot;, 
+           parse = TRUE,
+           size = 5,
+           x = 5, y= -2)
+p_equipoints</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco. TODO: una versión interactiva de este gráfico.</p>
+</div>
+</div>
+<div id="una-parabola-con-eje-horziontal" class="section level2">
+<h2>Una parábola con eje horziontal</h2>
+<p>Si completamos el cuadrado, vemos que <span class="math inline">\(y^2+6y+8x+25 = 0\)</span> es la ecuación de una parábola:</p>
+<span class="math display">\[\begin{align}
+y^2+6y+8x+25 &amp;= 0\\
+y^2+6y+9+8x+25-9  &amp;= 0\\
+(y+3)^2 &amp;= -16-8x\\
+(y+3)^2 &amp;= 4(-2)(x+2)
+\end{align}\]</span>
+<p>El vértice es <span class="math inline">\((-2, -3)\)</span>, p es <span class="math inline">\(-2\)</span>, el foco <span class="math inline">\((-4,-3)\)</span> la directriz es <span class="math inline">\(x=0\)</span>. Pero como la orientación de esta parábola es horizontal, no es una función. Cómo la graficamos con <code>ggplot</code>?</p>
+Si despejamos <span class="math inline">\(y\)</span> en función de <span class="math inline">\(x\)</span>, obtenemos dos funciones:
+<span class="math display">\[\begin{align}
+(y+3)^2 &amp;= (-8)(x+2)\\
+y     &amp;= -3 \pm \sqrt{-8(x+2)}\\
+y_1  &amp;=-3 + \sqrt{-8(x+2)}\\
+y_2 &amp;=-3 - \sqrt{-8(x+2)}\\
+\end{align}\]</span>
+<p>Podemos graficar <span class="math inline">\(y1\)</span> y <span class="math inline">\(y2\)</span>:</p>
+<pre class="r"><code>x &lt;- seq(-5, 0, length.out=1e3)
+lbs &lt;- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!
+            bquote(-3 - sqrt(-8*(x+2))))
+
+g &lt;- ggplot(data_frame(x=x), 
+            aes(x=x, color = color)) + 
+  stat_function(data = data_frame(x=x, color = factor(1)),
+                fun = function(x) { -3 + sqrt(-8*(x+2)) }) + 
+  stat_function(data = data_frame(x=x, color = factor(2)),
+                fun = function(x) { -3 - sqrt(-8*(x+2)) }) + 
+  scale_color_manual(labels = lbs,
+                     name = &quot;&quot;,
+                     values = c(scales::hue_pal()(2)[1], 
+                                scales::hue_pal()(2)[2])) + 
+  geom_hline(yintercept = 0) + 
+  geom_vline(xintercept = 0)
+g</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
