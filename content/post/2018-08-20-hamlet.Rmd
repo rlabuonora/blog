@@ -1,5 +1,5 @@
 ---
-title: "Hamlet"
+title: "Mining Hamlet"
 author: "Rafa"
 date: '2018-01-20'
 slug: hamlet
