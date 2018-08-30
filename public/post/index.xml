@@ -6,10 +6,21 @@
     <description>Recent content in Posts on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>NBA Ratings</title>
+      <link>/2018/08/25/nba-ratings/</link>
+      <pubDate>Sat, 25 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/25/nba-ratings/</guid>
+      <description>Explorando los ratings de la NBA.
+TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.
+library(glue) library(tidyverse) library(rvest) get_ratings_data &amp;lt;- function(year) { base_url &amp;lt;- &amp;quot;https://www.basketball-reference.com/leagues/&amp;quot; ratings_template_url &amp;lt;- &amp;quot;NBA_{year}_ratings.html&amp;quot; df &amp;lt;- glue(base_url, ratings_template_url) %&amp;gt;% read_html %&amp;gt;% html_table %&amp;gt;% `[[`(1) colnames(df) &amp;lt;- df[1,] df &amp;lt;- df[-1,] df %&amp;gt;% mutate_at(vars(W:`NRtg/A`), as.numeric) %&amp;gt;% mutate_at(vars(Team, Conf, Div), factor) } rt.17 &amp;lt;- get_ratings_data(&amp;quot;2017&amp;quot;) fit &amp;lt;- lm(W~ORtg + DRtg, data = rt.17) g_off &amp;lt;- ggplot(rt.</description>
+    </item>
     
     <item>
       <title>Parábolas con ggplot</title>
@@ -82,15 +93,6 @@ Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos
     </item>
     
     <item>
-      <title>Mining Hamlet</title>
-      <link>/2018/01/20/mining-hamlet/</link>
-      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/01/20/mining-hamlet/</guid>
-      <description>library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;../../static/data/shakespeare_plays.rds&amp;#39;) hamlet_title &amp;lt;- &amp;quot;Hamlet, Prince of Denmark&amp;quot; hamlet &amp;lt;- books %&amp;gt;% filter(title == hamlet_title) # ACT # ACT I. ACT_REGEX &amp;lt;- regex(&amp;quot;ACT ([IVX]+)\\.&amp;quot;, ignore_case = TRUE) # SCENE # Scene I. Elsinore. A platform before the Castle. SCENE_REGEX &amp;lt;- regex(&amp;quot;Scene ([IVX]+)\\.&amp;quot;) # CHAR # Fran. # Ham. Pol. CHAR_REGEX &amp;lt;- regex(&amp;quot;^([A-Z][a-z]*)\\.&amp;quot;) # Stage Dir # [Enter Horatio and Marcellus.] STAGEDIR_REGEX &amp;lt;- regex(&amp;quot;(\\[.+\\])&amp;quot;) # Helpers add_act_index &amp;lt;- function(df) { df %&amp;gt;% mutate(act_num = str_match(text, ACT_REGEX)[,2], act_num = act_num %&amp;gt;% as.</description>
-    </item>
-    
-    <item>
       <title>Hamlet</title>
       <link>/2018/01/20/hamlet/</link>
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
@@ -99,6 +101,15 @@ Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos
       <description>In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We’ll get the chance to use dplyr and some regular expression. Let’s dive in!
 Getting the text of the plays The text of Shakespeare’s plays is available from the gutenberg package. I downloaded the text and made it available as a data frame here so you don’t have to.
 library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;.</description>
+    </item>
+    
+    <item>
+      <title>Mining Hamlet</title>
+      <link>/2018/01/20/mining-hamlet/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/20/mining-hamlet/</guid>
+      <description>library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;../../static/data/shakespeare_plays.rds&amp;#39;) hamlet_title &amp;lt;- &amp;quot;Hamlet, Prince of Denmark&amp;quot; hamlet &amp;lt;- books %&amp;gt;% filter(title == hamlet_title) # ACT # ACT I. ACT_REGEX &amp;lt;- regex(&amp;quot;ACT ([IVX]+)\\.&amp;quot;, ignore_case = TRUE) # SCENE # Scene I. Elsinore. A platform before the Castle. SCENE_REGEX &amp;lt;- regex(&amp;quot;Scene ([IVX]+)\\.&amp;quot;) # CHAR # Fran. # Ham. Pol. CHAR_REGEX &amp;lt;- regex(&amp;quot;^([A-Z][a-z]*)\\.&amp;quot;) # Stage Dir # [Enter Horatio and Marcellus.] STAGEDIR_REGEX &amp;lt;- regex(&amp;quot;(\\[.+\\])&amp;quot;) # Helpers add_act_index &amp;lt;- function(df) { df %&amp;gt;% mutate(act_num = str_match(text, ACT_REGEX)[,2], act_num = act_num %&amp;gt;% as.</description>
     </item>
     
   </channel>

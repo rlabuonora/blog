@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.46" />
+
+
+<title>NBA Ratings - rlabuonora</title>
+<meta property="og:title" content="NBA Ratings - rlabuonora">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">NBA Ratings</h1>
+
+    
+    <span class="article-date">2018/08/25</span>
+    
+
+    <div class="article-content">
+      <p>Explorando los ratings de la NBA.</p>
+<p>TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.</p>
+<pre class="r"><code>library(glue)
+library(tidyverse)
+library(rvest)
+
+
+
+get_ratings_data &lt;- function(year) {
+  base_url &lt;- &quot;https://www.basketball-reference.com/leagues/&quot;
+  ratings_template_url &lt;- &quot;NBA_{year}_ratings.html&quot;
+  df &lt;- glue(base_url, ratings_template_url) %&gt;% 
+    read_html %&gt;% 
+    html_table %&gt;% 
+    `[[`(1)
+  
+  colnames(df) &lt;- df[1,]
+  df &lt;- df[-1,]
+  
+  df %&gt;% 
+    mutate_at(vars(W:`NRtg/A`), as.numeric) %&gt;% 
+    mutate_at(vars(Team, Conf, Div), factor) 
+}
+
+rt.17 &lt;- get_ratings_data(&quot;2017&quot;)
+fit &lt;- lm(W~ORtg + DRtg, data = rt.17)
+
+g_off &lt;- ggplot(rt.17, aes(ORtg, W, color = Conf)) + 
+  geom_point() + 
+  geom_smooth(inherit.aes = FALSE, aes(x=ORtg, y=W)) + 
+  labs(title = &quot;Offensive Rating vs Wins&quot;)
+
+#ggplotly(g_off)
+g_off</code></pre>
+<p><img src="/post/2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>g_def &lt;- ggplot(rt.17, aes(DRtg, W, color = Conf)) + 
+  geom_point() + 
+  geom_smooth( inherit.aes = FALSE, aes(x=DRtg, y=W)) + 
+  labs(title = &quot;Defensive Rating vs Wins&quot;)
+ g_def</code></pre>
+<p><img src="/post/2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

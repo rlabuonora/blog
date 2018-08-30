@@ -81,8 +81,7 @@
 <pre class="r"><code>library(latex2exp)
 
 fun.1 &lt;- function(x) { x^2 }
-g_2 &lt;- ggplot(data_frame(x=0), aes(x=x))
-g_2 + 
+g_1 &lt;- ggplot(data_frame(x=0), aes(x=x)) + 
   stat_function(fun = fun.1) + xlim(-5, 5) + 
   geom_segment(aes(x=-5, xend = 5, y=0, yend=0),
                size = 0.5,
@@ -94,9 +93,9 @@ g_2 +
   ggtitle(TeX(&#39;$y=x^2$&#39;)) + 
   theme(
     plot.title = element_text(hjust = 0.5)
-  ) +
-  NULL</code></pre>
-<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+  ) 
+g_1</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/g_1-1.png" width="672" /></p>
 <div id="ejemplo" class="section level3">
 <h3>Ejemplo</h3>
 <p><span class="math inline">\(x^2=16y\)</span> es una parábola con vértice en <span class="math inline">\((0,0)\)</span>, <span class="math inline">\(p = 4\)</span> y foco en <span class="math inline">\((0,4)\)</span>.</p>
@@ -104,7 +103,6 @@ g_2 +
 vertex &lt;- list(x=0, y=0, lab = &quot;Vértice&quot;)
 notable_points &lt;- bind_rows(focus, 
                             vertex)
-
 pt &lt;- data_frame(x=5, y=round(5^2/16, 2))
 
 p &lt;- ggplot(data_frame(x=0), aes(x=x)) +
@@ -119,7 +117,9 @@ p &lt;- ggplot(data_frame(x=0), aes(x=x)) +
   xlim(-9, 9) + 
   ylim(-5, 10)
 
-p_annotated &lt;- p +
+x &lt;- 5
+
+g_2 &lt;- p +
   geom_point(data = notable_points, aes(x=x, y=y)) + 
   geom_text(data=notable_points, 
             size = 3,
@@ -129,14 +129,10 @@ p_annotated &lt;- p +
                 x = x, y = y)) + 
   geom_hline(yintercept = -4, linetype = &quot;dashed&quot;) + 
   annotate(&quot;text&quot;, x= 3, y= -3.3, label = &quot;Directriz&quot;, size = 3) +
-  
   ggtitle(TeX(&#39;$y=x^2/16$&#39;)) + 
   theme(
     plot.title = element_text(hjust = 0.5)
-  )
-
-x &lt;- 5
-p_equipoints &lt;- p_annotated + geom_point(data = pt, aes(x=x, y=y)) + 
+  ) + geom_point(data = pt, aes(x=x, y=y)) + 
   geom_segment(aes(x= focus$x, y=focus$y, xend=pt$x, yend=pt$y),
                linetype = &quot;dashed&quot;) + 
   geom_segment(aes(x=pt$x, y=pt$y, xend=pt$x, yend = -4),
@@ -152,8 +148,8 @@ p_equipoints &lt;- p_annotated + geom_point(data = pt, aes(x=x, y=y)) +
            parse = TRUE,
            size = 5,
            x = 5, y= -2)
-p_equipoints</code></pre>
-<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+g_2</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/g_2-1.png" width="672" /></p>
 <p>En todos los puntos de la parábola, la distancia del punto al foco es igual que al foco. TODO: una versión interactiva de este gráfico.</p>
 </div>
 </div>
@@ -179,7 +175,7 @@ y_2 &amp;=-3 - \sqrt{-8(x+2)}\\
 lbs &lt;- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!
             bquote(-3 - sqrt(-8*(x+2))))
 
-g &lt;- ggplot(data_frame(x=x), 
+g_3 &lt;- ggplot(data_frame(x=x), 
             aes(x=x, color = color)) + 
   stat_function(data = data_frame(x=x, color = factor(1)),
                 fun = function(x) { -3 + sqrt(-8*(x+2)) }) + 
@@ -191,8 +187,18 @@ g &lt;- ggplot(data_frame(x=x),
                                 scales::hue_pal()(2)[2])) + 
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0)
-g</code></pre>
-<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+g_3</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/g_3-1.png" width="672" /></p>
+<p>Muchos gráficos en un con gridExtra</p>
+<pre class="r"><code>library(gridExtra)
+## 
+## Attaching package: &#39;gridExtra&#39;
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine
+
+grid.arrange(g_1, g_2, g_3, ncol = 2)</code></pre>
+<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 
     </div>
