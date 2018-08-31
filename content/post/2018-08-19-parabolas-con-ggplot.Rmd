@@ -16,7 +16,7 @@ theme_set(my_theme)
 ```
 
 
-## Parábola
+## Parábola (!)
 Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
 
 $(x-h)^2=4p(y-k), p \neq 0$
