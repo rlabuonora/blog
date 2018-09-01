@@ -61,7 +61,7 @@ g &lt;- ggplot() +
             nudge_y = 0.2,
             aes(x=x, y=y, label = paste0(&quot;list(&quot;, x ,&quot;,&quot;, y, &quot;)&quot;))) +
   annotate(&quot;point&quot;, x=1, y=1) + 
-  annotate(&quot;text&quot;, x=1.75, y=1, label=&quot;1,1&quot;) + 
+  annotate(&quot;text&quot;, x=1.25, y=1, label=&quot;1,1&quot;) + 
   annotate(&quot;point&quot;, x=5, y=1) + 
   annotate(&quot;text&quot;, x=4.75, y=1, label=&quot;5, 1&quot;) + 
   labs(x=&quot;&quot;, y=&quot;&quot;) + 
@@ -69,11 +69,4 @@ g &lt;- ggplot() +
   coord_fixed()
 g</code></pre>
 <p><img src="/post/2018-08-16-conic-sections-con-ggplot_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>Muchos gráficos en un con gridExtra</p>
-<pre class="r"><code>library(gridExtra)
-## 
-## Attaching package: &#39;gridExtra&#39;
-## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
 </div>

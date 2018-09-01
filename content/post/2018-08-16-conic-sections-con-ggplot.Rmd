@@ -8,7 +8,7 @@ categories: []
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, warning = FALSE)
+knitr::opts_chunk$set(collapse = TRUE, warning = FALSE, message = FALSE)
 library(ggplot2)
 library(tidyverse)
 library(latex2exp)
@@ -87,7 +87,7 @@ g <- ggplot() +
             nudge_y = 0.2,
             aes(x=x, y=y, label = paste0("list(", x ,",", y, ")"))) +
   annotate("point", x=1, y=1) + 
-  annotate("text", x=1.75, y=1, label="1,1") + 
+  annotate("text", x=1.25, y=1, label="1,1") + 
   annotate("point", x=5, y=1) + 
   annotate("text", x=4.75, y=1, label="5, 1") + 
   labs(x="", y="") + 
@@ -96,9 +96,5 @@ g <- ggplot() +
 g
 ```
 
-Muchos gráficos en un con gridExtra
 
-```{r}
-library(gridExtra)
-```
 
