@@ -149,10 +149,4 @@ g_3 <- ggplot(data_frame(x=x),
 g_3
 ```
 
-Muchos gráficos en un con gridExtra
 
-```{r}
-library(gridExtra)
-
-grid.arrange(g_1, g_2, g_3, ncol = 2)
-```

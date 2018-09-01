@@ -10,7 +10,7 @@ tags: []
 
 
 <div id="parabola" class="section level2">
-<h2>Parábola</h2>
+<h2>Parábola (!)</h2>
 <p>Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:</p>
 <p><span class="math inline">\((x-h)^2=4p(y-k), p \neq 0\)</span></p>
 <p>El vértice de la parábola está en <span class="math inline">\((h,k)\)</span> y la directriz <span class="math inline">\(y=k-p\)</span>. El foco está en <span class="math inline">\((h, k+p)\)</span> si la parábola es abierta hacia arriba.</p>
@@ -129,14 +129,4 @@ g_3 &lt;- ggplot(data_frame(x=x),
   geom_vline(xintercept = 0)
 g_3</code></pre>
 <p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/g_3-1.png" width="672" /></p>
-<p>Muchos gráficos en un con gridExtra</p>
-<pre class="r"><code>library(gridExtra)
-## 
-## Attaching package: &#39;gridExtra&#39;
-## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine
-
-grid.arrange(g_1, g_2, g_3, ncol = 2)</code></pre>
-<p><img src="/post/2018-08-19-parabolas-con-ggplot_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
