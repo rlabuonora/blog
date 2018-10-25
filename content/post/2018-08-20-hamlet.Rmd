@@ -35,41 +35,46 @@ hamlet <- books %>%
 
 ```
 
-
-ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
-
-
-
-library(stringr)
-
-str_detect(text, ACT_REGEX)
-
 We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.
 
 Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:
   
+```{r}
 testing <- c("ACT I.")
+```
 
 The first solution I came up with is to detect all lines starting with "ACT". Create the regular expression with the regex function:
 
+```{r}
 ACT_REGEX <- regex("^ACT", ignore_case = TRUE)
+```
 
 And test it like:
   
+  
+```{r}
 stringr::str_detect(testing, ACT_REGEX)
+```
+  
 
 Good. But we should capture the number of the act with parenthesis:
   
+```{r}
 ACT_REGEX <- regex("^ACT (I)", ignore_case = TRUE)
-
-and use str_match to extract the matched characters:
+```
   
+And use str_match to extract the matched characters:
+  
+```{r}
 m <- stringr::str_match(testing, ACT_REGEX)
-
+```
 
 But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:
   
+```{r}
 ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
+
+```
 
 
 
@@ -133,15 +138,6 @@ speeches_df <- hamlet_2 %>%
   group_by(char_name) %>% 
   mutate(cum_lines = as.integer(cumsum(speech_length))) %>% 
   dplyr::filter(char_name != "director")
-
-
-# Total lines per character
-# speeches_df <- speeches_df %>% 
-#   group_by(char_name) %>% 
-#   summarize(lines = sum(speech_length)) %>% 
-#   arrange(-lines) %>% 
-#   ungroup %>% 
-#   dplyr::filter(char_name != "director")
 
 
 top_n_speakers <- function(df, n) {

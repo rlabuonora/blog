@@ -23,22 +23,20 @@ books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
 
 hamlet &lt;- books %&gt;%  
   filter(title == &quot;Hamlet, Prince of Denmark&quot;)</code></pre>
-<p>ACT_REGEX &lt;- regex(“ACT ([IVX]+)\.”, ignore_case = TRUE)</p>
-<p>library(stringr)</p>
-<p>str_detect(text, ACT_REGEX)</p>
 <p>We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.</p>
 <p>Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:</p>
-<p>testing &lt;- c(“ACT I.”)</p>
+<pre class="r"><code>testing &lt;- c(&quot;ACT I.&quot;)</code></pre>
 <p>The first solution I came up with is to detect all lines starting with “ACT”. Create the regular expression with the regex function:</p>
-<p>ACT_REGEX &lt;- regex(“^ACT”, ignore_case = TRUE)</p>
+<pre class="r"><code>ACT_REGEX &lt;- regex(&quot;^ACT&quot;, ignore_case = TRUE)</code></pre>
 <p>And test it like:</p>
-<p>stringr::str_detect(testing, ACT_REGEX)</p>
+<pre class="r"><code>stringr::str_detect(testing, ACT_REGEX)
+## [1] TRUE</code></pre>
 <p>Good. But we should capture the number of the act with parenthesis:</p>
-<p>ACT_REGEX &lt;- regex(“^ACT (I)”, ignore_case = TRUE)</p>
-<p>and use str_match to extract the matched characters:</p>
-<p>m &lt;- stringr::str_match(testing, ACT_REGEX)</p>
+<pre class="r"><code>ACT_REGEX &lt;- regex(&quot;^ACT (I)&quot;, ignore_case = TRUE)</code></pre>
+<p>And use str_match to extract the matched characters:</p>
+<pre class="r"><code>m &lt;- stringr::str_match(testing, ACT_REGEX)</code></pre>
 <p>But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:</p>
-<p>ACT_REGEX &lt;- regex(“ACT ([IVX]+)\.”, ignore_case = TRUE)</p>
+<pre class="r"><code>ACT_REGEX &lt;- regex(&quot;ACT ([IVX]+)\\.&quot;, ignore_case = TRUE)</code></pre>
 <pre class="r"><code>
 
 # ACT
@@ -99,15 +97,6 @@ speeches_df &lt;- hamlet_2 %&gt;%
   dplyr::filter(char_name != &quot;director&quot;)
 
 
-# Total lines per character
-# speeches_df &lt;- speeches_df %&gt;% 
-#   group_by(char_name) %&gt;% 
-#   summarize(lines = sum(speech_length)) %&gt;% 
-#   arrange(-lines) %&gt;% 
-#   ungroup %&gt;% 
-#   dplyr::filter(char_name != &quot;director&quot;)
-
-
 top_n_speakers &lt;- function(df, n) {
   df %&gt;% 
     group_by(char_name) %&gt;% 
@@ -148,5 +137,5 @@ g &lt;- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
   scale_y_continuous(expand = c(0, 0))
 
 g</code></pre>
-<p><img src="/post/2018-08-20-hamlet_files/figure-html/unnamed-chunk-2-1.png" width="672" /> The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole play towards the end.</p>
+<p><img src="/post/2018-08-20-hamlet_files/figure-html/unnamed-chunk-8-1.png" width="672" /> The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole play towards the end.</p>
 </div>
