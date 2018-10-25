@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse = TRUE, warning = FALSE, message = FALSE)
 ```
 
 
-In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We'll get the chance to use `dplyr` and some `regular expression`. Let's dive in!
+In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We'll get the chance to use `dplyr` and some `regular expressions`. Let's dive in!
 
 # Getting the text of the plays
 
