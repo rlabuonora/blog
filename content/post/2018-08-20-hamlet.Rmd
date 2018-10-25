@@ -28,10 +28,53 @@ library(stringr)
 library(ggplot2)
 
 books <- readRDS('../../static/data/shakespeare_plays.rds')
-hamlet_title <- "Hamlet, Prince of Denmark"
+
 
 hamlet <- books %>%  
-  filter(title == hamlet_title)
+  filter(title == "Hamlet, Prince of Denmark")
+
+```
+
+
+ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
+
+
+
+library(stringr)
+
+str_detect(text, ACT_REGEX)
+
+We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.
+
+Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:
+  
+testing <- c("ACT I.")
+
+The first solution I came up with is to detect all lines starting with "ACT". Create the regular expression with the regex function:
+
+ACT_REGEX <- regex("^ACT", ignore_case = TRUE)
+
+And test it like:
+  
+stringr::str_detect(testing, ACT_REGEX)
+
+Good. But we should capture the number of the act with parenthesis:
+  
+ACT_REGEX <- regex("^ACT (I)", ignore_case = TRUE)
+
+and use str_match to extract the matched characters:
+  
+m <- stringr::str_match(testing, ACT_REGEX)
+
+
+But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:
+  
+ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
+
+
+
+
+```{r}
 
 
 # ACT
@@ -143,4 +186,6 @@ g <- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
 g
 
 ```
-
+The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty
+at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole
+play towards the end.
