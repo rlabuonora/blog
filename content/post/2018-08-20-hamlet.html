@@ -13,16 +13,6 @@ categories: []
 <div id="getting-the-text-of-the-plays" class="section level1">
 <h1>Getting the text of the plays</h1>
 <p>The text of Shakespeare’s plays is available from the <code>gutenberg</code> package. I downloaded the text and made it available as a data frame <a href="https://github.com/rlabuonora/text_mining/blob/master/data/shakespeare_plays.rds">here</a> so you don’t have to.</p>
-<pre class="r"><code>library(tidyr)
-library(dplyr)
-library(stringr)
-library(ggplot2)
-
-books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
-
-
-hamlet &lt;- books %&gt;%  
-  filter(title == &quot;Hamlet, Prince of Denmark&quot;)</code></pre>
 <p>We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.</p>
 <p>Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:</p>
 <pre class="r"><code>testing &lt;- c(&quot;ACT I.&quot;)</code></pre>
@@ -38,6 +28,12 @@ hamlet &lt;- books %&gt;%
 <p>But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:</p>
 <pre class="r"><code>ACT_REGEX &lt;- regex(&quot;ACT ([IVX]+)\\.&quot;, ignore_case = TRUE)</code></pre>
 <pre class="r"><code>
+
+books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
+
+
+hamlet &lt;- books %&gt;%  
+  filter(title == &quot;Hamlet, Prince of Denmark&quot;)
 
 # ACT
 # ACT I.

@@ -10,6 +10,10 @@ categories: []
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, warning = FALSE, message = FALSE)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
 ```
 
 
@@ -22,16 +26,7 @@ The text of Shakespeare's plays is available from the `gutenberg` package. I dow
 
 
 ```{r}
-library(tidyr)
-library(dplyr)
-library(stringr)
-library(ggplot2)
 
-books <- readRDS('../../static/data/shakespeare_plays.rds')
-
-
-hamlet <- books %>%  
-  filter(title == "Hamlet, Prince of Denmark")
 
 ```
 
@@ -81,6 +76,12 @@ ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
 
 ```{r}
 
+
+books <- readRDS('../../static/data/shakespeare_plays.rds')
+
+
+hamlet <- books %>%  
+  filter(title == "Hamlet, Prince of Denmark")
 
 # ACT
 # ACT I.

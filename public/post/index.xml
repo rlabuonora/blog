@@ -100,7 +100,7 @@ Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos
       <guid>/2018/01/20/hamlet/</guid>
       <description>In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We’ll get the chance to use dplyr and some regular expressions. Let’s dive in!
 Getting the text of the plays The text of Shakespeare’s plays is available from the gutenberg package. I downloaded the text and made it available as a data frame here so you don’t have to.
-library(tidyr) library(dplyr) library(stringr) library(ggplot2) books &amp;lt;- readRDS(&amp;#39;.</description>
+We need to detect the start of each act.</description>
     </item>
     
   </channel>
