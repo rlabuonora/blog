@@ -182,6 +182,7 @@ g <- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
 g
 
 ```
+
 The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty
 at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole
 play towards the end.
