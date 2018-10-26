@@ -76,12 +76,11 @@
 <p>We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.</p>
 <p>Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:</p>
 <pre class="r"><code>testing &lt;- c(&quot;ACT I.&quot;)</code></pre>
-<p>The first solution I came up with is to detect all lines starting with “ACT”. Create the regular expression with the regex function:</p>
-<pre class="r"><code>ACT_REGEX &lt;- regex(&quot;^ACT&quot;, ignore_case = TRUE)</code></pre>
-<p>And test it like:</p>
-<pre class="r"><code>stringr::str_detect(testing, ACT_REGEX)
+<p>The first solution I came up with is to detect all lines starting with “ACT”.</p>
+<pre class="r"><code>ACT_REGEX &lt;- regex(&quot;^ACT&quot;, ignore_case = TRUE)
+stringr::str_detect(testing, ACT_REGEX)
 ## [1] TRUE</code></pre>
-<p>Good. But we should capture the number of the act with parenthesis:</p>
+<p>Good. But we should capture the number of the act using parentheses:</p>
 <pre class="r"><code>ACT_REGEX &lt;- regex(&quot;^ACT (I)&quot;, ignore_case = TRUE)</code></pre>
 <p>And use str_match to extract the matched characters:</p>
 <pre class="r"><code>m &lt;- stringr::str_match(testing, ACT_REGEX)</code></pre>
@@ -176,11 +175,6 @@ col.pal &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)
 
 
 g &lt;- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) + 
-  # geom_vline(data = scene_grid, aes(xintercept = line, color = &quot;Scenes&quot;),
-  #                         linetype = &quot;dashed&quot;, size = 0.4) +
-  # geom_vline(data = act_grid, aes(xintercept = line, color = &quot;Acts&quot;),
-  #                         linetype = &quot;dashed&quot;, size = 0.5) +
-  # scale_color_manual(values = c( &quot;Acts&quot; = col.pal[1] , &quot;Scenes&quot; = col.pal[2])) +
   guides(colour = guide_legend(title = NULL)) +
   geom_area(alpha = 0.8) + 
   guides(fill = guide_legend(title = NULL)) +
@@ -196,8 +190,8 @@ g &lt;- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
   scale_y_continuous(expand = c(0, 0))
 
 g</code></pre>
-<p><img src="/post/2018-08-20-hamlet_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole play towards the end.</p>
+<p><img src="/post/2018-08-20-hamlet_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining of the play. Polonius has a lot of lines in the middle of the play, until he’s caught behind the arras just before line 4000. Of course, Hamlet eats up the whole play towards the end.</p>
 </div>
 
     </div>

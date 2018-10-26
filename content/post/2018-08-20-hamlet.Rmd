@@ -23,13 +23,6 @@ In this post I go over the text of Hamlet, Prince of Denmark, by William Shakesp
 
 The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](https://github.com/rlabuonora/text_mining/blob/master/data/shakespeare_plays.rds) so you don't have to.
 
-
-
-```{r}
-
-
-```
-
 We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.
 
 Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:
@@ -38,21 +31,15 @@ Regular expressions can be tricky, so we need to test them carefully. We create 
 testing <- c("ACT I.")
 ```
 
-The first solution I came up with is to detect all lines starting with "ACT". Create the regular expression with the regex function:
+The first solution I came up with is to detect all lines starting with "ACT". 
 
 ```{r}
 ACT_REGEX <- regex("^ACT", ignore_case = TRUE)
-```
-
-And test it like:
-  
-  
-```{r}
 stringr::str_detect(testing, ACT_REGEX)
 ```
-  
 
-Good. But we should capture the number of the act with parenthesis:
+
+Good. But we should capture the number of the act using parentheses:
   
 ```{r}
 ACT_REGEX <- regex("^ACT (I)", ignore_case = TRUE)
@@ -162,11 +149,6 @@ col.pal <- RColorBrewer::brewer.pal(8, "Set2")
 
 
 g <- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) + 
-  # geom_vline(data = scene_grid, aes(xintercept = line, color = "Scenes"),
-  #                         linetype = "dashed", size = 0.4) +
-  # geom_vline(data = act_grid, aes(xintercept = line, color = "Acts"),
-  #                         linetype = "dashed", size = 0.5) +
-  # scale_color_manual(values = c( "Acts" = col.pal[1] , "Scenes" = col.pal[2])) +
   guides(colour = guide_legend(title = NULL)) +
   geom_area(alpha = 0.8) + 
   guides(fill = guide_legend(title = NULL)) +
@@ -185,6 +167,4 @@ g
 
 ```
 
-The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty
-at the beggining of the play. Polonius is quite important in the 2nd act, and Hamlet eats up the whole
-play towards the end.
+The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty at the beggining of the play. Polonius has a lot of lines in the middle of the play, until he's caught behind the arras just before line 4000. Of course, Hamlet eats up the whole play towards the end.
