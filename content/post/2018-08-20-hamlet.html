@@ -27,6 +27,9 @@ categories: []
 <pre class="r"><code>m &lt;- stringr::str_match(testing, ACT_REGEX)</code></pre>
 <p>But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:</p>
 <pre class="r"><code>ACT_REGEX &lt;- regex(&quot;ACT ([IVX]+)\\.&quot;, ignore_case = TRUE)</code></pre>
+</div>
+<div id="putting-it-all-together" class="section level1">
+<h1>Putting it all together</h1>
 <pre class="r"><code>
 
 books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
