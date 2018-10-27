@@ -28,16 +28,16 @@ The text of Shakespeare's plays is available from the `gutenberg` package. I dow
 
 
 ```{r}
-books <- readRDS('../../static/post/2018-08-20-hamlet_files/shakespeare_plays.rds')
+books <- readRDS('../../public/post/2018-08-20-hamlet_files/shakespeare_plays.rds')
 hamlet <- books %>%  
   filter(title == "Hamlet, Prince of Denmark")
 ```
 
 
 # Extracting the Character names
-I use a regular expression to extract character names from the lines of the play. Most characters names appear abreviated.
+We can use a regular expressions to extract character names from the lines of the play. Most characters names appear abreviated (Ham. for Hamlet, Hor. for Horatio).
 
-`lag` and `cumsum` are useful for working with mutate while being able to look at consecutive lines in the data frame. I also create a line number index with `row_number`.
+`lag` and `cumsum` are useful inside call to `mutate` to look at consecutive lines in the data frame. I also create a line number index with `row_number`.
 
 
 ```{r}
@@ -66,13 +66,15 @@ Now we need to create a `data frame` of speeches. Each line is a speech in the p
 # Build a df with speech, start line, length char
 speeches_df <- hamlet %>% 
   group_by(speech_idx) %>% 
-  summarise( 
-          char_name = first(char_name), line = first(line),
+  summarise(char_name = first(char_name), 
+            line = first(line),
           speech_length = as.integer(n()-2)) %>% 
   group_by(char_name) %>% 
   dplyr::filter(char_name != "director")
 ```
+
 The longest speech is by Hamlet (duh!), and starts at line 2677.
+
 ```{r}
 speeches_df %>% 
   arrange(-speech_length)

@@ -5,15 +5,15 @@ date: '2018-08-25'
 slug: nba-ratings
 categories: []
 tags: []
+draft: true
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
-```
+
 Explorando los ratings de la NBA.
 
 TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.
 
-```{r}
+
+```r
 library(glue)
 library(tidyverse)
 library(rvest)
@@ -46,13 +46,17 @@ g_off <- ggplot(rt.17, aes(ORtg, W, color = Conf)) +
 
 #ggplotly(g_off)
 g_off
+```
 
+<img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+
+```r
 g_def <- ggplot(rt.17, aes(DRtg, W, color = Conf)) + 
   geom_point() + 
   geom_smooth( inherit.aes = FALSE, aes(x=DRtg, y=W)) + 
   labs(title = "Defensive Rating vs Wins")
  g_def
-
-
 ```
+
+<img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" />
 

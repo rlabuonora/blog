@@ -70,8 +70,10 @@
 
     <div class="article-content">
       <p>Explorando los ratings de la NBA.</p>
+
 <p>TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.</p>
-<pre class="r"><code>library(glue)
+
+<pre><code class="language-r">library(glue)
 library(tidyverse)
 library(rvest)
 
@@ -102,14 +104,19 @@ g_off &lt;- ggplot(rt.17, aes(ORtg, W, color = Conf)) +
   labs(title = &quot;Offensive Rating vs Wins&quot;)
 
 #ggplotly(g_off)
-g_off</code></pre>
-<p><img src="/post/2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<pre class="r"><code>g_def &lt;- ggplot(rt.17, aes(DRtg, W, color = Conf)) + 
+g_off
+</code></pre>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+
+<pre><code class="language-r">g_def &lt;- ggplot(rt.17, aes(DRtg, W, color = Conf)) + 
   geom_point() + 
   geom_smooth( inherit.aes = FALSE, aes(x=DRtg, y=W)) + 
   labs(title = &quot;Defensive Rating vs Wins&quot;)
- g_def</code></pre>
-<p><img src="/post/2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+ g_def
+</code></pre>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 
     </div>
   </article>

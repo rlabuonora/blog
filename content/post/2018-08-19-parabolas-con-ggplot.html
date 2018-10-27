@@ -96,20 +96,20 @@ g_2</code></pre>
 <div id="una-parabola-con-eje-horziontal" class="section level2">
 <h2>Una parábola con eje horziontal</h2>
 <p>Si completamos el cuadrado, vemos que <span class="math inline">\(y^2+6y+8x+25 = 0\)</span> es la ecuación de una parábola:</p>
-<span class="math display">\[\begin{align}
+<p><span class="math display">\[\begin{align}
 y^2+6y+8x+25 &amp;= 0\\
 y^2+6y+9+8x+25-9  &amp;= 0\\
 (y+3)^2 &amp;= -16-8x\\
 (y+3)^2 &amp;= 4(-2)(x+2)
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>El vértice es <span class="math inline">\((-2, -3)\)</span>, p es <span class="math inline">\(-2\)</span>, el foco <span class="math inline">\((-4,-3)\)</span> la directriz es <span class="math inline">\(x=0\)</span>. Pero como la orientación de esta parábola es horizontal, no es una función. Cómo la graficamos con <code>ggplot</code>?</p>
-Si despejamos <span class="math inline">\(y\)</span> en función de <span class="math inline">\(x\)</span>, obtenemos dos funciones:
+<p>Si despejamos <span class="math inline">\(y\)</span> en función de <span class="math inline">\(x\)</span>, obtenemos dos funciones:
 <span class="math display">\[\begin{align}
 (y+3)^2 &amp;= (-8)(x+2)\\
 y     &amp;= -3 \pm \sqrt{-8(x+2)}\\
 y_1  &amp;=-3 + \sqrt{-8(x+2)}\\
 y_2 &amp;=-3 - \sqrt{-8(x+2)}\\
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>Podemos graficar <span class="math inline">\(y1\)</span> y <span class="math inline">\(y2\)</span>:</p>
 <pre class="r"><code>x &lt;- seq(-5, 0, length.out=1e3)
 lbs &lt;- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!

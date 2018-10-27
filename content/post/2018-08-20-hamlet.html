@@ -16,14 +16,14 @@ categories: []
 <h1>Getting the text of the plays</h1>
 <p>The text of Shakespeare’s plays is available from the <code>gutenberg</code> package. I downloaded the text and made it available as a data frame <a href="/post/2018-08-20-hamlet_files/shakespeare_plays.rds">here</a>
 so you don’t have to.</p>
-<pre class="r"><code>books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
+<pre class="r"><code>books &lt;- readRDS(&#39;../../public/post/2018-08-20-hamlet_files/shakespeare_plays.rds&#39;)
 hamlet &lt;- books %&gt;%  
   filter(title == &quot;Hamlet, Prince of Denmark&quot;)</code></pre>
 </div>
 <div id="extracting-the-character-names" class="section level1">
 <h1>Extracting the Character names</h1>
-<p>I use a regular expression to extract character names from the lines of the play. Most characters names appear abreviated.</p>
-<p><code>lag</code> and <code>cumsum</code> are useful for working with mutate while being able to look at consecutive lines in the data frame. I also create a line number index with <code>row_number</code>.</p>
+<p>We can use a regular expressions to extract character names from the lines of the play. Most characters names appear abreviated (Ham. for Hamlet, Hor. for Horatio).</p>
+<p><code>lag</code> and <code>cumsum</code> are useful inside call to <code>mutate</code> to look at consecutive lines in the data frame. I also create a line number index with <code>row_number</code>.</p>
 <pre class="r"><code># Fran., Ham., Pol.
 CHAR_REGEX &lt;- regex(&quot;^([A-Z][a-z]*)\\.&quot;)
 # Stage Dir
@@ -44,8 +44,8 @@ hamlet &lt;- hamlet %&gt;%
 # Build a df with speech, start line, length char
 speeches_df &lt;- hamlet %&gt;% 
   group_by(speech_idx) %&gt;% 
-  summarise( 
-          char_name = first(char_name), line = first(line),
+  summarise(char_name = first(char_name), 
+            line = first(line),
           speech_length = as.integer(n()-2)) %&gt;% 
   group_by(char_name) %&gt;% 
   dplyr::filter(char_name != &quot;director&quot;)</code></pre>

@@ -24,11 +24,13 @@ point &lt;- c(1, 4)
 radius &lt;- my_dist(center, point)
 radius^2
 ## [1] 58</code></pre>
-<p>La ecuación del círculo es: <span class="math display">\[(x+2)^2 + (y+3)^2 = 58\]</span></p>
+<p>La ecuación del círculo es:
+<span class="math display">\[(x+2)^2 + (y+3)^2 = 58\]</span></p>
 </div>
 <div id="completar-el-cuadrado-y-encontrar-la-ecuacion-del-circulo" class="section level2">
 <h2>Completar el cuadrado y encontrar la ecuación del círculo</h2>
-<p><span class="math display">\[x^2-6x+y^2-2y+6\]</span> es <span class="math display">\[(x-3)^2+(y-1)^2 = 4\]</span></p>
+<p><span class="math display">\[x^2-6x+y^2-2y+6\]</span> es
+<span class="math display">\[(x-3)^2+(y-1)^2 = 4\]</span></p>
 <p>Graficarlo <a href="https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2">este post en Stack Overflow</a>. Los primeros <code>geom_segment</code> son para dibujar los ejes. Luego uso <code>annotate</code> para graficar las curvas en su forma paramétrica.</p>
 <p>Para dibujar la capa con puntos, primero hice un data frame con las coordenadas, una <em>layer</em> <code>geom_point</code> para marcar los puntos y una <em>layer</em> geom_text para las etiquetas de los puntos. El problema es que hay dos puntos que quedan superpuestos con el círculo.</p>
 <p>Así que esos dos puntos (<span class="math inline">\((1,1)\)</span> y <span class="math inline">\((5, 1)\)</span>) los dibujo aparte con <code>annotate</code>.</p>
