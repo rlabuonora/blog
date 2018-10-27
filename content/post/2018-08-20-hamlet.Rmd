@@ -23,12 +23,12 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
 
 # Getting the text of the plays
 
-The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](/post/data/shakespeare_plays.rds)
+The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](/post/2018-08-20-hamlet_files/shakespeare_plays.rds)
  so you don't have to.
 
 
 ```{r}
-books <- readRDS('../../static/data/shakespeare_plays.rds')
+books <- readRDS('../../static/post/2018-08-20-hamlet_files/shakespeare_plays.rds')
 hamlet <- books %>%  
   filter(title == "Hamlet, Prince of Denmark")
 ```
