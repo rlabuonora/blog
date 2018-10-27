@@ -11,10 +11,11 @@ categories: []
 
 <p><img src="/post/2018-08-20-hamlet_files/MV5BMjI5OTgwNTc3M15BMl5BanBnXkFtZTgwNDY1NTk4NjE@._V1_SY1000_CR0,0,668,1000_AL_.jpg" /></p>
 <p>A lot of Shakespeare’s tragic heores don’t dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities later in the plays. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).</p>
-<p>In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare using quantity of lines spoken by character to visualize the dynamic of the play.We’ll get the chance to use <code>dplyr</code> and some <code>regular expressions</code>.</p>
+<p>In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play. We’ll get the chance to use <code>dplyr</code> and some <code>regular expressions</code>.</p>
 <div id="getting-the-text-of-the-plays" class="section level1">
 <h1>Getting the text of the plays</h1>
-<p>The text of Shakespeare’s plays is available from the <code>gutenberg</code> package. I downloaded the text and made it available as a data frame <a href="https://github.com/rlabuonora/text_mining/blob/master/data/shakespeare_plays.rds">here</a> so you don’t have to.</p>
+<p>The text of Shakespeare’s plays is available from the <code>gutenberg</code> package. I downloaded the text and made it available as a data frame <a href="/post/data/shakespeare_plays.rds">here</a>
+so you don’t have to.</p>
 <pre class="r"><code>books &lt;- readRDS(&#39;../../static/data/shakespeare_plays.rds&#39;)
 hamlet &lt;- books %&gt;%  
   filter(title == &quot;Hamlet, Prince of Denmark&quot;)</code></pre>

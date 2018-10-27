@@ -19,11 +19,13 @@ library(ggplot2)
 
 A lot of Shakespeare's tragic heores don't dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities later in the plays. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).
 
-In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare using quantity of lines spoken by character to visualize the dynamic of the play.We'll get the chance to use `dplyr` and some `regular expressions`.
+In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play. We'll get the chance to use `dplyr` and some `regular expressions`.
 
 # Getting the text of the plays
 
-The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](https://github.com/rlabuonora/text_mining/blob/master/data/shakespeare_plays.rds) so you don't have to.
+The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](/post/data/shakespeare_plays.rds)
+ so you don't have to.
+
 
 ```{r}
 books <- readRDS('../../static/data/shakespeare_plays.rds')
