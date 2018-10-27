@@ -15,139 +15,108 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 ```
+![](/post/2018-08-20-hamlet_files/MV5BMjI5OTgwNTc3M15BMl5BanBnXkFtZTgwNDY1NTk4NjE@._V1_SY1000_CR0,0,668,1000_AL_.jpg)
 
+A lot of Shakespeare's tragic heores don't dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities later in the plays. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).
 
-In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare. We'll get the chance to use `dplyr` and some `regular expressions`. Let's dive in!
+In this post I go over the text of Hamlet, Prince of Denmark, by William Shakespeare using quantity of lines spoken by character to visualize the dynamic of the play.We'll get the chance to use `dplyr` and some `regular expressions`.
 
 # Getting the text of the plays
 
 The text of Shakespeare's plays is available from the `gutenberg` package. I downloaded the text and made it available as a data frame [here](https://github.com/rlabuonora/text_mining/blob/master/data/shakespeare_plays.rds) so you don't have to.
 
-We need to detect the start of each act. These lines are of the form ACT I., ACT II. etc.
-
-Regular expressions can be tricky, so we need to test them carefully. We create a vector of characters so we can test it:
-  
 ```{r}
-testing <- c("ACT I.")
-```
-
-The first solution I came up with is to detect all lines starting with "ACT". 
-
-```{r}
-ACT_REGEX <- regex("^ACT", ignore_case = TRUE)
-stringr::str_detect(testing, ACT_REGEX)
-```
-
-
-Good. But we should capture the number of the act using parentheses:
-  
-```{r}
-ACT_REGEX <- regex("^ACT (I)", ignore_case = TRUE)
-```
-  
-And use str_match to extract the matched characters:
-  
-```{r}
-m <- stringr::str_match(testing, ACT_REGEX)
-```
-
-But how about the rest of the acts? We need to capture ONE OR MORE ROMAN NUMERALS:
-  
-```{r}
-ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
-
-```
-
-
-# Putting it all together
-
-
-```{r}
-
-
 books <- readRDS('../../static/data/shakespeare_plays.rds')
-
-
 hamlet <- books %>%  
   filter(title == "Hamlet, Prince of Denmark")
+```
 
-# ACT
-# ACT I.
-ACT_REGEX <- regex("ACT ([IVX]+)\\.", ignore_case = TRUE)
 
-# SCENE
-# Scene I. Elsinore. A platform before the Castle.
-SCENE_REGEX <- regex("Scene ([IVX]+)\\.")
+# Extracting the Character names
+I use a regular expression to extract character names from the lines of the play. Most characters names appear abreviated.
 
-# CHAR
-# Fran.
-# Ham. Pol.
+`lag` and `cumsum` are useful for working with mutate while being able to look at consecutive lines in the data frame. I also create a line number index with `row_number`.
+
+
+```{r}
+# Fran., Ham., Pol.
 CHAR_REGEX <- regex("^([A-Z][a-z]*)\\.")
-
 # Stage Dir
 # [Enter Horatio and Marcellus.]
 STAGEDIR_REGEX <- regex("(\\[.+\\])")
 
-
-
-add_act_index <- function(df) {
-  df %>% 
-    mutate(act_num = str_match(text, ACT_REGEX)[,2],
-           act_num = act_num %>% as.roman %>% as.integer) %>% 
-    fill(act_num)
-}
-
-add_scene_index <- function(df) {
-  df %>% 
-    mutate(scene_num = str_match(text, SCENE_REGEX)[,2] %>% as.roman %>% as.integer) %>% 
-    group_by(act_num) %>% 
-    fill(scene_num) %>% 
-    ungroup
-}
-
-hamlet_2 <- hamlet %>% 
-  add_act_index %>% 
-  add_scene_index %>%
+hamlet <- hamlet %>% 
   mutate(char_name = str_match(text, CHAR_REGEX)[,2]) %>% 
   mutate(stage_dir = str_match(text, STAGEDIR_REGEX)[,2],
          char_name = if_else(!is.na(stage_dir), "director", char_name)) %>%
-  mutate(start_speech = !is.na(char_name) & lag(text) == "") %>%
+  mutate(start_speech = !is.na(char_name) & 
+           lag(text) == "") %>%
   mutate(speech_idx = cumsum(start_speech)) %>% 
-  filter(!is.na(scene_num)) %>% 
   mutate(line = row_number()) %>% 
-  select(text, act_num, scene_num, char_name, start_speech, speech_idx, line)
+  select(text, char_name, start_speech, speech_idx, line)
+```
 
+Now we need to create a `data frame` of speeches. Each line is a speech in the play, with the character that speaks it and the number of lines it lasts. 
+
+
+```{r}
 
 # Build a df with speech, start line, length char
-speeches_df <- hamlet_2 %>% 
+speeches_df <- hamlet %>% 
   group_by(speech_idx) %>% 
-  summarise(act = first(act_num), scene = first(scene_num), 
-            char_name = first(char_name), line = first(line),
-            speech_length = as.integer(n()-2)) %>% 
+  summarise( 
+          char_name = first(char_name), line = first(line),
+          speech_length = as.integer(n()-2)) %>% 
   group_by(char_name) %>% 
-  mutate(cum_lines = as.integer(cumsum(speech_length))) %>% 
   dplyr::filter(char_name != "director")
+```
+The longest speech is by Hamlet (duh!), and starts at line 2677.
+```{r}
+speeches_df %>% 
+  arrange(-speech_length)
+```
 
 
-top_n_speakers <- function(df, n) {
-  df %>% 
-    group_by(char_name) %>% 
-    summarize(lines = n()) %>% 
-    arrange(-lines) %>% 
-    head(n)
-}
+Lets take a look at the text of the speech:
+```{r}
+hamlet %>% 
+  filter(line %in% 2677:2690) %>% 
+  select(text) 
+```
 
-speakers <- top_n_speakers(hamlet_2, 8)
+Lets focus on the characters with the most lines:
 
+```{r}
+top_speakers <- speeches_df %>% 
+  group_by(char_name)  %>%
+  summarize(total_lines = sum(speech_length)) %>% 
+  arrange(-total_lines) %>% 
+  head(6)
+```
+
+Use `inner_join` to discard the less important characters:
+
+```{r}
+# Keep speeches by these speakers
 speeches_df_main <- speeches_df %>% 
-  filter(char_name %in% speakers$char_name) %>% 
+  inner_join(top_speakers, by = "char_name") %>% 
   filter(!is.na(char_name))
+```
 
-# colors
+The last thing we need is a column with the cumulative lines spoken by each character:
 
+```{r}
+speeches_df_main <- speeches_df_main %>% 
+   mutate(cum_lines = as.integer(cumsum(speech_length)))
+
+```
+
+Now we can plot the play:
+```{r}
+# color palette
 col.pal <- RColorBrewer::brewer.pal(8, "Set2")
 
-
+# Plot Play
 g <- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) + 
   guides(colour = guide_legend(title = NULL)) +
   geom_area(alpha = 0.8) + 
@@ -167,4 +136,8 @@ g
 
 ```
 
-The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty at the beggining of the play. Polonius has a lot of lines in the middle of the play, until he's caught behind the arras just before line 4000. Of course, Hamlet eats up the whole play towards the end.
+The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty at the beggining. 
+
+Polonius has a lot of lines in the middle of the play, until he's caught behind the arras just before line 4000. 
+
+Hamlet eats up the whole play towards the end in his stand of against evil King Claudius.
