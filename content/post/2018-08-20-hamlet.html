@@ -2,6 +2,10 @@
 title: "Mining Hamlet"
 author: "Rafa"
 date: '2018-01-20'
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
 slug: hamlet
 tags: []
 categories: []
@@ -9,8 +13,7 @@ categories: []
 
 
 
-<p><img src="/post/2018-08-20-hamlet_files/MV5BMjI5OTgwNTc3M15BMl5BanBnXkFtZTgwNDY1NTk4NjE@._V1_SY1000_CR0,0,668,1000_AL_.jpg" /></p>
-<p>A lot of Shakespeare’s tragic heores don’t dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities later in the plays. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).</p>
+<p>A lot of Shakespeare’s tragic heores don’t dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities as the play unfolds. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).</p>
 <p>In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play. We’ll get the chance to use <code>dplyr</code> and some <code>regular expressions</code>.</p>
 <div id="getting-the-text-of-the-plays" class="section level1">
 <h1>Getting the text of the plays</h1>
@@ -47,13 +50,11 @@ speeches_df &lt;- hamlet %&gt;%
   summarise(char_name = first(char_name), 
             line = first(line),
           speech_length = as.integer(n()-2)) %&gt;% 
-  group_by(char_name) %&gt;% 
   dplyr::filter(char_name != &quot;director&quot;)</code></pre>
 <p>The longest speech is by Hamlet (duh!), and starts at line 2677.</p>
 <pre class="r"><code>speeches_df %&gt;% 
   arrange(-speech_length)
 ## # A tibble: 1,077 x 4
-## # Groups:   char_name [31]
 ##    speech_idx char_name  line speech_length
 ##         &lt;int&gt; &lt;chr&gt;     &lt;int&gt;         &lt;int&gt;
 ##  1        498 Ham        2677            60
@@ -101,7 +102,16 @@ speeches_df_main &lt;- speeches_df %&gt;%
   filter(!is.na(char_name))</code></pre>
 <p>The last thing we need is a column with the cumulative lines spoken by each character:</p>
 <pre class="r"><code>speeches_df_main &lt;- speeches_df_main %&gt;% 
-   mutate(cum_lines = as.integer(cumsum(speech_length)))</code></pre>
+   group_by(char_name) %&gt;% 
+   mutate(cum_lines = as.integer(cumsum(speech_length))) %&gt;% 
+   ungroup() %&gt;% 
+   mutate(char_name = fct_recode(char_name,
+             &quot;Horatio&quot;       = &quot;Hor&quot;,
+             &quot;King Claudius&quot; = &quot;King&quot;,
+             &quot;Laertes&quot;       = &quot;Laer&quot;,
+             &quot;Polonius&quot;      = &quot;Pol&quot;,
+             &quot;Ophelia&quot;       = &quot;Oph&quot;,
+             &quot;Hamlet&quot;        = &quot;Ham&quot;))</code></pre>
 <p>Now we can plot the play:</p>
 <pre class="r"><code># color palette
 col.pal &lt;- RColorBrewer::brewer.pal(8, &quot;Set2&quot;)
@@ -112,7 +122,7 @@ g &lt;- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
   geom_area(alpha = 0.8) + 
   guides(fill = guide_legend(title = NULL)) +
   scale_fill_brewer(palette = &quot;Set2&quot;) + 
-  labs(title = hamlet, subtitle = &quot;Lines by Character&quot;) + 
+  labs(title = &quot;Cumulative lines&quot;, subtitle = &quot;By Character&quot;) + 
   xlab(&quot;Line&quot;) + 
   ylab(&quot;Spoken Lines&quot;) +
   theme_bw() + 
@@ -124,7 +134,5 @@ g &lt;- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
 
 g</code></pre>
 <p><img src="/post/2018-08-20-hamlet_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining.</p>
-<p>Polonius has a lot of lines in the middle of the play, until he’s caught behind the arras just before line 4000.</p>
-<p>Hamlet eats up the whole play towards the end in his stand of against evil King Claudius.</p>
+<p>The plot shows the dynamic of the play quite nicely. Horatio, Hamlet’s friend figures quite prominenty at the beggining. Polonius has a lot of lines in the middle of the play, until he’s caught behind the arras just before line 4000. Towards the end, Hamlet eats up the whole play in his showdown with King Claudius.</p>
 </div>

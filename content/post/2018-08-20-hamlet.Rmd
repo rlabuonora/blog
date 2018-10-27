@@ -2,6 +2,10 @@
 title: "Mining Hamlet"
 author: "Rafa"
 date: '2018-01-20'
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
 slug: hamlet
 tags: []
 categories: []
@@ -14,10 +18,11 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 library(ggplot2)
+library(forcats)
 ```
-![](/post/2018-08-20-hamlet_files/MV5BMjI5OTgwNTc3M15BMl5BanBnXkFtZTgwNDY1NTk4NjE@._V1_SY1000_CR0,0,668,1000_AL_.jpg)
 
-A lot of Shakespeare's tragic heores don't dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities later in the plays. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).
+
+A lot of Shakespeare's tragic heores don't dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities as the play unfolds. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).
 
 In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play. We'll get the chance to use `dplyr` and some `regular expressions`.
 
@@ -69,7 +74,6 @@ speeches_df <- hamlet %>%
   summarise(char_name = first(char_name), 
             line = first(line),
           speech_length = as.integer(n()-2)) %>% 
-  group_by(char_name) %>% 
   dplyr::filter(char_name != "director")
 ```
 
@@ -111,7 +115,16 @@ The last thing we need is a column with the cumulative lines spoken by each char
 
 ```{r}
 speeches_df_main <- speeches_df_main %>% 
-   mutate(cum_lines = as.integer(cumsum(speech_length)))
+   group_by(char_name) %>% 
+   mutate(cum_lines = as.integer(cumsum(speech_length))) %>% 
+   ungroup() %>% 
+   mutate(char_name = fct_recode(char_name,
+             "Horatio"       = "Hor",
+             "King Claudius" = "King",
+             "Laertes"       = "Laer",
+             "Polonius"      = "Pol",
+             "Ophelia"       = "Oph",
+             "Hamlet"        = "Ham"))
 
 ```
 
@@ -126,7 +139,7 @@ g <- ggplot(speeches_df_main, aes(line, cum_lines, fill = char_name)) +
   geom_area(alpha = 0.8) + 
   guides(fill = guide_legend(title = NULL)) +
   scale_fill_brewer(palette = "Set2") + 
-  labs(title = hamlet, subtitle = "Lines by Character") + 
+  labs(title = "Cumulative lines", subtitle = "By Character") + 
   xlab("Line") + 
   ylab("Spoken Lines") +
   theme_bw() + 
@@ -140,8 +153,4 @@ g
 
 ```
 
-The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty at the beggining. 
-
-Polonius has a lot of lines in the middle of the play, until he's caught behind the arras just before line 4000. 
-
-Hamlet eats up the whole play towards the end in his stand of against evil King Claudius.
+The plot shows the dynamic of the play quite nicely. Horatio, Hamlet's friend figures quite prominenty at the beggining. Polonius has a lot of lines in the middle of the play, until he's caught behind the arras just before line 4000. Towards the end, Hamlet eats up the whole play in  his showdown with King Claudius.
