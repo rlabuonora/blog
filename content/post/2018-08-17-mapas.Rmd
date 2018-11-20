@@ -11,8 +11,6 @@ tags:
 
 Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando. 
 
-Por el lado del Software hay un libro que parece bastante definitivo (). 
-
 
 ## Geografía
 

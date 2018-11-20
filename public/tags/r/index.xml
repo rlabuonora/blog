@@ -18,8 +18,8 @@
       
       <guid>/2018/07/17/mapas/</guid>
       <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
-Por el lado del Software hay un libro que parece bastante definitivo ().
-Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.</description>
+Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.
+ Leaflet Leaflet permite para hacer mapas interactivos.</description>
     </item>
     
   </channel>
