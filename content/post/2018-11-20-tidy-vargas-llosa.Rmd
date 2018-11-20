@@ -7,21 +7,20 @@ categories: []
 tags: []
 draft: false
 ---
-```{r}
-library(tidytext)
-library(tidyr)
+```{r, echo = FALSE, warnings = FALSE, message=FALSE}
+
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
 library(wordcloud)
 library(ggplot2)
-library(dplyr)
-
-theme_set(theme_bw())
-
+library(tidytext)
 library(stringr)
 library(forcats)
 library(wordcloud)
+theme_set(theme_bw())
 ```
 
-```{r}
+```{r echo = FALSE}
 # Nombres de los archivos y los libros
 libros <- tribble(
   ~file,                                                 ~title,                             ~year,
@@ -120,19 +119,5 @@ plt <- book_words %>%
   arrange(desc(tf_idf)) %>%
   mutate(word = factor(word, levels = rev(unique(word))))
 
-
-grupo_1 <- libros$title[1:4]
-
-plt %>%
-  filter(title %in% libros$title[10:13]) %>%
-  group_by(title) %>%
-  top_n(10) %>%
-  ungroup %>%
-  ggplot(aes(word, tf_idf, fill = title)) +
-  geom_col(show.legend = FALSE) +
-  labs(x = NULL, y = "tf-idf") + 
-  facet_wrap(~title, ncol = 2, scales="free") + 
-  coord_flip()
-  
 ```
 
