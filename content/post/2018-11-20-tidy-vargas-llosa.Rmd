@@ -5,7 +5,7 @@ date: '2017-12-20'
 slug: tidy-vargas-llosa
 categories: []
 tags: []
-draft: true
+draft: false
 ---
 ```{r}
 library(tidytext)
