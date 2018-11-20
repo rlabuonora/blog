@@ -10,36 +10,52 @@ draft: false
 
 
 
-<pre class="r"><code>mvll_tidy &lt;- readRDS(&#39;../../public/data/mvll_tidy.rds&#39;) %&gt;%
-  unnest_tokens(word, text)
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE)
 
-
-
-mvll_sentiment &lt;- mvll_tidy %&gt;% 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+library(wordcloud)</code></pre>
+<pre><code>## Loading required package: RColorBrewer</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(tidytext)
+library(stringr)
+library(forcats)
+library(wordcloud)
+library(tibble)
+theme_set(theme_bw())</code></pre>
+<div id="sentiment-analysis" class="section level1">
+<h1>Sentiment Analysis</h1>
+<pre class="r"><code>mvll_sentiment &lt;- mvll_tidy %&gt;% 
   inner_join(get_sentiments(&quot;bing&quot;)) %&gt;% 
   count(title, index = line %/% 80  , sentiment) %&gt;%
   spread(sentiment, n) %&gt;%
-  mutate(sentiment = positive - negative)</code></pre>
-<pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<pre class="r"><code>ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
+  mutate(sentiment = positive - negative)
+
+
+ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
   geom_col() + 
-  facet_wrap(~title, scales = &quot;free_x&quot;)</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (position_stack).</code></pre>
+  facet_wrap(~title, scales = &quot;free_x&quot;) + 
+  guides(fill=FALSE)</code></pre>
 <p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="wordcloud-con-los-cuadernos-de-don-rigoberto" class="section level1">
+<h1>Wordcloud con Los cuadernos de Don Rigoberto</h1>
 <pre class="r"><code>s &lt;- mvll_tidy %&gt;% 
   filter(title == &quot;Notebooks of Don Rigoberto&quot; ) %&gt;%
   filter(!str_detect(word, &quot;\u2019&quot;)) %&gt;% # remove didn&#39;t, they&#39;re, etc.
   anti_join(stop_words) %&gt;%
   count(word, sort = TRUE) %&gt;% 
   with(wordcloud(word, n, max.words = 40))</code></pre>
-<pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="palabras-positivas-y-negativas-mas-comunes" class="section level1">
+<h1>Palabras positivas y negativas más comunes</h1>
 <pre class="r"><code>word_counts &lt;- mvll_tidy %&gt;%
   inner_join(get_sentiments(&quot;bing&quot;)) %&gt;%
   count(word, sentiment, sort = TRUE) %&gt;%
-  ungroup</code></pre>
-<pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<pre class="r"><code>word_counts %&gt;%
+  ungroup
+
+word_counts %&gt;%
   group_by(sentiment) %&gt;%
   top_n(10) %&gt;%
   ungroup %&gt;%
@@ -48,9 +64,10 @@ mvll_sentiment &lt;- mvll_tidy %&gt;%
   geom_col(show_legend = FALSE)  +
   facet_wrap(~sentiment, scales = &quot;free_y&quot;) + 
   coord_flip()</code></pre>
-<pre><code>## Selecting by n</code></pre>
-<pre><code>## Warning: Ignoring unknown parameters: show_legend</code></pre>
-<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="palabras-caracteristicas-de-cada-libro" class="section level1">
+<h1>Palabras características de cada libro</h1>
 <pre class="r"><code>book_words &lt;- mvll_tidy %&gt;%
   count(title, word, sort = TRUE) %&gt;%
   ungroup %&gt;%
@@ -61,7 +78,6 @@ plt &lt;- book_words %&gt;%
   mutate(word = factor(word, levels = rev(unique(word))))
 
 
-grupo_1 &lt;- libros$title[1:4]
 
 plt %&gt;%
   filter(title %in% libros$title[10:13]) %&gt;%
@@ -73,13 +89,5 @@ plt %&gt;%
   labs(x = NULL, y = &quot;tf-idf&quot;) + 
   facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
   coord_flip()</code></pre>
-<pre><code>## Selecting by tf_idf</code></pre>
-<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
-<pre class="r"><code>book_words &lt;- mvll_tidy %&gt;%
-  count(title, word, sort = TRUE) %&gt;%
-  ungroup %&gt;%
-  bind_tf_idf(word, title, n)
-
-plt &lt;- book_words %&gt;%
-  arrange(desc(tf_idf)) %&gt;%
-  mutate(word = factor(word, levels = rev(unique(word))))</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>

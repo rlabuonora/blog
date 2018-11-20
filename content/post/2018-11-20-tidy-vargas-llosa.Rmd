@@ -7,7 +7,8 @@ categories: []
 tags: []
 draft: false
 ---
-```{r, echo = FALSE, warnings = FALSE, message=FALSE}
+```{r}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE)
 
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))
@@ -17,6 +18,7 @@ library(tidytext)
 library(stringr)
 library(forcats)
 library(wordcloud)
+library(tibble)
 theme_set(theme_bw())
 ```
 
@@ -41,15 +43,14 @@ libros <- tribble(
   "discrete_hero.txt",                            "Discrete Hero",                            2013
 )
 
+mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
+  unnest_tokens(word, text)
 ```
 
+# Sentiment Analysis
 
 
 ```{r}
-mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
-  unnest_tokens(word, text)
-
-
 
 mvll_sentiment <- mvll_tidy %>% 
   inner_join(get_sentiments("bing")) %>% 
@@ -60,8 +61,13 @@ mvll_sentiment <- mvll_tidy %>%
 
 ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
   geom_col() + 
-  facet_wrap(~title, scales = "free_x")
+  facet_wrap(~title, scales = "free_x") + 
+  guides(fill=FALSE)
 
+```
+
+# Wordcloud con Los cuadernos de Don Rigoberto
+```{r}
 
 s <- mvll_tidy %>% 
   filter(title == "Notebooks of Don Rigoberto" ) %>%
@@ -70,7 +76,10 @@ s <- mvll_tidy %>%
   count(word, sort = TRUE) %>% 
   with(wordcloud(word, n, max.words = 40))
 
+```
 
+# Palabras positivas y negativas más comunes
+```{r}
 word_counts <- mvll_tidy %>%
   inner_join(get_sentiments("bing")) %>%
   count(word, sentiment, sort = TRUE) %>%
@@ -85,7 +94,10 @@ word_counts %>%
   geom_col(show_legend = FALSE)  +
   facet_wrap(~sentiment, scales = "free_y") + 
   coord_flip()
+```
 
+# Palabras características de cada libro
+```{r}
 book_words <- mvll_tidy %>%
   count(title, word, sort = TRUE) %>%
   ungroup %>%
@@ -96,7 +108,6 @@ plt <- book_words %>%
   mutate(word = factor(word, levels = rev(unique(word))))
 
 
-grupo_1 <- libros$title[1:4]
 
 plt %>%
   filter(title %in% libros$title[10:13]) %>%
@@ -108,16 +119,6 @@ plt %>%
   labs(x = NULL, y = "tf-idf") + 
   facet_wrap(~title, ncol = 2, scales="free") + 
   coord_flip()
-
-
-book_words <- mvll_tidy %>%
-  count(title, word, sort = TRUE) %>%
-  ungroup %>%
-  bind_tf_idf(word, title, n)
-
-plt <- book_words %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(word = factor(word, levels = rev(unique(word))))
 
 ```
 
