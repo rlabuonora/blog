@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.49.2" />
+
+
+<title>Tidy Vargas Llosa - rlabuonora</title>
+<meta property="og:title" content="Tidy Vargas Llosa - rlabuonora">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Tidy Vargas Llosa</h1>
+
+    
+    <span class="article-date">2017/12/20</span>
+    
+
+    <div class="article-content">
+      <pre class="r"><code>library(tidytext)
+library(tidyr)
+library(wordcloud)</code></pre>
+<pre><code>## Loading required package: RColorBrewer</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>theme_set(theme_bw())
+
+library(stringr)
+library(forcats)
+library(wordcloud)</code></pre>
+<pre class="r"><code># Nombres de los archivos y los libros
+libros &lt;- tribble(
+  ~file,                                                 ~title,                             ~year,
+  &quot;time_of_the_hero.txt&quot;,                         &quot;Time of the Hero&quot;,                         1963,
+  &quot;conversation_in_the_cathedral.txt&quot;,            &quot;Conversation in the Cathedral&quot;,            1969,
+  &quot;captain_pantoja_and_the_special_service.txt&quot;,  &quot;Captain Pantoja and the Special Service&quot;,  1973,
+  &quot;aunt_julia_and_the_scriptwriter.txt&quot;,          &quot;Aunt Julia and the Scriptwriter&quot;,          1977,
+  &quot;war_of_the_end_of_the_world.txt&quot;,              &quot;War of the End of the World&quot;,              1981,
+  &quot;real_life_of_alejandro_mayta.txt&quot;,             &quot;Real Life of Alejandro Mayta&quot;,             1984 ,
+  &quot;storyteller.txt&quot;,                              &quot;The Storyteller&quot;,                          1987 ,
+  &quot;a_fish_in_the_water.txt&quot;,                      &quot;A Fish in the Water&quot;,                      1993,
+  &quot;death_in_the_andes.txt&quot; ,                      &quot;Death in the Andes&quot;,                       1994,
+  &quot;notebooks_of_don_rigoberto.txt&quot;,               &quot;Notebooks of Don Rigoberto&quot;,               1997,
+  &quot;feast_of_the_goat.txt&quot;,                        &quot;Feast of the Goat&quot;,                        2000,
+  &quot;way_to_paradise.txt&quot;,                          &quot;Way to Paradise&quot;,                          2003,
+  &quot;bad_girl.txt&quot;,                                 &quot;Bad Girl&quot;,                                 2006,
+  &quot;dream_of_the_celt.txt&quot;,                        &quot;Dream of the Celt&quot;,                        2010,
+  &quot;discrete_hero.txt&quot;,                            &quot;Discrete Hero&quot;,                            2013
+)</code></pre>
+<pre class="r"><code>mvll_tidy &lt;- readRDS(&#39;../../public/data/mvll_tidy.rds&#39;) %&gt;%
+  unnest_tokens(word, text)
+
+
+
+mvll_sentiment &lt;- mvll_tidy %&gt;% 
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;% 
+  count(title, index = line %/% 80  , sentiment) %&gt;%
+  spread(sentiment, n) %&gt;%
+  mutate(sentiment = positive - negative)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
+  geom_col() + 
+  facet_wrap(~title, scales = &quot;free_x&quot;)</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (position_stack).</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>s &lt;- mvll_tidy %&gt;% 
+  filter(title == &quot;Notebooks of Don Rigoberto&quot; ) %&gt;%
+  filter(!str_detect(word, &quot;\u2019&quot;)) %&gt;% # remove didn&#39;t, they&#39;re, etc.
+  anti_join(stop_words) %&gt;%
+  count(word, sort = TRUE) %&gt;% 
+  with(wordcloud(word, n, max.words = 40))</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>word_counts &lt;- mvll_tidy %&gt;%
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;%
+  count(word, sentiment, sort = TRUE) %&gt;%
+  ungroup</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>word_counts %&gt;%
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n, fill=sentiment)) +
+  geom_col(show_legend = FALSE)  +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;) + 
+  coord_flip()</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre><code>## Warning: Ignoring unknown parameters: show_legend</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>book_words &lt;- mvll_tidy %&gt;%
+  count(title, word, sort = TRUE) %&gt;%
+  ungroup %&gt;%
+  bind_tf_idf(word, title, n)
+
+plt &lt;- book_words %&gt;%
+  arrange(desc(tf_idf)) %&gt;%
+  mutate(word = factor(word, levels = rev(unique(word))))
+
+
+grupo_1 &lt;- libros$title[1:4]
+
+plt %&gt;%
+  filter(title %in% libros$title[10:13]) %&gt;%
+  group_by(title) %&gt;%
+  top_n(10) %&gt;%
+  ungroup %&gt;%
+  ggplot(aes(word, tf_idf, fill = title)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf-idf&quot;) + 
+  facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
+  coord_flip()</code></pre>
+<pre><code>## Selecting by tf_idf</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<pre class="r"><code>book_words &lt;- mvll_tidy %&gt;%
+  count(title, word, sort = TRUE) %&gt;%
+  ungroup %&gt;%
+  bind_tf_idf(word, title, n)
+
+plt &lt;- book_words %&gt;%
+  arrange(desc(tf_idf)) %&gt;%
+  mutate(word = factor(word, levels = rev(unique(word))))
+
+
+grupo_1 &lt;- libros$title[1:4]
+
+plt %&gt;%
+  filter(title %in% libros$title[10:13]) %&gt;%
+  group_by(title) %&gt;%
+  top_n(10) %&gt;%
+  ungroup %&gt;%
+  ggplot(aes(word, tf_idf, fill = title)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf-idf&quot;) + 
+  facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
+  coord_flip()</code></pre>
+<pre><code>## Selecting by tf_idf</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-5.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
