@@ -102,5 +102,14 @@ Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos
 In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play.</description>
     </item>
     
+    <item>
+      <title>Tidy Vargas Llosa</title>
+      <link>/2017/12/20/tidy-vargas-llosa/</link>
+      <pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/20/tidy-vargas-llosa/</guid>
+      <description>library(tidytext) library(tidyr) library(wordcloud) ## Loading required package: RColorBrewer library(ggplot2) library(dplyr) ## ## Attaching package: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union theme_set(theme_bw()) library(stringr) library(forcats) library(wordcloud) # Nombres de los archivos y los libros libros &amp;lt;- tribble( ~file, ~title, ~year, &amp;quot;time_of_the_hero.txt&amp;quot;, &amp;quot;Time of the Hero&amp;quot;, 1963, &amp;quot;conversation_in_the_cathedral.txt&amp;quot;, &amp;quot;Conversation in the Cathedral&amp;quot;, 1969, &amp;quot;captain_pantoja_and_the_special_service.</description>
+    </item>
+    
   </channel>
 </rss>
