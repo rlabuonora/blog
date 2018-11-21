@@ -10,19 +10,7 @@ draft: false
 
 
 
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE)
-
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(tidyr))
-library(wordcloud)</code></pre>
 <pre><code>## Loading required package: RColorBrewer</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(tidytext)
-library(stringr)
-library(forcats)
-library(wordcloud)
-library(tibble)
-theme_set(theme_bw())</code></pre>
 <div id="sentiment-analysis" class="section level1">
 <h1>Sentiment Analysis</h1>
 <pre class="r"><code>mvll_sentiment &lt;- mvll_tidy %&gt;% 
