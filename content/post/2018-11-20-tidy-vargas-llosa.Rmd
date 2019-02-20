@@ -46,9 +46,14 @@ libros <- tribble(
 mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
   unnest_tokens(word, text)
 ```
+# Vargas Llosa
+
+Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
+ 
 
 # Sentiment Analysis
 
+Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
 
 ```{r}
 
