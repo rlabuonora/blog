@@ -1,7 +1,7 @@
 baseurl = "/"
 languageCode = "es"
 title = "rlabuonora"
-theme = "hugo-lithium"
+theme = "hugo-tanka"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
