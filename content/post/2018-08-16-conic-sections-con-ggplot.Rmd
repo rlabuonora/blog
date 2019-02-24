@@ -1,5 +1,5 @@
 ---
-title: "Círculos con ggplot"
+title: "Visualizando secciones cónicas con ggplot"
 author: "Rafa"
 date: '2018-08-16'
 slug: conic-sections-con-ggplot
@@ -29,33 +29,26 @@ $$ (x-h)^2+(y-k)^2=r^2 $$
 
 donde $(h, k)$ es el centro y $r$ el radio.
 
-Un círculo que pasa por `(1, 4)` con centro en `(-2, -3)`. 
+Si quiero dibujar un círculo que pasa por `(1, 4)` y tiene centro en `(-2, -3)`. 
 
 ```{r, echo = TRUE, eval = TRUE, results  = "markup"}
 # distancia euclideana
-my_dist <- function(x, y) { sqrt(sum((x-y)^2)) }
+dist <- function(x, y) { sqrt(sum((x-y)^2)) }
 ```
 
 ```{r, echo = TRUE, eval = TRUE, results  = "markup"}
-center <- c(-2, -3)
-point <- c(1, 4)
+centro <- c(-2, -3)
+punto <- c(1, 4)
 #  Hallar el radio como la distancia entre el punto y el centro
-radius <- my_dist(center, point)
-radius^2
+radio <- dist(centro, punto)
+radio^2
 ```
 La ecuación del círculo es:
 $$(x+2)^2 + (y+3)^2 = 58$$
   
-## Completar el cuadrado y encontrar la ecuación del círculo
   
-$$x^2-6x+y^2-2y+6$$ es
-$$(x-3)^2+(y-1)^2 = 4$$ 
-  
-Graficarlo [este post en Stack Overflow](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2). Los primeros `geom_segment` son para dibujar los ejes. Luego uso `annotate` para graficar las curvas en su forma paramétrica.
+[Este post en Stack Overflow](https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2) explica como graficar una función en forma paramétrica usando `annotate`.
 
-Para dibujar la capa con puntos, primero hice un data frame con las coordenadas, una *layer* `geom_point` para marcar los puntos y una *layer* geom_text para las etiquetas de los puntos. El problema es que hay dos puntos que quedan superpuestos con el círculo.
-
-Así que esos dos puntos ($(1,1)$ y $(5, 1)$) los dibujo aparte con `annotate`.
 
 ```{r}
 library(ggplot2)
@@ -95,6 +88,123 @@ g <- ggplot() +
   coord_fixed()
 g
 ```
+
+
+## Parábola
+Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
+
+$(x-h)^2=4p(y-k),\, (p \neq 0)$
+
+El vértice de la parábola está en $(h,k)$ y la directriz $y=k-p$. El foco está en $(h, k+p)$ si la parábola es abierta hacia arriba.
+
+
+### Ejemplo
+$x^2=16y$ es una parábola con vértice en $(0,0)$, $p = 4$ y foco en $(0,4)$.
+
+```{r g_2}
+focus <- list(x=0, y=4, lab = "Foco")
+vertex <- list(x=0, y=0, lab = "Vértice")
+notable_points <- bind_rows(focus, 
+                            vertex)
+pt <- data_frame(x=5, y=round(5^2/16, 2))
+
+p <- ggplot(data_frame(x=0), aes(x=x)) +
+  geom_segment(aes(x=-9, xend = 9, y=0, yend=0),
+               size = 0.5,
+               arrow = arrow(length = unit(0.2, "cm"))) + # Eje X
+  geom_segment(aes(x=0, xend=0, y=-5, yend=10),
+               size = 0.5,
+               lineend = "butt",
+               arrow = arrow(length = unit(0.2, "cm"))) + # Eje Y
+  stat_function(fun = function(x) { x^2 / 16}) + 
+  xlim(-9, 9) + 
+  ylim(-5, 10)
+
+x <- 5
+
+g_2 <- p +
+  geom_point(data = notable_points, aes(x=x, y=y)) + 
+  geom_text(data=notable_points, 
+            size = 3,
+            nudge_y = 1.25,
+            nudge_x = 1.25,
+            aes(label = paste0(lab, "\n(", x, ",", y, ")"), 
+                x = x, y = y)) + 
+  geom_hline(yintercept = -4, linetype = "dashed") + 
+  annotate("text", x= 3, y= -3.3, label = "Directriz", size = 3) +
+  ggtitle(TeX('$y=x^2/16$')) + 
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  ) + geom_point(data = pt, aes(x=x, y=y)) + 
+  geom_segment(aes(x= focus$x, y=focus$y, xend=pt$x, yend=pt$y),
+               linetype = "dashed") + 
+  geom_segment(aes(x=pt$x, y=pt$y, xend=pt$x, yend = -4),
+               linetype = "dashed") + 
+  annotate("text", 
+           label = "phantom(0) == phantom(0)", 
+           parse = TRUE,
+           angle = 60,
+           size = 5,
+           x = 2.5, y= 2.85) + 
+  annotate("text", 
+           label = "phantom(0) == phantom(0)", 
+           parse = TRUE,
+           size = 5,
+           x = 5, y= -2)
+g_2
+```
+
+Todos los puntos de la parábola estan a la misma distancia del foco que de la directriz. Sería interesanter armar una app de `shiny` para mover los puntos notables.
+
+
+## Una parábola con eje horziontal
+Dibujar una parábola con eje vertical es simple porque podemos usar `stat_fun`. Pero si queremos dibujarlas con eje horizontal no podemos escibir los puntos de la parábola como un función y pasarsela a `stat_function`.
+
+
+La ecuación $y^2+6y+8x+25 = 0$ no parece una parábola, pero si completamos el cuadrado:
+
+\begin{align}
+y^2+6y+8x+25 &= 0\\
+y^2+6y+9+8x+25-9  &= 0\\
+(y+3)^2 &= -16-8x\\
+(y+3)^2 &= 4(-2)(x+2)
+\end{align}
+
+
+Es una parábola con vértice $(-2, -3)$, p es $-2$, el foco $(-4,-3)$ la directriz es $x=0$. 
+
+Pero como la orientación de esta parábola es horizontal, no es una función. Cómo la graficamos con `ggplot`?
+
+Si despejamos $y$ en función de $x$, obtenemos dos funciones:
+\begin{align}
+(y+3)^2 &= (-8)(x+2)\\
+y     &= -3 \pm \sqrt{-8(x+2)}\\
+y_1  &=-3 + \sqrt{-8(x+2)}\\
+y_2 &=-3 - \sqrt{-8(x+2)}\\
+\end{align}
+
+Podemos graficar $y1$ y $y2$:
+  
+```{r g_3}
+x <- seq(-5, 0, length.out=1e3)
+lbs <- list(bquote(-3 + sqrt(-8*(x+2))), # investigar bquote!
+            bquote(-3 - sqrt(-8*(x+2))))
+
+g_3 <- ggplot(data_frame(x=x), 
+            aes(x=x, color = color)) + 
+  stat_function(data = data_frame(x=x, color = factor(1)),
+                fun = function(x) { -3 + sqrt(-8*(x+2)) }) + 
+  stat_function(data = data_frame(x=x, color = factor(2)),
+                fun = function(x) { -3 - sqrt(-8*(x+2)) }) + 
+  scale_color_manual(labels = lbs,
+                     name = "",
+                     values = c(scales::hue_pal()(2)[1], 
+                                scales::hue_pal()(2)[2])) + 
+  geom_hline(yintercept = 0) + 
+  geom_vline(xintercept = 0)
+g_3
+```
+
 
 
 

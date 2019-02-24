@@ -23,18 +23,6 @@ library(glue) library(tidyverse) library(rvest) get_ratings_data &amp;lt;- funct
     </item>
     
     <item>
-      <title>Parábolas con ggplot</title>
-      <link>/2018/08/19/parabolas-con-ggplot/</link>
-      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/19/parabolas-con-ggplot/</guid>
-      <description>Parábola (!) Una parábola es un conjunto de puntos que equidista de una línea (directriz) y un punto (foco). Estos puntos satisfacen:
-\((x-h)^2=4p(y-k), p \neq 0\)
-El vértice de la parábola está en \((h,k)\) y la directriz \(y=k-p\). El foco está en \((h, k+p)\) si la parábola es abierta hacia arriba.
- Gráfico de un Parábola en ggplot Si podemos escribir la parábola como una función, podemos graficarla usando stat_fun. Para graficar \(y=f(x)\):</description>
-    </item>
-    
-    <item>
       <title>Visualizaciones</title>
       <link>/2018/08/17/visualizaciones/</link>
       <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
@@ -46,7 +34,17 @@ Sunburst Sankey Networks </description>
     </item>
     
     <item>
-      <title>Círculos con ggplot</title>
+      <title>Visualizando funciones trigonométricas con ggplot</title>
+      <link>/2018/08/16/trigonometric-funs/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/16/trigonometric-funs/</guid>
+      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
+Para dibujar las funciones, uso stat_function, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de las guías.</description>
+    </item>
+    
+    <item>
+      <title>Visualizando secciones cónicas con ggplot</title>
       <link>/2018/08/16/conic-sections-con-ggplot/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
@@ -55,18 +53,8 @@ Sunburst Sankey Networks </description>
 Círculo La ecuación genérico de un círculo es
 \[ (x-h)^2+(y-k)^2=r^2 \]
 donde \((h, k)\) es el centro y \(r\) el radio.
-Un círculo que pasa por (1, 4) con centro en (-2, -3).
-# distancia euclideana my_dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } center &amp;lt;- c(-2, -3) point &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radius &amp;lt;- my_dist(center, point) radius^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
-    </item>
-    
-    <item>
-      <title>Visualizar funciones trigonométricas con ggplot</title>
-      <link>/2018/08/16/trigonometric-funs/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/trigonometric-funs/</guid>
-      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
-Para dibujar las funciones, uso stat_function, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de las guías.</description>
+Si quiero dibujar un círculo que pasa por (1, 4) y tiene centro en (-2, -3).
+# distancia euclideana dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } centro &amp;lt;- c(-2, -3) punto &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radio &amp;lt;- dist(centro, punto) radio^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
     </item>
     
     <item>
