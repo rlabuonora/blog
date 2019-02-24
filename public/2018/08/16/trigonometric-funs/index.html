@@ -14,7 +14,7 @@
   <title>
     
     
-     Trigonometric Funs 
+     Visualizar funciones trigonométricas con ggplot 
     
   </title>
   <link rel="canonical" href="/2018/08/16/trigonometric-funs/">
@@ -43,17 +43,18 @@
 
 
 <section id=content>
-  <h1> Trigonometric Funs </h1>
+  <h1> Visualizar funciones trigonométricas con ggplot </h1>
 
   <div id=sub-header>
     Rafa · 2018/08/16 · 2 minute read
   </div>
 
   <div class="entry-content">
-    <p>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.</p>
-<p>El código no es muy complejo. Uso <code>stat_function</code> para dibujar las dos funciones, <code>geom_segment</code> para los ejes y <code>scale_x_continuous</code> para especificar la posición y etiqueta de los ticks.</p>
-<p>Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas. En <code>stat_function</code> especifico <code>aes(colour = &quot;sin(x)&quot;)</code>. Eso hace que el color de ese geom quede ligado al texto <code>&quot;sin(x)&quot;</code> en la leyenda.</p>
-<p>Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> fue de bastante utilidad, pero me parece que la solución que encontré es demasiado <em>verbose</em>.</p>
+    <p><img src="/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg" /></p>
+<p>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.</p>
+<p>Para dibujar las funciones, uso <code>stat_function</code>, <code>geom_segment</code> para los ejes y <code>scale_x_continuous</code> para especificar la posición y etiqueta de las guías.</p>
+<p>En <code>stat_function</code> especifico <code>aes(colour = &quot;sin(x)&quot;)</code>. Eso hace que el color de ese geom quede ligado al texto <code>&quot;sin(x)&quot;</code> en la leyenda.</p>
+<p>Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> fue de bastante utilidad.</p>
 <pre class="r"><code>library(tidyverse)
 library(ggplot2)
 

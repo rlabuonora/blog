@@ -1,19 +1,20 @@
 ---
-title: Trigonometric Funs
+title: Visualizar funciones trigonométricas con ggplot
 author: Rafa
 date: '2018-08-16'
 slug: trigonometric-funs
 categories: []
 tags: []
 ---
+![](/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg)
 
-En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
+En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
 
-El código no es muy complejo. Uso `stat_function` para dibujar las dos funciones, `geom_segment` para los ejes y `scale_x_continuous` para especificar la posición y etiqueta de los ticks.
+Para dibujar las funciones, uso `stat_function`, `geom_segment` para los ejes y `scale_x_continuous` para especificar la posición y etiqueta de las guías.
 
-Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas. En `stat_function` especifico `aes(colour = "sin(x)")`. Eso hace que el color de ese geom quede ligado al texto `"sin(x)"` en la leyenda.
+En `stat_function` especifico `aes(colour = "sin(x)")`. Eso hace que el color de ese geom quede ligado al texto `"sin(x)"` en la leyenda.
 
-Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre [como poner letras griegas en ggplot](https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2) fue de bastante utilidad, pero me parece que la solución que encontré es demasiado *verbose*.
+Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre [como poner letras griegas en ggplot](https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2) fue de bastante utilidad.
 
 
 ```{r, warning = FALSE, message= FALSE}

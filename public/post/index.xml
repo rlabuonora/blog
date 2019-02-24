@@ -60,14 +60,13 @@ Un círculo que pasa por (1, 4) con centro en (-2, -3).
     </item>
     
     <item>
-      <title>Trigonometric Funs</title>
+      <title>Visualizar funciones trigonométricas con ggplot</title>
       <link>/2018/08/16/trigonometric-funs/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/08/16/trigonometric-funs/</guid>
-      <description>En mis épocas más humanistas desarrollé cierta admiración por los antiguos griegos, y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas.
-El código no es muy complejo. Uso stat_function para dibujar las dos funciones, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de los ticks.
-Un detalle poco intutivo sobre ggplot que surgió fue la forma en que se crean las leyendas.</description>
+      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
+Para dibujar las funciones, uso stat_function, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de las guías.</description>
     </item>
     
     <item>
