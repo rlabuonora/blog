@@ -111,14 +111,5 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
       <description>## Loading required package: RColorBrewer Sentiment Analysis mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!str_detect(word, &amp;quot;\u2019&amp;quot;)) %&amp;gt;% # remove didn&amp;#39;t, they&amp;#39;re, etc.</description>
     </item>
     
-    <item>
-      <title>Sobre</title>
-      <link>/about/</link>
-      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
-      
-      <guid>/about/</guid>
-      <description>Este es el blog de Rafael La Buonora.</description>
-    </item>
-    
   </channel>
 </rss>
