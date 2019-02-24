@@ -51,8 +51,8 @@
 
   <div class="entry-content">
     <p><img src="/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg" /></p>
-<p>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.</p>
-<p>Para dibujar las funciones, uso <code>stat_function</code>, <code>geom_segment</code> para los ejes y <code>scale_x_continuous</code> para especificar la posición y etiqueta de las guías.</p>
+<p>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas: seno y coseno. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.</p>
+<p>Para dibujar las funciones, uso <code>stat_function</code>, <code>geom_segment</code>. <code>scale_x_continuous</code> permite especificar la posición y etiqueta de las guías.</p>
 <p>En <code>stat_function</code> especifico <code>aes(colour = &quot;sin(x)&quot;)</code>. Eso hace que el color de ese geom quede ligado al texto <code>&quot;sin(x)&quot;</code> en la leyenda.</p>
 <p>Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> fue de bastante utilidad.</p>
 <pre class="r"><code>library(tidyverse)

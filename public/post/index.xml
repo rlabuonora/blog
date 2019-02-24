@@ -34,30 +34,6 @@ Sunburst Sankey Networks </description>
     </item>
     
     <item>
-      <title>Visualizando funciones trigonométricas con ggplot</title>
-      <link>/2018/08/16/trigonometric-funs/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/trigonometric-funs/</guid>
-      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
-Para dibujar las funciones, uso stat_function, geom_segment para los ejes y scale_x_continuous para especificar la posición y etiqueta de las guías.</description>
-    </item>
-    
-    <item>
-      <title>Visualizando secciones cónicas con ggplot</title>
-      <link>/2018/08/16/conic-sections-con-ggplot/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/2018/08/16/conic-sections-con-ggplot/</guid>
-      <description>En este post exploro un poco algunas secciones cónicas usando ggplot y LaTeX.
-Círculo La ecuación genérico de un círculo es
-\[ (x-h)^2+(y-k)^2=r^2 \]
-donde \((h, k)\) es el centro y \(r\) el radio.
-Si quiero dibujar un círculo que pasa por (1, 4) y tiene centro en (-2, -3).
-# distancia euclideana dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } centro &amp;lt;- c(-2, -3) punto &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radio &amp;lt;- dist(centro, punto) radio^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
-    </item>
-    
-    <item>
       <title>Scraping NBA data</title>
       <link>/2018/08/01/scraping-nba-data/</link>
       <pubDate>Wed, 01 Aug 2018 00:00:00 +0000</pubDate>
@@ -96,6 +72,30 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
       
       <guid>/2017/12/20/tidy-vargas-llosa/</guid>
       <description>## Loading required package: RColorBrewer Sentiment Analysis mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!str_detect(word, &amp;quot;\u2019&amp;quot;)) %&amp;gt;% # remove didn&amp;#39;t, they&amp;#39;re, etc.</description>
+    </item>
+    
+    <item>
+      <title>Visualizando secciones cónicas con ggplot</title>
+      <link>/2017/08/21/conic-sections-con-ggplot/</link>
+      <pubDate>Mon, 21 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/21/conic-sections-con-ggplot/</guid>
+      <description>En este post exploro un poco algunas secciones cónicas usando ggplot y LaTeX.
+Círculo La ecuación genérico de un círculo es
+\[ (x-h)^2+(y-k)^2=r^2 \]
+donde \((h, k)\) es el centro y \(r\) el radio.
+Si quiero dibujar un círculo que pasa por (1, 4) y tiene centro en (-2, -3).
+# distancia euclideana dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } centro &amp;lt;- c(-2, -3) punto &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radio &amp;lt;- dist(centro, punto) radio^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
+    </item>
+    
+    <item>
+      <title>Visualizando funciones trigonométricas con ggplot</title>
+      <link>/2017/08/16/trigonometric-funs/</link>
+      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/16/trigonometric-funs/</guid>
+      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas: seno y coseno. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
+Para dibujar las funciones, uso stat_function, geom_segment. scale_x_continuous permite especificar la posición y etiqueta de las guías.</description>
     </item>
     
   </channel>

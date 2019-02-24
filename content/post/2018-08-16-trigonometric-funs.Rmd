@@ -1,16 +1,16 @@
 ---
 title: Visualizando funciones trigonométricas con ggplot
 author: Rafa
-date: '2018-08-16'
+date: '2017-08-16'
 slug: trigonometric-funs
 categories: []
 tags: []
 ---
 ![](/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg)
 
-En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
+En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas: seno y coseno. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
 
-Para dibujar las funciones, uso `stat_function`, `geom_segment` para los ejes y `scale_x_continuous` para especificar la posición y etiqueta de las guías.
+Para dibujar las funciones, uso `stat_function`, `geom_segment`. `scale_x_continuous` permite especificar la posición y etiqueta de las guías.
 
 En `stat_function` especifico `aes(colour = "sin(x)")`. Eso hace que el color de ese geom quede ligado al texto `"sin(x)"` en la leyenda.
 
