@@ -1,5 +1,5 @@
 ---
-title: Scraping NBA data
+title: Scraping NBA data with rvest and purrr
 author: Rafa
 date: '2018-08-01'
 slug: scraping-nba-data
