@@ -2,8 +2,8 @@ baseurl = "/"
 languageCode = "es"
 title = "rlabuonora"
 theme = "hugo-tanka"
-googleAnalytics = ""
-disqusShortname = ""
+googleAnalytics = "UA-136189174-1"
+disqusShortname = "blog-mvbubivkga"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
