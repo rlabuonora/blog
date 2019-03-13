@@ -3,30 +3,58 @@ title: Un mapa de Montevideo con leaflet
 author: Rafa
 date: '2018-07-17'
 slug: mapas
-categories: []
+categories: [R]
 tags:
   - R
   - Viz
 ---
 
-Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando. 
+R tiene abstracciones que nos permiten trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas. 
+
+La API de `StreetView` publica un mapa con bastante detalle del terreno (calles, ríos, comercios, etc.) obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps. Leaflet facilita el consumo de la API para hacer mapas interactivos generando un widget HTML con controles para moverse y hacer zoom. 
 
 
-## Geografía
+```{r}
+mvd <- list(lng=-56.164532, lat=-34.901112)
 
-La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.
+leaflet() %>% 
+  setView(lng=mvd$lng, lat=mvd$lat, zoom=12) %>% 
+  addTiles(group="Google") 
+```
 
-## Leaflet
+Para hacer este mapa, simplemente llamamos a `leaflet::leaflet()` sin argumentos, `setView()` para especificar las coordenadas donde se centra el mapa y `addTiles()` para las imágenes para dibujar el mapa. Leaflet sigue las convenciones del `tidyverse`, por lo que podemos encadenar las llamadas a las funciones con ` %>% `.
 
-Leaflet permite para hacer mapas interactivos. Trae los datos del mapa de una API (podemos elegir varias: StreetView, etc.) y genera un html widget. Después es fácil incluir el widget en una app de Shiny o en un blog generado por Hugo.
+Hay otro tipo de mapas que representan algun tipo de entidad geográfica (un país o un barrio) mediante un polígono. La información para construir estos mapas no está disponible en las imágenes satelitales, porque las fronteras entre estas entidades no es visible. En Uruguay, el INE publica _shapefiles_ con la información cartográfica de los departamentos de Uruguay, los barrios de Montevideo, etc.
 
-## Sf
+Los _shapefiles_ se publican con otros archivos que incluyen datos y otros atributos de las formas. `readOGR()` devuelve un objeto `SpatialPolygonsDataFrame`:
 
-También están los viejos y queridos shapefiles. Un mapa shapefile viene en varios archivos (con formato shx, dbf, sbx, sbn) que contienen información de polígonos. 
+```{r}
+# leer shapefile (cuidado que incluyen los shpx, dbf, etc.)
+states <- readOGR("./static/shps/barrios/ine_barrios_mvd_nbi85.shp",
+                  layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
 
-El INE publica shapefiles con la información cartográfica que dispone para Uruguay. Tuve que trabajar bastante para instalar los paquetes (en especial RGDAL que es a nivel de sistema operativo). Pero después hacer el mapa es simple.
+states@data$barrio <- states@data$NOMBBARR %>% as.character
 
-Cargar librerías y datos del mapa:
+crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# proyeccion ine
+prj <- CRS("+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
+
+# asignar proy
+proj4string(states) <- prj
+# transformar la proyección
+st <- spTransform(states, crswgs84)
+```
+
+
+Estos mapas sirven para _choropleths_, visualizaciones que muestran la forma de un área coloreada con alguna variable (población, PIB, etc.):
+
+```{r}
+# Choropleth del PIB departamental
+```
+
+Los shapefiles tienen las coordenadas de las formas que contienen, por lo que si especificamos la proyección usada podemos superponerlos con los mapas que publica `StreetView`:
+
+
 ```{r setup, message=FALSE, results = "hide"}
 library(maptools)
 library(leaflet)
@@ -40,7 +68,7 @@ crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 prj <- CRS("+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 
 # leer shapefile (cuidado que incluyen los shpx, dbf, etc.)
-states <- readOGR("../../static/shps/ine_barrios_mvd_nbi85.shp",
+states <- readOGR("../../static/shps/barrios/ine_barrios_mvd_nbi85.shp",
                   layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
 
 states@data$barrio <- states@data$NOMBBARR %>% as.character
@@ -73,7 +101,11 @@ leaflet(st) %>%
 ```
 
 
-El código sigue las convenciones del tidyverse y es similar a un gráfico de ggplot, porque organiza el gráfico en capas (layers). La primera call a la función `leaflet` lleva el objeto como argumento. La primera es `addPolygons` que agrega los polígonos en la layer `NROBARRIO`. El `fill` viene dado por el `AREA_KM` que es una columna en un data frame interno que viene con los datos (está en el archivo dbf).
+El código sigue las convenciones del tidyverse y es similar a un gráfico de `ggplot`, porque organiza el gráfico en capas. 
+
+La diferencia es que los datos de base provienen de un _shapefile_, al que le aplicamos algunas transformaciones. Estas transformaciones especifican las coordenadas de los polígonos del _shapefile_ y permiten superponer este mapa con el de `StreetView`. 
+
+Luego de llamar a `leaflet::leaflet` con el argumento `st`, agregamos una capa de polígonos con `addPolygons`, y especificamos el `fill` de cada polígono con `AREA_KM`.  `AREA_KM` es una columna en un data frame interno que viene con los datos (está en el archivo dbf).
 
 `addTiles` usa la API (por defecto StreetView) para traer el mapa con las features del terreno. El grupo `Google` permite agrupar esta capa del mapa para invocarla después (con los checkboxes).
 
