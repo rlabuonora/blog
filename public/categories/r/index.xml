@@ -5,21 +5,20 @@
     <link>/categories/r/</link>
     <description>Recent content in R on rlabuonora</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <language>es</language>
+    <lastBuildDate>Tue, 17 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hola R Markdown</title>
-      <link>/2015/07/23/hola-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Un mapa de Montevideo con leaflet</title>
+      <link>/2018/07/17/mapas/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hola-r-markdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/2018/07/17/mapas/</guid>
+      <description>R tiene abstracciones que nos permiten trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas.
+La API de StreetView publica un mapa con bastante detalle del terreno (calles, ríos, comercios, etc.) obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps.</description>
     </item>
     
   </channel>

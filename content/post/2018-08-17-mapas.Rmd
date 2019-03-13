@@ -15,6 +15,13 @@ La API de `StreetView` publica un mapa con bastante detalle del terreno (calles,
 
 
 ```{r}
+library(tidyverse)
+library(maptools)
+library(leaflet)
+library(dplyr)
+library(rgdal)
+library(shiny)
+
 mvd <- list(lng=-56.164532, lat=-34.901112)
 
 leaflet() %>% 
@@ -30,7 +37,7 @@ Los _shapefiles_ se publican con otros archivos que incluyen datos y otros atrib
 
 ```{r}
 # leer shapefile (cuidado que incluyen los shpx, dbf, etc.)
-states <- readOGR("./static/shps/barrios/ine_barrios_mvd_nbi85.shp",
+states <- readOGR("../../static/shps/barrios/ine_barrios_mvd_nbi85.shp",
                   layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
 
 states@data$barrio <- states@data$NOMBBARR %>% as.character
@@ -56,12 +63,7 @@ Los shapefiles tienen las coordenadas de las formas que contienen, por lo que si
 
 
 ```{r setup, message=FALSE, results = "hide"}
-library(maptools)
-library(leaflet)
-library(dplyr)
-library(rgdal)
-library(shiny)
-library(leaflet)
+
 
 crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 # proyeccion ine

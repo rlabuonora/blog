@@ -50,9 +50,8 @@ NBA Reference This website has statistics on every aspect of the game for a long
       <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/07/17/mapas/</guid>
-      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
-Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.
- Leaflet Leaflet permite para hacer mapas interactivos.</description>
+      <description>R tiene abstracciones que nos permiten trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas.
+La API de StreetView publica un mapa con bastante detalle del terreno (calles, ríos, comercios, etc.) obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps.</description>
     </item>
     
     <item>
@@ -71,7 +70,9 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
       <pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/12/20/tidy-vargas-llosa/</guid>
-      <description>## Loading required package: RColorBrewer Sentiment Analysis mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!str_detect(word, &amp;quot;\u2019&amp;quot;)) %&amp;gt;% # remove didn&amp;#39;t, they&amp;#39;re, etc.</description>
+      <description>## Loading required package: RColorBrewer Vargas Llosa Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
+ Sentiment Analysis Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
+mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!</description>
     </item>
     
     <item>

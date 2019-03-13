@@ -17,9 +17,8 @@
       <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/07/17/mapas/</guid>
-      <description>Me encantan los mapas. R tiene un montón de opciones para dibujar mapas. En un proyecto reciente para el trabajo tuve que usarlos y estuve explorando.
-Geografía La ciencia atrás de todo esto es bastante compleja. Por suerte R nos permite hacer cosas sin entender mucho los fundamentos que hay atrás de una proyección cartográfica, los sistemas de coordenadas, etc.
- Leaflet Leaflet permite para hacer mapas interactivos.</description>
+      <description>R tiene abstracciones que nos permiten trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas.
+La API de StreetView publica un mapa con bastante detalle del terreno (calles, ríos, comercios, etc.) obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps.</description>
     </item>
     
   </channel>
