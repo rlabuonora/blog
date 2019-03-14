@@ -48,13 +48,18 @@
   <h1> Tidy Vargas Llosa </h1>
 
   <div id=sub-header>
-    Rafa · 2017/12/20 · 1 minute read
+    Rafa · 2017/12/20 · 2 minute read
   </div>
 
   <div class="entry-content">
     <pre><code>## Loading required package: RColorBrewer</code></pre>
+<div id="vargas-llosa" class="section level1">
+<h1>Vargas Llosa</h1>
+<p>Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [<a href="https://rlabuonora74.wordpress.com/" class="uri">https://rlabuonora74.wordpress.com/</a>]. En base al libro [<a href="https://www.tidytextmining.com/" class="uri">https://www.tidytextmining.com/</a>], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.</p>
+</div>
 <div id="sentiment-analysis" class="section level1">
 <h1>Sentiment Analysis</h1>
+<p>Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.</p>
 <pre class="r"><code>mvll_sentiment &lt;- mvll_tidy %&gt;% 
   inner_join(get_sentiments(&quot;bing&quot;)) %&gt;% 
   count(title, index = line %/% 80  , sentiment) %&gt;%
@@ -145,7 +150,7 @@ plt %&gt;%
                 return;
 
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      var disqus_shortname = '';
+      var disqus_shortname = 'blog-mvbubivkga';
       dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 })();
@@ -155,6 +160,17 @@ plt %&gt;%
 
 
   
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-136189174-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
   
 <script src="/js/math-code.js"></script>
 <script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
