@@ -76,27 +76,14 @@ mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quo
     </item>
     
     <item>
-      <title>Visualizando secciones cónicas con ggplot</title>
-      <link>/2017/08/21/conic-sections-con-ggplot/</link>
-      <pubDate>Mon, 21 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/2017/08/21/conic-sections-con-ggplot/</guid>
-      <description>En este post exploro un poco algunas secciones cónicas usando ggplot y LaTeX.
-Círculo La ecuación genérico de un círculo es
-\[ (x-h)^2+(y-k)^2=r^2 \]
-donde \((h, k)\) es el centro y \(r\) el radio.
-Si quiero dibujar un círculo que pasa por (1, 4) y tiene centro en (-2, -3).
-# distancia euclideana dist &amp;lt;- function(x, y) { sqrt(sum((x-y)^2)) } centro &amp;lt;- c(-2, -3) punto &amp;lt;- c(1, 4) # Hallar el radio como la distancia entre el punto y el centro radio &amp;lt;- dist(centro, punto) radio^2 ## [1] 58 La ecuación del círculo es: \[(x+2)^2 + (y+3)^2 = 58\]</description>
-    </item>
-    
-    <item>
-      <title>Visualizando funciones trigonométricas con ggplot</title>
-      <link>/2017/08/16/trigonometric-funs/</link>
+      <title>Geometría y ggplot</title>
+      <link>/2017/08/16/ggplot-geometria/</link>
       <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/08/16/trigonometric-funs/</guid>
-      <description>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas: seno y coseno. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.
-Para dibujar las funciones, uso stat_function, geom_segment. scale_x_continuous permite especificar la posición y etiqueta de las guías.</description>
+      <guid>/2017/08/16/ggplot-geometria/</guid>
+      <description>ggplot es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso ggplot para dibujar algunas formas geométricas.
+Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.
+geom_segment y scale_x_continuous permiten especificar la posición y etiqueta de las guías.</description>
     </item>
     
   </channel>
