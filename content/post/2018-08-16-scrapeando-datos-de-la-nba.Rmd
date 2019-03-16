@@ -12,6 +12,28 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
                       message = FALSE, 
                       cache = TRUE)
+
+library(knitr)
+hook_output <- knit_hooks$get("output")
+knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
 ```
 
 
@@ -59,7 +81,7 @@ data <- data[[1]]
 
 Let's inspect the data:
 
-```{r}
+```{r, output.lines=15}
 str(data)
 ```
 Ok, so all the columns are read in as text. That's natural, since all html pages are text, so we need to convert the data to the correct data types. 
@@ -92,7 +114,7 @@ str(select(data_2, Tm, Pos))
 
 Repeat for all the numeric variables using the `:` notation to select all the columns from `G` to `PS.G`.
 
-```{r convert_type_3}
+```{r convert_type_3, output.lines=15}
 data_3 <- data %>%
   mutate_at(vars(G:`PS/G`, Age), as.numeric)
 str(select(data_3, G:`PS/G`, Age))
@@ -125,7 +147,7 @@ head(urls)
 
 Awesome! Now instead of creating a vector of urls, we'll create a list of data frames, one for every season.
   
-```{r for_loop_2, cache = TRUE}
+```{r for_loop_2, cache = TRUE, output.lines=15}
 base_url <- "https://www.basketball-reference.com/leagues/"
 page <- "NBA_{year}_per_game.html"
 data <- list()
@@ -220,7 +242,7 @@ head(df.14)
 
 Good, now we're all set for using `map`:
 
-```{r, cache = TRUE}
+```{r, cache = TRUE, output.lines=15}
 list_of_data_frames <- as.list(2000:2017) %>% 
   purrr::map(get_player_data)
   

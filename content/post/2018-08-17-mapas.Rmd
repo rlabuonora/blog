@@ -9,9 +9,17 @@ tags:
   - Viz
 ---
 
-R tiene abstracciones que nos permiten trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas. 
+```{r results='hide', echo = FALSE, message=FALSE, warning=FALSE}
 
-La API de `StreetView` publica un mapa con bastante detalle del terreno (calles, ríos, comercios, etc.) obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps. Leaflet facilita el consumo de la API para hacer mapas interactivos generando un widget HTML con controles para moverse y hacer zoom. 
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning=FALSE,
+                      message = FALSE)
+
+```
+
+R tiene abstracciones para trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas. 
+
+La API de `StreetView` publica un mapa con bastante información del terreno como calles, ríos y lugares importantes obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps. Leaflet facilita el consumo de la API para hacer mapas interactivos generando un widget HTML con controles para moverse y hacer zoom. 
 
 
 ```{r}
@@ -29,7 +37,7 @@ leaflet() %>%
   addTiles(group="Google") 
 ```
 
-Para hacer este mapa, simplemente llamamos a `leaflet::leaflet()` sin argumentos, `setView()` para especificar las coordenadas donde se centra el mapa y `addTiles()` para las imágenes para dibujar el mapa. Leaflet sigue las convenciones del `tidyverse`, por lo que podemos encadenar las llamadas a las funciones con ` %>% `.
+Para hacer este mapa llamamos a `leaflet::leaflet()` sin argumentos, `setView()` para especificar las coordenadas y zoom iniciales y `addTiles()` para dibujar el mapa. Leaflet sigue las convenciones del `tidyverse`, por lo que podemos encadenar las llamadas a las funciones con `%>% `.
 
 Hay otro tipo de mapas que representan algun tipo de entidad geográfica (un país o un barrio) mediante un polígono. La información para construir estos mapas no está disponible en las imágenes satelitales, porque las fronteras entre estas entidades no es visible. En Uruguay, el INE publica _shapefiles_ con la información cartográfica de los departamentos de Uruguay, los barrios de Montevideo, etc.
 

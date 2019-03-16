@@ -4,3 +4,4 @@ rvest
 dplyr
 bindrcpp
 glue
+knitr
