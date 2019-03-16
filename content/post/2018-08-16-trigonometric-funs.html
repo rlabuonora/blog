@@ -9,8 +9,8 @@ tags: []
 
 
 
-<p><img src="/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg" />
-<code>ggplot</code> es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso <code>ggplot</code> para dibujar algunas formas geométricas.</p>
+<p><img src="/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg" /></p>
+<p><code>ggplot</code> es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso <code>ggplot</code> para dibujar algunas formas geométricas.</p>
 <p>Para dibujar el gráfico de una función, podemos usar <code>stat_function</code>. En el primer gráfico, dibujo <span class="math inline">\(sin(x)\)</span> y <span class="math inline">\(cos(x)\)</span>. Especifico <code>aes(colour = &quot;sin(x)&quot;)</code> para que el color de ese cada <code>geom</code> quede ligado al texto correcto en la leyenda.</p>
 <p><code>geom_segment</code> y <code>scale_x_continuous</code> permiten especificar la posición y etiqueta de las guías.</p>
 <p>Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> explica como poner caractéres del alfabeto griego en los ejes usando <code>expression()</code>.</p>
@@ -204,11 +204,5 @@ g_3 &lt;- ggplot(data_frame(x=x),
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0)
 g_3</code></pre>
-<pre><code>## Warning in sqrt(-8 * (x + 2)): NaNs produced
-
-## Warning in sqrt(-8 * (x + 2)): NaNs produced</code></pre>
-<pre><code>## Warning: Removed 40 rows containing missing values (geom_path).
-
-## Warning: Removed 40 rows containing missing values (geom_path).</code></pre>
 <p><img src="/post/2018-08-16-trigonometric-funs_files/figure-html/g_3-1.png" width="672" /></p>
 </div>

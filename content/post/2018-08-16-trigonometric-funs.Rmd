@@ -7,6 +7,16 @@ categories: []
 tags: []
 ---
 ![](/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE, 
+                      cache = TRUE)
+
+library(knitr)
+```
+
 `ggplot` es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso `ggplot` para dibujar algunas formas geométricas.
 
 Para dibujar el gráfico de una función, podemos usar `stat_function`. En el primer gráfico, dibujo $sin(x)$ y $cos(x)$. Especifico `aes(colour = "sin(x)")` para que el color de ese cada `geom` quede ligado al texto correcto en la leyenda.
