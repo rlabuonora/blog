@@ -104,6 +104,4 @@ leaflet(st) %>%
   )
 ```
 
-El grupo `StreetView` permite agrupar esta capa del mapa para invocarla después (con los checkboxes).
-
-`addLayerControl` es una capa de controles con dos checkboxes que permiten prender y apagar las dos capas del mapa (StreetView e INE).
+Especificar `group=INE` y `group=StreetView` permite agrupar estas capas del mapa para que `addLayerControl` las identifique para genera los dos checkboxes que permiten prender y apagar esas capas del mapa. 
