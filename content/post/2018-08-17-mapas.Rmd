@@ -48,7 +48,6 @@ Los _shapefiles_ se publican con otros archivos que incluyen datos y otros atrib
 states <- readOGR("../../static/shps/barrios/ine_barrios_mvd_nbi85.shp",
                   layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
 
-states@data$barrio <- states@data$NOMBBARR %>% as.character
 
 crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 # proyeccion ine
@@ -60,42 +59,37 @@ proj4string(states) <- prj
 st <- spTransform(states, crswgs84)
 ```
 
+El mapa que vamos a usar tiene un `data_frame` con tres columnas: un código para cada barrio, el nombre y el área. Estos datos estan en el archivo dbf que viene en el zip.
 
-Estos mapas sirven para _choropleths_, visualizaciones que muestran la forma de un área coloreada con alguna variable (población, PIB, etc.):
 
 ```{r}
-# Choropleth del PIB departamental
+head(states@data)
 ```
+
+Los _shapefiles_ son útiles para dibujar _choropleths_, que pintan cada polígono con un color para mostrar alguna variable. Acá pintamos cada barrio según su área:
+
+```{r}
+# Paleta de colores
+qpal <- colorNumeric("YlOrRd", st@data$AREA_KM)
+
+leaflet(st) %>%
+  addPolygons(layerId=~NROBARRIO, color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.5,
+              fillColor = ~qpal(AREA_KM),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE), group="INE") %>% 
+  addLegend(pal = qpal, values = ~AREA_KM)
+
+```
+
+Para hacer el _choropleth_ necesitamos una función que nos de un color para cada valor de la variable que queremos visualizar. Eso es lo que hace `qpal`. Luego dibujamos el mapa con `leaflet()` y `addPolygons()`.
+
 
 Los shapefiles tienen las coordenadas de las formas que contienen, por lo que si especificamos la proyección usada podemos superponerlos con los mapas que publica `StreetView`:
 
 
-```{r setup, message=FALSE, results = "hide"}
-
-
-crswgs84 <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-# proyeccion ine
-prj <- CRS("+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
-
-# leer shapefile (cuidado que incluyen los shpx, dbf, etc.)
-states <- readOGR("../../static/shps/barrios/ine_barrios_mvd_nbi85.shp",
-                  layer = "ine_barrios_mvd_nbi85", GDAL1_integer64_policy = TRUE)
-
-states@data$barrio <- states@data$NOMBBARR %>% as.character
-# asignar proy
-proj4string(states) <- prj
-# transformar la proyección
-st <- spTransform(states, crswgs84)
-
-```
-Un mapa de Montevideo con Leaflet. Las capas pueden ser las de StreetView o la del Shapefile publicado por INE.
 
 ```{r}
-
-mvd <- c(-56.164532, -34.901112)
-mvd1 <- mvd  + 0.0071
-mvd2 <- mvd  - 0.0071
-
 
 leaflet(st) %>%
   addPolygons(layerId=~NROBARRIO, color = "#444444", weight = 1, smoothFactor = 0.5,
@@ -103,20 +97,13 @@ leaflet(st) %>%
               fillColor = ~colorQuantile("YlOrRd", AREA_KM)(AREA_KM),
               highlightOptions = highlightOptions(color = "white", weight = 2,
                                                   bringToFront = TRUE), group="INE") %>%
-  addTiles(group="Google") %>%
+  addTiles(group="StreetView") %>%
   addLayersControl(
-    overlayGroups = c("INE", "Google"),
+    overlayGroups = c("INE", "StreetView"),
     options = layersControlOptions(collapsed = FALSE)
   )
 ```
 
+El grupo `StreetView` permite agrupar esta capa del mapa para invocarla después (con los checkboxes).
 
-El código sigue las convenciones del tidyverse y es similar a un gráfico de `ggplot`, porque organiza el gráfico en capas. 
-
-La diferencia es que los datos de base provienen de un _shapefile_, al que le aplicamos algunas transformaciones. Estas transformaciones especifican las coordenadas de los polígonos del _shapefile_ y permiten superponer este mapa con el de `StreetView`. 
-
-Luego de llamar a `leaflet::leaflet` con el argumento `st`, agregamos una capa de polígonos con `addPolygons`, y especificamos el `fill` de cada polígono con `AREA_KM`.  `AREA_KM` es una columna en un data frame interno que viene con los datos (está en el archivo dbf).
-
-`addTiles` usa la API (por defecto StreetView) para traer el mapa con las features del terreno. El grupo `Google` permite agrupar esta capa del mapa para invocarla después (con los checkboxes).
-
-`addLayerControl` es una capa de controles (dos checkboxes que permiten prender y apagar las otras dos capas del mapa.)
+`addLayerControl` es una capa de controles con dos checkboxes que permiten prender y apagar las dos capas del mapa (StreetView e INE).
