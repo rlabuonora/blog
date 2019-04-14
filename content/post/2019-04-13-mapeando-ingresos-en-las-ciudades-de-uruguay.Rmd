@@ -63,7 +63,7 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 
 En un [post anterior](https://www.blog.rlabuonora.com/2018/07/17/mapas/) hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de [Charlotte Wickham](https://www.cwick.co.nz/) sobre mapas y pensé en replicar el proyecto final del curso con datos de Uruguay.
 
-La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (especialmente Carrasco y Pocitos).
+La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Pocitos, etc.).
 
 Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país.
 
@@ -85,16 +85,14 @@ class(ine_seg_11)
 ```
 
 
-Este objeto es un `data.frame`. Cada fila corresponde a uno de los 4313 segmentos censales de Uruguay. Tiene 13 columnas, incluyendo el `AREA` y el `PERIMETER`, el departamento y la localidad donde se ubican.
+Este objeto es un `data.frame` que además de los tipo de datos usuales (`AREA`, `PERIMETER`, departamento, localidad) tiene una columna con la forma y la ubicación de cada segmento censal.
 
 ```{r}
 head(ine_seg_11@data)
 ```
 
-Hasta acá sería un `data.frame` normal, pero también incluye una columna con la forma de cada segmento. Esto es lo que nos va a permitir crear un mapa con estos datos.
 
 Para saber más sobre estos objetos, recomiendo el capítulo 2 de [Geocomputation with R](https://geocompr.robinlovelace.net/).
-
 
 
 La ECH tiene los ingresos de los hogares identificados por segmento censal, por lo que podemos calcular la mediana de ingresos por segmento con `group_by` y `summarize` de `dplyr`:
@@ -116,7 +114,9 @@ medianas <- ingresos_ech %>%
 ```
 
 # Elegir una localidad
-Una vez calculada esta estimación, elijo una localidad para subsetear el mapa
+
+Una vez calculada esta estimación, elijo una localidad para subsetear el mapa.
+
 ```{r}
 # Salto es la localidad 1120
 cod_loc <- "15120"
@@ -124,7 +124,7 @@ mapa_loc <- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]
 ```
 
 # Pegar las estimaciones
-y linkeo el mapa con las medianas por sección:
+Para visualizar las medianas por segmento, le agrego la columna con la mediana de cada segmento usando `depto_id`, `seccion_id` y `segmento_id` como identificadores:
 
 ```{r}
 mapa_loc@data <- mapa_loc@data %>% 
@@ -145,9 +145,9 @@ tm_shape(mapa_loc) +
             labels = c("0-20%", "20%-40%", "40%-60%", "60%-80%", "80%-100%"),
             title = "Quintiles de Ingreso") +
     tm_layout("Salto", legend.position = c("right", "top"),
-              legend.text.size = 0.4,
-              legend.title.size = 0.6, 
-              title.size = 0.8)
+              legend.text.size = 0.6,
+              legend.title.size = 0.8, 
+              title.size = 1)
 ```
 
 # Una función
@@ -211,4 +211,6 @@ tmap_arrange(
             mapa_ingresos("9220", "Minas", c("left", "bottom")))
 ```
 
-El problema más grande que le veo a estos mapas es que si no conocemos la ciudad es difícil entender el mapa. Para solucionar esto necesitaríamos agregarle referencias geográficas como calles o cuerpos de agua que permitan hacerse una idea de la forma de la ciudad. Dejo eso para otro post.
+Lo que más me gustaría mejorar de estos mapas es poder agregar referencias como calles importantes o cuerpos de agua que permitan ubicarse mejor en la geografía de la ciudad. Dejo eso para otro post.
+
+La estimación de las medianas probablemente deja mucho que desear desde el punto de vista estadístico también.

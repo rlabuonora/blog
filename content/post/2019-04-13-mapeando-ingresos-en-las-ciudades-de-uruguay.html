@@ -10,7 +10,7 @@ tags: []
 
 
 <p>En un <a href="https://www.blog.rlabuonora.com/2018/07/17/mapas/">post anterior</a> hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de <a href="https://www.cwick.co.nz/">Charlotte Wickham</a> sobre mapas y pensé en replicar el proyecto final del curso con datos de Uruguay.</p>
-<p>La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (especialmente Carrasco y Pocitos).</p>
+<p>La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Pocitos, etc.).</p>
 <p>Para visualizar esta estructura, linkeo los datos de la <a href="http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1">Encuesta Continua de Hogares</a> con un mapa de los segmentos censales del país.</p>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
@@ -31,7 +31,7 @@ ine_seg_11 &lt;- readOGR(dsn = &#39;~/blog_data/mapas_vectoriales_ine/&#39;,
 <pre><code>## [1] &quot;SpatialPolygonsDataFrame&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;sp&quot;</code></pre>
-<p>Este objeto es un <code>data.frame</code>. Cada fila corresponde a uno de los 4313 segmentos censales de Uruguay. Tiene 13 columnas, incluyendo el <code>AREA</code> y el <code>PERIMETER</code>, el departamento y la localidad donde se ubican.</p>
+<p>Este objeto es un <code>data.frame</code> que además de los tipo de datos usuales (<code>AREA</code>, <code>PERIMETER</code>, departamento, localidad) tiene una columna con la forma y la ubicación de cada segmento censal.</p>
 <pre class="r"><code>head(ine_seg_11@data)</code></pre>
 <pre><code>##        AREA PERIMETER DEPTO SECCION SEGMENTO LOCALIDAD CODSEC CODSEG
 ## 0  14476.50 1785.1361     1       0        0        20    100 100000
@@ -47,7 +47,6 @@ ine_seg_11 &lt;- readOGR(dsn = &#39;~/blog_data/mapas_vectoriales_ine/&#39;,
 ## 3   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
 ## 4   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
 ## 5   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON</code></pre>
-<p>Hasta acá sería un <code>data.frame</code> normal, pero también incluye una columna con la forma de cada segmento. Esto es lo que nos va a permitir crear un mapa con estos datos.</p>
 <p>Para saber más sobre estos objetos, recomiendo el capítulo 2 de <a href="https://geocompr.robinlovelace.net/">Geocomputation with R</a>.</p>
 <p>La ECH tiene los ingresos de los hogares identificados por segmento censal, por lo que podemos calcular la mediana de ingresos por segmento con <code>group_by</code> y <code>summarize</code> de <code>dplyr</code>:</p>
 <pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &quot;UTF-8&quot;)</code></pre>
@@ -68,14 +67,14 @@ medianas &lt;- ingresos_ech %&gt;%
 </div>
 <div id="elegir-una-localidad" class="section level1">
 <h1>Elegir una localidad</h1>
-<p>Una vez calculada esta estimación, elijo una localidad para subsetear el mapa</p>
+<p>Una vez calculada esta estimación, elijo una localidad para subsetear el mapa.</p>
 <pre class="r"><code># Salto es la localidad 1120
 cod_loc &lt;- &quot;15120&quot;
 mapa_loc &lt;- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]</code></pre>
 </div>
 <div id="pegar-las-estimaciones" class="section level1">
 <h1>Pegar las estimaciones</h1>
-<p>y linkeo el mapa con las medianas por sección:</p>
+<p>Para visualizar las medianas por segmento, le agrego la columna con la mediana de cada segmento usando <code>depto_id</code>, <code>seccion_id</code> y <code>segmento_id</code> como identificadores:</p>
 <pre class="r"><code>mapa_loc@data &lt;- mapa_loc@data %&gt;% 
     left_join(medianas, by = c(&quot;DEPTO&quot; = &quot;depto_id&quot;,
                                &quot;SECCION&quot; = &quot;seccion_id&quot;,
@@ -89,9 +88,9 @@ mapa_loc &lt;- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]</code></pre>
             labels = c(&quot;0-20%&quot;, &quot;20%-40%&quot;, &quot;40%-60%&quot;, &quot;60%-80%&quot;, &quot;80%-100%&quot;),
             title = &quot;Quintiles de Ingreso&quot;) +
     tm_layout(&quot;Salto&quot;, legend.position = c(&quot;right&quot;, &quot;top&quot;),
-              legend.text.size = 0.4,
-              legend.title.size = 0.6, 
-              title.size = 0.8)</code></pre>
+              legend.text.size = 0.6,
+              legend.title.size = 0.8, 
+              title.size = 1)</code></pre>
 <p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="una-funcion" class="section level1">
@@ -164,5 +163,6 @@ mapa_loc &lt;- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]</code></pre>
 ## with 4313 features
 ## It has 13 fields</code></pre>
 <p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>El problema más grande que le veo a estos mapas es que si no conocemos la ciudad es difícil entender el mapa. Para solucionar esto necesitaríamos agregarle referencias geográficas como calles o cuerpos de agua que permitan hacerse una idea de la forma de la ciudad. Dejo eso para otro post.</p>
+<p>Lo que más me gustaría mejorar de estos mapas es poder agregar referencias como calles importantes o cuerpos de agua que permitan ubicarse mejor en la geografía de la ciudad. Dejo eso para otro post.</p>
+<p>La estimación de las medianas probablemente deja mucho que desear desde el punto de vista estadístico también.</p>
 </div>
