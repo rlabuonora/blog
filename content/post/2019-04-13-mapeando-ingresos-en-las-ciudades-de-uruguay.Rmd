@@ -61,29 +61,41 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 ```
 
 
-En un [post anterior](https://www.blog.rlabuonora.com/2018/07/17/mapas/) hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de [Charlotte Wickham](https://www.cwick.co.nz/) sobre mapas y para seguir la regla de hacer un mini-proyecto después de cada curso o tutorial que hago, pensé en replicar el mapa del curso con datos de Uruguay.
+En un [post anterior](https://www.blog.rlabuonora.com/2018/07/17/mapas/) hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de [Charlotte Wickham](https://www.cwick.co.nz/) sobre mapas y pensé en replicar el proyecto final del curso con datos de Uruguay.
 
 La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (especialmente Carrasco y Pocitos).
+
+Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país.
+
 
 ```{r message=FALSE, echo=FALSE}
 mapa_ingresos("1020", "Montevideo")
 ```
 
+# El mapa
 
-Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país.
+`readOGR` lee los archivos publicados por el INE como un objecto `SpatialPolygonsDataFrame`. 
 
 ```{r, message = FALSE, warning = FALSE}
 # Cargar mapa
 ine_seg_11 <- readOGR(dsn = '~/blog_data/mapas_vectoriales_ine/', 
                       layer = 'ine_seg_11')
+class(ine_seg_11)
+
 ```
 
-El mapa publicado por el INE se carga como un objecto `SpatialPolygonsDataFrame`. Para saber más sobre esta estructura de datos, recomiendo leer el capítulo 2 de [Geocomputation with R](https://geocompr.robinlovelace.net/).
+
+Este objeto es un `data.frame`. Cada fila corresponde a uno de los 4313 segmentos censales de Uruguay. Tiene 13 columnas, incluyendo el `AREA` y el `PERIMETER`, el departamento y la localidad donde se ubican.
 
 ```{r}
-class(ine_seg_11)
 head(ine_seg_11@data)
 ```
+
+Hasta acá sería un `data.frame` normal, pero también incluye una columna con la forma de cada segmento. Esto es lo que nos va a permitir crear un mapa con estos datos.
+
+Para saber más sobre estos objetos, recomiendo el capítulo 2 de [Geocomputation with R](https://geocompr.robinlovelace.net/).
+
+
 
 La ECH tiene los ingresos de los hogares identificados por segmento censal, por lo que podemos calcular la mediana de ingresos por segmento con `group_by` y `summarize` de `dplyr`:
 ```{r, warning=FALSE, message=FALSE}
@@ -103,19 +115,25 @@ medianas <- ingresos_ech %>%
     summarize(mediana = median(ingreso))
 ```
 
-
-Una vez calculada esta estimación, elijo una localidad para subsetear el mapa, y linkeo el mapa con las medianas por sección
-
+# Elegir una localidad
+Una vez calculada esta estimación, elijo una localidad para subsetear el mapa
 ```{r}
 # Salto es la localidad 1120
 cod_loc <- "15120"
 mapa_loc <- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]
+```
+
+# Pegar las estimaciones
+y linkeo el mapa con las medianas por sección:
+
+```{r}
 mapa_loc@data <- mapa_loc@data %>% 
     left_join(medianas, by = c("DEPTO" = "depto_id",
                                "SECCION" = "seccion_id",
                                "SEGMENTO" = "segmento_id"))
 
 ```
+
 En el post anterior usé leaflet para hacer los mapas. Como Charlotte usa `tmap` voy a usar esa librería para hacer el choropleth:
 
 ```{r}
