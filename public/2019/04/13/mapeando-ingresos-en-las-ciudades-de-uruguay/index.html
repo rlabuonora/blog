@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Mi Blog">
+
+  <link rel="icon" type="image/png" href="/favicon-code-fork.ico">
+
+  <title>
+    
+    
+     Mapeando Ingresos en las Ciudades de Uruguay 
+    
+  </title>
+  <link rel="canonical" href="/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/"></a></h1>
+  <ul>
+    
+    <li><a href="/">Inicio</a></li>
+    
+    <li><a href="https://cv.rlabuonora.com/">CV</a></li>
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> Mapeando Ingresos en las Ciudades de Uruguay </h1>
+
+  <div id=sub-header>
+     · 2019/04/13 · 5 minute read
+  </div>
+
+  <div class="entry-content">
+    <p>En un <a href="https://www.blog.rlabuonora.com/2018/07/17/mapas/">post anterior</a> hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de <a href="https://www.cwick.co.nz/">Charlotte Wickham</a> sobre mapas y para seguir la regla de hacer un mini-proyecto después de cada curso o tutorial que hago, pensé en replicar el mapa del curso con datos de Uruguay.</p>
+<p>La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (especialmente Carrasco y Pocitos).</p>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields</code></pre>
+<p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Para visualizar esta estructura, linkeo los datos de la <a href="http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1">Encuesta Continua de Hogares</a> con un mapa de los segmentos censales del país.</p>
+<pre class="r"><code># Cargar mapa
+ine_seg_11 &lt;- readOGR(dsn = &#39;~/blog_data/mapas_vectoriales_ine/&#39;, 
+                      layer = &#39;ine_seg_11&#39;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields</code></pre>
+<p>El mapa publicado por el INE se carga como un objecto <code>SpatialPolygonsDataFrame</code>. Para saber más sobre esta estructura de datos, recomiendo leer el capítulo 2 de <a href="https://geocompr.robinlovelace.net/">Geocomputation with R</a>.</p>
+<pre class="r"><code>class(ine_seg_11)</code></pre>
+<pre><code>## [1] &quot;SpatialPolygonsDataFrame&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;sp&quot;</code></pre>
+<pre class="r"><code>head(ine_seg_11@data)</code></pre>
+<pre><code>##        AREA PERIMETER DEPTO SECCION SEGMENTO LOCALIDAD CODSEC CODSEG
+## 0  14476.50 1785.1361     1       0        0        20    100 100000
+## 1 122200.01 1563.4714     1       1        1        20    101 101001
+## 2 151608.67 1676.3479     1       1        2        20    101 101002
+## 3  99377.28 1456.9389     1       1        3        20    101 101003
+## 4  54395.51 1040.6595     1       1      104        20    101 101104
+## 5  41055.69  838.3599     1       1      105        20    101 101105
+##   CODLOC  NOMBDEPTO    NOMBLOC CDEPTO_ISO CLOC_ISO
+## 0   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
+## 1   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
+## 2   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
+## 3   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
+## 4   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON
+## 5   1020 MONTEVIDEO MONTEVIDEO       UYMO  UYMOMON</code></pre>
+<p>La ECH tiene los ingresos de los hogares identificados por segmento censal, por lo que podemos calcular la mediana de ingresos por segmento con <code>group_by</code> y <code>summarize</code> de <code>dplyr</code>:</p>
+<pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &quot;UTF-8&quot;)</code></pre>
+<pre><code>## [1] &quot;en_US.UTF-8/UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8&quot;</code></pre>
+<pre class="r"><code>ingresos_ech &lt;- read_tsv(&quot;~/blog_data/H_2018_TERCEROS.dat&quot;) %&gt;% 
+  transmute(id       =as.character(numero),
+            depto_id = dpto, 
+            depto = nomdpto,
+            localidad_id = as.numeric(locagr),
+            localidad = nom_locagr,
+            seccion_id = as.numeric(secc),
+            segmento_id = as.numeric(segm),
+            ingreso = YSVL)
+
+medianas &lt;- ingresos_ech %&gt;% 
+    group_by(depto_id, seccion_id, segmento_id) %&gt;% 
+    summarize(mediana = median(ingreso))</code></pre>
+<p>Una vez calculada esta estimación, elijo una localidad para subsetear el mapa, y linkeo el mapa con las medianas por sección</p>
+<pre class="r"><code># Salto es la localidad 1120
+cod_loc &lt;- &quot;15120&quot;
+mapa_loc &lt;- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]
+mapa_loc@data &lt;- mapa_loc@data %&gt;% 
+    left_join(medianas, by = c(&quot;DEPTO&quot; = &quot;depto_id&quot;,
+                               &quot;SECCION&quot; = &quot;seccion_id&quot;,
+                               &quot;SEGMENTO&quot; = &quot;segmento_id&quot;))</code></pre>
+<p>En el post anterior usé leaflet para hacer los mapas. Como Charlotte usa <code>tmap</code> voy a usar esa librería para hacer el choropleth:</p>
+<pre class="r"><code>tm_shape(mapa_loc) +
+    tm_fill(col = &quot;mediana&quot;, 
+            style=&quot;quantile&quot;, 
+            textNA = &quot;S/D&quot;,
+            colorNA = &quot;gray80&quot;,
+            labels = c(&quot;0-20%&quot;, &quot;20%-40%&quot;, &quot;40%-60%&quot;, &quot;60%-80%&quot;, &quot;80%-100%&quot;),
+            title = &quot;Quintiles de Ingreso&quot;) +
+    tm_layout(&quot;Salto&quot;, legend.position = c(&quot;right&quot;, &quot;top&quot;),
+              legend.text.size = 0.4,
+              legend.title.size = 0.6, 
+              title.size = 0.8)</code></pre>
+<p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div id="una-funcion" class="section level1">
+<h1>Una función</h1>
+<p>Para poder hacer el mapa para varias localidades, lo puse todo en una función, a la que hay que pasarle el nombre y el código de la localidad para que haga el mapa:</p>
+<pre class="r"><code>mapa_ingresos &lt;- function(cod_loc, nom_loc, legend_pos = c(&quot;right&quot;,&quot;top&quot;)) {
+  
+  # segmento censal
+  ine_seg_11 &lt;- readOGR(dsn = &#39;~/blog_data/mapas_vectoriales_ine/&#39;, layer = &#39;ine_seg_11&#39;)
+  crswgs84 &lt;- CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;)
+  # proyeccion ine
+  prj &lt;- CRS(&quot;+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot;)
+  proj4string(ine_seg_11) &lt;- prj
+  #ine_seg_11 &lt;- spTransform(states, crswgs84)
+  
+  Sys.setlocale(&quot;LC_ALL&quot;, &quot;UTF-8&quot;)
+  ingresos_ech &lt;- read_tsv(&quot;~/blog_data/H_2018_TERCEROS.dat&quot;) %&gt;% 
+    transmute(id       =as.character(numero),
+              depto_id = dpto, 
+              depto = nomdpto,
+              localidad_id = as.numeric(locagr),
+              localidad = nom_locagr,
+              seccion_id = as.numeric(secc),
+              segmento_id = as.numeric(segm),
+              ingreso = YSVL)
+  
+  medianas &lt;- ingresos_ech %&gt;% 
+    group_by(depto_id, seccion_id, segmento_id) %&gt;% 
+    summarize(mediana = median(ingreso))
+  
+  mapa_loc &lt;- ine_seg_11[ine_seg_11$CODLOC == cod_loc,]
+  
+  mapa_loc@data &lt;- mapa_loc@data %&gt;% 
+    left_join(medianas, by = c(&quot;DEPTO&quot; = &quot;depto_id&quot;,
+                               &quot;SECCION&quot; = &quot;seccion_id&quot;,
+                               &quot;SEGMENTO&quot; = &quot;segmento_id&quot;))
+  
+  tm_shape(mapa_loc) +
+    tm_fill(col = &quot;mediana&quot;, 
+            style=&quot;quantile&quot;, 
+            textNA = &quot;S/D&quot;,
+            colorNA = &quot;gray80&quot;,
+            labels = c(&quot;0-20%&quot;, &quot;20%-40%&quot;, &quot;40%-60%&quot;, &quot;60%-80%&quot;, &quot;80%-100%&quot;),
+            title = &quot;Quintiles de Ingreso&quot;) +
+    tm_layout(nom_loc, legend.position = legend_pos,
+              legend.text.size = 0.6,
+              legend.title.size = 0.8, 
+              title.size = 1)
+}</code></pre>
+<p>Para sacar varios mapas a la vez podemos usar <code>tmap_arrange</code>:</p>
+<pre class="r"><code>tmap_arrange(
+            mapa_ingresos(&quot;14320&quot;, &quot;Rocha&quot;, c(&quot;left&quot;, &quot;bottom&quot;)),
+            mapa_ingresos(&quot;6220&quot;, &quot;Durazno&quot;, c(&quot;left&quot;, &quot;bottom&quot;)),
+            mapa_ingresos(&quot;18220&quot;, &quot;Tacuarembó&quot;, c(&quot;left&quot;, &quot;bottom&quot;)),
+            mapa_ingresos(&quot;9220&quot;, &quot;Minas&quot;, c(&quot;left&quot;, &quot;bottom&quot;)))</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## with 4313 features
+## It has 13 fields</code></pre>
+<p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>El problema más grande que le veo a estos mapas es que si no conocemos la ciudad es difícil entender el mapa. Para solucionar esto necesitaríamos agregarle referencias geográficas como calles o cuerpos de agua que permitan hacerse una idea de la forma de la ciudad. Dejo eso para otro post.</p>
+</div>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/2018/08/25/nba-ratings/">&laquo; NBA Ratings</a>
+    
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-mvbubivkga';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-136189174-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+</body>
+</html>
+
