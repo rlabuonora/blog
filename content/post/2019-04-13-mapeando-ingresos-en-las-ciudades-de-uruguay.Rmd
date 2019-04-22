@@ -235,6 +235,6 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 Para sacar varios mapas a la vez podemos usar `tmap_arrange` con esta función:
 ```{r}
 tmap_arrange(
-            mapa_ingresos("14320", "Rocha"),
+            mapa_ingresos("11120", "Paysandú"),
             mapa_ingresos("6220", "Durazno"))
 ```
