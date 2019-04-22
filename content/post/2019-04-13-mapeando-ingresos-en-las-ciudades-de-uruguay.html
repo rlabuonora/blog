@@ -69,8 +69,8 @@ class(ine_seg_11_sf)</code></pre>
 <div id="elegir-una-localidad" class="section level2">
 <h2>Elegir una localidad</h2>
 <p>Para elegir la ciudad a mapear, usamos el código de localidad y <code>filter</code>:</p>
-<pre class="r"><code># Salto es la localidad 15120
-cod_loc &lt;- &quot;15120&quot;
+<pre class="r"><code># Montevideo es la localidad 1020
+cod_loc &lt;- &quot;1020&quot;
 mapa_loc &lt;- filter(ine_seg_11_sf, CODLOC==cod_loc)</code></pre>
 </div>
 <div id="agregar-mapa-de-fondo" class="section level2">
@@ -112,12 +112,13 @@ tm_shape(mapa_raster) +
           title = &quot;Ingreso&quot;,
           textNA = &quot;S/D&quot;,
           alpha = 0.75) + 
-  tm_layout(&quot;Salto&quot;, 
+  tm_layout(&quot;Montevideo&quot;, 
             frame = FALSE,
             legend.position = c(&quot;right&quot;, &quot;bottom&quot;),
             legend.format = list(
               &quot;text.separator&quot; = &quot;-&quot;
-            ))</code></pre>
+            )) +
+  tm_legend(show=FALSE)</code></pre>
 <p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
@@ -153,7 +154,8 @@ tm_shape(mapa_raster) +
 }</code></pre>
 <p>Para sacar varios mapas a la vez podemos usar <code>tmap_arrange</code> con esta función:</p>
 <pre class="r"><code>tmap_arrange(
-            mapa_ingresos(&quot;11120&quot;, &quot;Paysandú&quot;),
-            mapa_ingresos(&quot;6220&quot;, &quot;Durazno&quot;))</code></pre>
+            mapa_ingresos(&quot;15120&quot;, &quot;Salto&quot;),
+            mapa_ingresos(&quot;6220&quot;, &quot;Durazno&quot;),
+            ncol = 1)</code></pre>
 <p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>

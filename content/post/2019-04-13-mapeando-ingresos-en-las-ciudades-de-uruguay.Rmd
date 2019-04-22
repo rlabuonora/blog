@@ -132,8 +132,8 @@ ine_seg_11_sf <- ine_seg_11_sf %>%
 Para elegir la ciudad a mapear, usamos el código de localidad y `filter`:
 
 ```{r}
-# Salto es la localidad 15120
-cod_loc <- "15120"
+# Montevideo es la localidad 1020
+cod_loc <- "1020"
 mapa_loc <- filter(ine_seg_11_sf, CODLOC==cod_loc)
 ```
 
@@ -188,12 +188,13 @@ tm_shape(mapa_raster) +
           title = "Ingreso",
           textNA = "S/D",
           alpha = 0.75) + 
-  tm_layout("Salto", 
+  tm_layout("Montevideo", 
             frame = FALSE,
             legend.position = c("right", "bottom"),
             legend.format = list(
               "text.separator" = "-"
-            ))
+            )) +
+  tm_legend(show=FALSE)
 ```
 
 
@@ -235,6 +236,7 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 Para sacar varios mapas a la vez podemos usar `tmap_arrange` con esta función:
 ```{r}
 tmap_arrange(
-            mapa_ingresos("11120", "Paysandú"),
-            mapa_ingresos("6220", "Durazno"))
+            mapa_ingresos("15120", "Salto"),
+            mapa_ingresos("6220", "Durazno"),
+            ncol = 1)
 ```
