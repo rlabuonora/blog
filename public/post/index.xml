@@ -17,8 +17,9 @@
       <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/</guid>
-      <description>En un post anterior hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. Hace un tiempo que estoy trabajando sobre un curso de Charlotte Wickham sobre mapas y pensé en replicar el proyecto final del curso con datos de Uruguay.
-La principal pregunta que me interesa contestar es ¿cómo es la distribución del ingreso en las ciudades de Uruguay? En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Pocitos, etc.</description>
+      <description>En un post anterior hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE.
+En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos
+Para visualizar esta estructura, linkeo los datos de la Encuesta Continua de Hogares con un mapa de los segmentos censales del país.</description>
     </item>
     
     <item>
