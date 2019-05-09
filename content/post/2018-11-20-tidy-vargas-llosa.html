@@ -76,6 +76,12 @@ plt %&gt;%
 </blockquote>
 <p>tiene sentimientos positivos, porque “esto”, “no” y “es” tienen sentimientos neutros (no está en el léxico) y “bueno” tiene sentimientos positivos.</p>
 <pre class="r"><code>mvll_sentiment &lt;- mvll_tidy %&gt;% 
+   filter(title %in% c(&quot;Aunt Julia and the Scriptwriter&quot;,
+                       &quot;Conversation in the Cathedral&quot;,
+                       &quot;A Fish in the Water&quot;,
+                       &quot;Feast of the Goat&quot;,
+                       &quot;Notebooks of Don Rigoberto&quot;,
+                       &quot;Bad Girl&quot;)) %&gt;%
   inner_join(get_sentiments(&quot;bing&quot;)) %&gt;% 
   count(title, index = line %/% 80  , sentiment) %&gt;%
   spread(sentiment, n) %&gt;%

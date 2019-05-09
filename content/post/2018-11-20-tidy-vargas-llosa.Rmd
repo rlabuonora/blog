@@ -132,6 +132,12 @@ tiene sentimientos positivos, porque "esto", "no" y "es" tienen sentimientos neu
 ```{r}
 
 mvll_sentiment <- mvll_tidy %>% 
+   filter(title %in% c("Aunt Julia and the Scriptwriter",
+                       "Conversation in the Cathedral",
+                       "A Fish in the Water",
+                       "Feast of the Goat",
+                       "Notebooks of Don Rigoberto",
+                       "Bad Girl")) %>%
   inner_join(get_sentiments("bing")) %>% 
   count(title, index = line %/% 80  , sentiment) %>%
   spread(sentiment, n) %>%
