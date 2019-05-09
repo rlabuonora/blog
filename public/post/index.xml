@@ -81,9 +81,9 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
       <pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/12/20/tidy-vargas-llosa/</guid>
-      <description>## Loading required package: RColorBrewer Vargas Llosa Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
- Sentiment Analysis Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
-mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!</description>
+      <description>## Loading required package: RColorBrewer Vargas Llosa Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí algunos reviews. En este post aplico algunas de las técnicas de este libro a las novelas.
+ Datos Para este proyecto, conseguí todas las novelas de Vargas Llosa en Inglés en formato digital (epub, mobi) y las convertí a texto.
+El primer paso para analizar texto es estructurarlo para el análisis.</description>
     </item>
     
     <item>
@@ -93,8 +93,7 @@ mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quo
       
       <guid>/2017/08/16/ggplot-geometria/</guid>
       <description>ggplot es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso ggplot para dibujar algunas formas geométricas.
-Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.
-geom_segment y scale_x_continuous permiten especificar la posición y etiqueta de las guías.</description>
+Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.</description>
     </item>
     
   </channel>

@@ -48,30 +48,26 @@ mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
 ```
 # Vargas Llosa
 
-Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
- 
+Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí [algunos reviews](https://rlabuonora74.wordpress.com/). En este post aplico algunas de las técnicas de [este libro](https://www.tidytextmining.com/) a las novelas.
 
-# Sentiment Analysis
+# Datos
 
-Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
+Para este proyecto, conseguí todas las novelas de Vargas Llosa en Inglés en formato digital (epub, mobi) y las convertí a texto.
 
-```{r}
+El primer paso para analizar texto es estructurarlo para el análisis. Este proceso se llama tokenización, porque implica separar el texto en "tokens", pequeñas unidades de análisis. En este caso vamos a trabajar con texto tokenizado en palabras. El proceso de tokenización también puede incluír convertir las palabras a minúsculas y sacar las puntuaciones.
 
-mvll_sentiment <- mvll_tidy %>% 
-  inner_join(get_sentiments("bing")) %>% 
-  count(title, index = line %/% 80  , sentiment) %>%
-  spread(sentiment, n) %>%
-  mutate(sentiment = positive - negative)
+# Wordcloud
+
+El análisis más básico de texto on R se llama WordCloud, y grafica las palabras más usadas en el texto analizando con el tamaño de la fuente proporcional a la frecuencia en que aparecen los términos.
+
+Para hacer un WordCloud para una novela concreta, filtramos el data frame para que tenga solo el texto de la novela, y usamos `anti_join` para sacar las stop words. Las `stop words` son palabras como "la" y "de". Suelen ser las palabras más usadas, pero no tienen información sobre el contenido del texto, por lo que es conveniente sacarlas.
+
+Los otros tokens que llaman la atención en este análisis son los nombres de los personajes. Rigoberto y Lucrecia son los tokens más usados en Los cuadernos de don Rigoberto.
 
 
-ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
-  geom_col() + 
-  facet_wrap(~title, scales = "free_x") + 
-  guides(fill=FALSE)
 
-```
 
-# Wordcloud con Los cuadernos de Don Rigoberto
+
 ```{r}
 
 s <- mvll_tidy %>% 
@@ -82,26 +78,17 @@ s <- mvll_tidy %>%
   with(wordcloud(word, n, max.words = 40))
 
 ```
+ 
 
-# Palabras positivas y negativas más comunes
-```{r}
-word_counts <- mvll_tidy %>%
-  inner_join(get_sentiments("bing")) %>%
-  count(word, sentiment, sort = TRUE) %>%
-  ungroup
 
-word_counts %>%
-  group_by(sentiment) %>%
-  top_n(10) %>%
-  ungroup %>%
-  mutate(word = reorder(word, n)) %>%
-  ggplot(aes(word, n, fill=sentiment)) +
-  geom_col(show_legend = FALSE)  +
-  facet_wrap(~sentiment, scales = "free_y") + 
-  coord_flip()
-```
+
+
+
 
 # Palabras características de cada libro
+
+
+Otro análisis similar es el índice de tf-idf. Esta métrica busca extraer los términos más característicos de un texto. EXPLICAR METRICA.
 ```{r}
 book_words <- mvll_tidy %>%
   count(title, word, sort = TRUE) %>%
@@ -126,4 +113,37 @@ plt %>%
   coord_flip()
 
 ```
+# Sentiment Analysis
 
+El análisis de sentimiento busca crear métricas para que tan positivo o negativo es el texto que estamos analizando.  Para eso, necesitamos un "léxico", una base de datos con palabras y sus sentimientos correspondientes. Bing es uno de los léxicos disponibles, y para cada palabra define si es positivo o negativo:
+
+```{r}
+head(get_sentiments("bing"))
+```
+
+Para analizar el texto de las novelas, usamos el léxico para determinar si cada palabra es positiva o negativa. Después tomamos unidades de 80 líneas y calculamos `sentiment` como la diferencia entre la cantidad de palabras positivas y negativas. Esto nos da una métrica de que tan positivas son las palabras usadas en esa parte del texto.
+
+Una cosa importante a tener en cuenta al usar esta técnica es que analiza los tokens individualmente y no entiende la estructura del texto. Esto implica que la métrica no entiende que un texto como 
+
+> "esto no es bueno"
+
+tiene sentimientos positivos, porque "esto", "no" y "es" tienen sentimientos neutros (no está en el léxico) y "bueno" tiene sentimientos positivos.
+
+```{r}
+
+mvll_sentiment <- mvll_tidy %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(title, index = line %/% 80  , sentiment) %>%
+  spread(sentiment, n) %>%
+  mutate(sentiment = positive - negative)
+
+
+ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
+  geom_col() + 
+  facet_wrap(~title, ncol = 2, scales = "free_x") + 
+  guides(fill=FALSE)
+
+```
+
+
+En, Vargas Llosa usa pocas palabras con sentimientos positivos. Esta visualización también identifica momentos particularmente buenos o malos en las novelas:
