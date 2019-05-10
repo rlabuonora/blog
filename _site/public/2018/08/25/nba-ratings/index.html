@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Mi Blog">
+
+  <link rel="icon" type="image/png" href="/favicon-code-fork.ico">
+
+  <title>
+    
+    
+     NBA Ratings 
+    
+  </title>
+  <link rel="canonical" href="/2018/08/25/nba-ratings/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/"></a></h1>
+  <ul>
+    
+    <li><a href="/">Inicio</a></li>
+    
+    <li><a href="https://cv.rlabuonora.com/">CV</a></li>
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> NBA Ratings </h1>
+
+  <div id=sub-header>
+    Rafa · 2018/08/25 · 1 minute read
+  </div>
+
+  <div class="entry-content">
+    <p>Explorando los ratings de la NBA.</p>
+
+<p>TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.</p>
+
+<pre><code class="language-r">library(glue)
+library(tidyverse)
+library(rvest)
+
+
+
+get_ratings_data &lt;- function(year) {
+  base_url &lt;- &quot;https://www.basketball-reference.com/leagues/&quot;
+  ratings_template_url &lt;- &quot;NBA_{year}_ratings.html&quot;
+  df &lt;- glue(base_url, ratings_template_url) %&gt;% 
+    read_html %&gt;% 
+    html_table %&gt;% 
+    `[[`(1)
+  
+  colnames(df) &lt;- df[1,]
+  df &lt;- df[-1,]
+  
+  df %&gt;% 
+    mutate_at(vars(W:`NRtg/A`), as.numeric) %&gt;% 
+    mutate_at(vars(Team, Conf, Div), factor) 
+}
+
+rt.17 &lt;- get_ratings_data(&quot;2017&quot;)
+fit &lt;- lm(W~ORtg + DRtg, data = rt.17)
+
+g_off &lt;- ggplot(rt.17, aes(ORtg, W, color = Conf)) + 
+  geom_point() + 
+  geom_smooth(inherit.aes = FALSE, aes(x=ORtg, y=W)) + 
+  labs(title = &quot;Offensive Rating vs Wins&quot;)
+
+#ggplotly(g_off)
+g_off
+</code></pre>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+
+<pre><code class="language-r">g_def &lt;- ggplot(rt.17, aes(DRtg, W, color = Conf)) + 
+  geom_point() + 
+  geom_smooth( inherit.aes = FALSE, aes(x=DRtg, y=W)) + 
+  labs(title = &quot;Defensive Rating vs Wins&quot;)
+ g_def
+</code></pre>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/2018/08/17/visualizaciones/">&laquo; Visualizaciones</a>
+    
+    
+      <a class="basic-alignment left" href="/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/">Mapeando Ingresos en las Ciudades de Uruguay &raquo;</a>
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-mvbubivkga';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-136189174-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+
+
+</body>
+</html>
+

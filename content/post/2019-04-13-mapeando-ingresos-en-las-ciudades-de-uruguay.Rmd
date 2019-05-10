@@ -64,25 +64,25 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 ```
 
 
-En un [post anterior](https://www.blog.rlabuonora.com/2018/07/17/mapas/) hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE. 
+Todas las ciudades tienen zonas ricas y zonas pobres. En Montevideo, las zonas costeras concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Malvín, Pocitos, etc.). 
 
-En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos 
+En este post armo un mapa para visualizar cuáles son las zonas con mayores ingresos en las ciudades de Uruguay linkeando los mapas que publica el INE con las formas de los segmentos censales y los datos de ingresos de la Encuesta Continua de Hogares:
 
-Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país.
+<!-- En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos  -->
 
+<!-- Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país. -->
 
+<!-- TODO: Refactor using chunk names -->
 ```{r message=FALSE, echo=FALSE}
 mapa_ingresos("1020", "Montevideo")
 ```
 
-# Paso a paso
+# Las Zonas Censales
+La información geográfica puede venir en formato `raster` o en formato `shapefile`. Un objeto `raster` es una grilla de números, y cada celda de la grilla está georeferenciada a una parte de la superficie de la tierra. Los shapefiles son una forma de almacenar datos de formas, que pueden representar entidades geográficas físicas o imaginarias (ríos, países, etc.)
 
-Este mapa confirma lo que eso y es fácil de entender porque conozco la ciudad. Cuando no conocemos una ciudad puede ser más difícil ubicarse en el mapa. Para solucionar este problema podemos agregarle detalles geográficos de fondo como calles o cuerpos de agua usando la API de Google Maps.
+El INE [publica shapefiles](http://ine.gub.uy/mapas-vectoriales) con las formas de los segmentos censales que usa para muestrear la Encuesta de Hogares. En Uruguay hay `nrow(ine_seg_11_sf)` segmentos censales.
 
-
-## Mapa de secciones censales
-
-El mapa de secciones censales de Uruguay es [publicado por el INE](http://ine.gub.uy/mapas-vectoriales) en formato `shapefile`. Lo leemos con `st_read` del paquete `sf`.
+La librería sf tiene un montón de herramientas para trabajar con datos geográficos. La mejor fuente que conozco para aprender más es [Geocomputation with R](https://geocompr.robinlovelace.net/). 
 
 ```{r, message = FALSE, warning = FALSE}
 library(sf)
@@ -95,10 +95,12 @@ ine_seg_11_sf <- st_transform(ine_seg_11_sf, crs=4326)
 class(ine_seg_11_sf)
 ```
 
-Esta función crea un objeto de clase `sf`. Para saber más sobre estos objetos, recomiendo el capítulo 2 de [Geocomputation with R](https://geocompr.robinlovelace.net/).
+```{r}
+plot(st_geometry(ine_seg_11_sf))
+```
 
 ## Calculamos las medianas
-La ECH tiene los ingresos de los hogares identificados por segmento censal, por lo que podemos calcular la mediana de ingresos para cada segmento combinando `group_by` y `summarize`:
+Para calcular el ingreso en cada segmento censal, usamos los datos de la Encuesta Continua de Hogares. Los microdatos incluyen el segmento censal de cada hogar y una estimación de su ingreso. `dplyr` hace muy fácil calcular la mediana del ingreso de los hogares encuestados:
 ```{r, warning=FALSE, message=FALSE}
 Sys.setlocale("LC_ALL", "UTF-8")
 medianas <- read_tsv("~/blog_data/H_2018_TERCEROS.dat") %>% 
@@ -114,8 +116,9 @@ medianas <- read_tsv("~/blog_data/H_2018_TERCEROS.dat") %>%
   summarize(mediana = median(ingreso))
 ```
 
-## Pegar las medianas en el mapa
-Agregarle atributos no espaciales a un objeto `sf` es simple, ya que se comportan como `data.frames` y soportan las funciones del `tidyverse`, por lo que podemos usar `left_join` con `depto_id`, `seccion_id` y `segmento_id` como identificadores:
+## Linkear los datos al mapa
+
+Para visualizar todo en un mapa, hay que linkear los datos con el dataframe de los segmentos censales. Agregarle atributos no espaciales a un objeto `sf` es simple, ya que se comportan como `data.frames` y soportan las funciones del `tidyverse`, por lo que podemos usar `left_join` con `depto_id`, `seccion_id` y `segmento_id` como identificadores:
 
 ```{r}
 ine_seg_11_sf <- ine_seg_11_sf %>% 
@@ -129,36 +132,47 @@ ine_seg_11_sf <- ine_seg_11_sf %>%
 
 ## Elegir una localidad
 
-Para elegir la ciudad a mapear, usamos el código de localidad y `filter`:
+Como queremos mapear los ingresos en cada ciudad, tenemos que encontrar una forma de seleccionar una zona del mapa. Para esto podemos usar `filter` y seleccionar los polígonos que pertenecen a cierta localidad`:
 
 ```{r}
 # Montevideo es la localidad 1020
 cod_loc <- "1020"
 mapa_loc <- filter(ine_seg_11_sf, CODLOC==cod_loc)
+plot(st_geometry(mapa_loc))
 ```
 
 ## Agregar mapa de fondo
 
-La tercera fuente de datos es el mapa del terreno de Google Maps. Para consumir la API, es necesario registrarse y darles una tarjeta de crédito (`r emo::ji("-1")`) para obtener una API key, que queda guardada como una `environment varaible` en mi sistema operativo. [Ver más info aquí](https://cran.r-project.org/web/packages/httr/vignettes/secrets.html).
+Este mapa funciona bien si conocemos la ciudad, pero para zonas geográficas no tan familiares puede ser conveniente agregar referencias como calles importantes o cuerpos de agua. 
+
+Para eso podemos usar google maps, que publica una API con mapas basadas en imágenes satelitales.Para consumir la API, es necesario registrarse y darles una tarjeta de crédito `r emo::ji("-1")` para obtener una clave. [Acá](https://cran.r-project.org/web/packages/httr/vignettes/secrets.html). hay más info sobre como trabajar con API keys en R.
 
 ```{r}
 library(ggmap)
+# Leer la API key de variable de environment
 API_KEY <- Sys.getenv("GOOGLE_API")
+# Loguearse a la API
 register_google(API_KEY)
 ```
-Luego de pasarle esta clave a `register_google`, estamos habilitados para usar `get_map`, pasándole las coordenadas del mapa que quieremos. Para obtener estas coordenadas, usamos el bounding box del mapa subseteado por la localidad seleccionada:
+Para bajar el mapa de Google Maps, necesitamos las coordenadas del mapa que vamos a dibujar. Para obtener estas coordenadas, subseteo el mapa original con el código de la localidad que quiero mapear y obtengo las coordenadas del mapa subseteado.
 
 ```{r}
+
+cod_loc <- "1020"
+mapa_loc <- filter(ine_seg_11_sf, CODLOC==cod_loc)
+
 bbox <- st_bbox(mapa_loc) %>% 
    setNames(c("left", "bottom", "right", "top"))
 
 mapa <- get_map(location=bbox)
 ```
-Para poder dibujar este mapa con `tmap`, tengo que convertirlo a un `Raster`. Encontré una función de Robin Lovelace que hace precisamente eso:
+Para poder dibujar este mapa con `tmap`, tengo que convertirlo a un `Raster` con la función `ggmap_rast`.
 
 ```{r}
 # https://gis.stackexchange.com/questions/155334/ggmap-clip-a-map
 library(raster)
+library(tmap)
+
 ggmap_rast <- function(map) {
   map_bbox <- attr(map, 'bb') 
   .extent <- extent(as.numeric(map_bbox[c(2,4,1,3)]))
@@ -172,13 +186,12 @@ ggmap_rast <- function(map) {
   values(blue) <- rgb_cols[['blue']]
   stack(red,green,blue)
 }
+
+mapa_raster <- ggmap_rast(mapa)
 ```
 
-
-Finalmente combinamos todo en un mapa con `tmap`:
+Ahora que tengo el `Raster`, los polígonos de los segmentos censales y la estimación de las medianas, podemos hacer un mapa en capas con `tmap`:
 ```{r}
-library(tmap)
-mapa_raster <- ggmap_rast(mapa)
 
 tm_shape(mapa_raster) + 
   tm_rgb() + 
@@ -198,9 +211,10 @@ tm_shape(mapa_raster) +
 ```
 
 
-# Una función
+# Una función para dibujar le mapa de una localidad
 
-Para poder hacer el mapa para varias localidades, lo puse todo en una función, a la que hay que pasarle el nombre y el código de la localidad para que haga el mapa:
+`tmap` nos permite dibujar un mapa con todos los elementos que vinimos desarrollando en distintas capas. También tiene una función que permite armar grillas de mapas. Para usarla, refactoreamos todo el código para armar un mapa en una función que toma el código de la localidad y el título y la llamamos para Salto y Durazno.
+
 
 ```{r}
 
@@ -233,10 +247,11 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 }
 ```
 
-Para sacar varios mapas a la vez podemos usar `tmap_arrange` con esta función:
+Para sacar varios mapas a la vez podemos combinar `tmap_arrange` con esta función:
 ```{r}
 tmap_arrange(
             mapa_ingresos("15120", "Salto"),
             mapa_ingresos("6220", "Durazno"),
             ncol = 1)
 ```
+

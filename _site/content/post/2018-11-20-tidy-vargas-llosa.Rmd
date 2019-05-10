@@ -1,0 +1,120 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE)
+
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+library(wordcloud)
+library(ggplot2)
+library(tidytext)
+library(stringr)
+library(forcats)
+library(wordcloud)
+library(tibble)
+theme_set(theme_bw())
+```
+
+```{r echo = FALSE}
+# Nombres de los archivos y los libros
+libros <- tribble(
+  ~file,                                                 ~title,                             ~year,
+  "time_of_the_hero.txt",                         "Time of the Hero",                         1963,
+  "conversation_in_the_cathedral.txt",            "Conversation in the Cathedral",            1969,
+  "captain_pantoja_and_the_special_service.txt",  "Captain Pantoja and the Special Service",  1973,
+  "aunt_julia_and_the_scriptwriter.txt",          "Aunt Julia and the Scriptwriter",          1977,
+  "war_of_the_end_of_the_world.txt",              "War of the End of the World",              1981,
+  "real_life_of_alejandro_mayta.txt",             "Real Life of Alejandro Mayta",             1984 ,
+  "storyteller.txt",                              "The Storyteller",                          1987 ,
+  "a_fish_in_the_water.txt",                      "A Fish in the Water",                      1993,
+  "death_in_the_andes.txt" ,                      "Death in the Andes",                       1994,
+  "notebooks_of_don_rigoberto.txt",               "Notebooks of Don Rigoberto",               1997,
+  "feast_of_the_goat.txt",                        "Feast of the Goat",                        2000,
+  "way_to_paradise.txt",                          "Way to Paradise",                          2003,
+  "bad_girl.txt",                                 "Bad Girl",                                 2006,
+  "dream_of_the_celt.txt",                        "Dream of the Celt",                        2010,
+  "discrete_hero.txt",                            "Discrete Hero",                            2013
+)
+
+mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
+  unnest_tokens(word, text)
+```
+# Vargas Llosa
+
+Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
+ 
+
+# Sentiment Analysis
+
+Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
+
+```{r}
+
+mvll_sentiment <- mvll_tidy %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(title, index = line %/% 80  , sentiment) %>%
+  spread(sentiment, n) %>%
+  mutate(sentiment = positive - negative)
+
+
+ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
+  geom_col() + 
+  facet_wrap(~title, scales = "free_x") + 
+  guides(fill=FALSE)
+
+```
+
+# Wordcloud con Los cuadernos de Don Rigoberto
+```{r}
+
+s <- mvll_tidy %>% 
+  filter(title == "Notebooks of Don Rigoberto" ) %>%
+  filter(!str_detect(word, "\u2019")) %>% # remove didn't, they're, etc.
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE) %>% 
+  with(wordcloud(word, n, max.words = 40))
+
+```
+
+# Palabras positivas y negativas más comunes
+```{r}
+word_counts <- mvll_tidy %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup
+
+word_counts %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill=sentiment)) +
+  geom_col(show_legend = FALSE)  +
+  facet_wrap(~sentiment, scales = "free_y") + 
+  coord_flip()
+```
+
+# Palabras características de cada libro
+```{r}
+book_words <- mvll_tidy %>%
+  count(title, word, sort = TRUE) %>%
+  ungroup %>%
+  bind_tf_idf(word, title, n)
+
+plt <- book_words %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(word = factor(word, levels = rev(unique(word))))
+
+
+
+plt %>%
+  filter(title %in% libros$title[10:13]) %>%
+  group_by(title) %>%
+  top_n(10) %>%
+  ungroup %>%
+  ggplot(aes(word, tf_idf, fill = title)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = "tf-idf") + 
+  facet_wrap(~title, ncol = 2, scales="free") + 
+  coord_flip()
+
+```
+

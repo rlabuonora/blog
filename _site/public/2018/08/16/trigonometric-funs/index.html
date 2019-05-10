@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Mi Blog">
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <title>
+    
+    
+     Visualizando funciones trigonométricas con ggplot 
+    
+  </title>
+  <link rel="canonical" href="/2018/08/16/trigonometric-funs/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/"></a></h1>
+  <ul>
+    
+    <li><a href="/">Inicio</a></li>
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> Visualizando funciones trigonométricas con ggplot </h1>
+
+  <div id=sub-header>
+    Rafa · 2018/08/16 · 2 minute read
+  </div>
+
+  <div class="entry-content">
+    <p><img src="/post/2018-08-16-trigonometric-funs_files/Raffaello_Sanzio_Raphael_RAS020.jpg" /></p>
+<p>En mis épocas más humanísticas adquirí cierta admiración por los antiguos griegos y siempre me dió intriga la trigonometría. En este post armo un gráfico de las dos funciones trigonométricas más famosas: seno y coseno. La complicación más grande fue especificar la leyenda de las dos curvas y los caracteres griegos en los ejes.</p>
+<p>Para dibujar las funciones, uso <code>stat_function</code>, <code>geom_segment</code>. <code>scale_x_continuous</code> permite especificar la posición y etiqueta de las guías.</p>
+<p>En <code>stat_function</code> especifico <code>aes(colour = &quot;sin(x)&quot;)</code>. Eso hace que el color de ese geom quede ligado al texto <code>&quot;sin(x)&quot;</code> en la leyenda.</p>
+<p>Otra cosa que resultó más complicada de lo esperado son las etiquetas del eje x con letras griegas. Este post de stackoverflow sobre <a href="https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2">como poner letras griegas en ggplot</a> fue de bastante utilidad.</p>
+<pre class="r"><code>library(tidyverse)
+library(ggplot2)
+
+# Crear etiquetas para eje x
+lbls &lt;- c( expression(-2 * pi),
+           expression(-3 * pi / 2),
+           expression(- pi),
+           expression(-pi/2),
+           0,
+           expression(pi/ 2),
+           expression(pi),
+           expression(3 * pi /2),
+           expression(2 * pi)
+           )
+
+
+# Gráfico
+ggplot(data_frame(x = c(-7, 7)), aes(x = x)) +
+  stat_function(fun = function(x) { sin(x) }, 
+                geom = &quot;line&quot;, 
+                linetype = &quot;dashed&quot;, 
+                size = 1,
+                aes(colour = &quot;sin(x)&quot;)) +
+  stat_function(fun = function(x) { cos(x) },
+                linetype = &quot;dashed&quot;,
+                size = 1,
+                aes(colour = &quot;cos(x)&quot;)
+                ) +
+  scale_x_continuous(
+    breaks = seq(-2 * pi, 2*pi, pi/2),
+    labels = lbls
+  ) + 
+  labs(x = &quot;x&quot;, y = &quot;y&quot;) + 
+  geom_segment(aes(x=-7, xend = 7, y=0, yend=0), 
+               size = 0.5,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + 
+  geom_segment(aes(x=0, xend=0, y=-1, yend=1.2),
+               size = 0.5,
+               lineend = &quot;butt&quot;,
+               arrow = arrow(length = unit(0.2, &quot;cm&quot;))) + 
+  labs(title = &quot;Funciones Trigonométricas&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank(),
+  ) </code></pre>
+<p><img src="/post/2018-08-16-trigonometric-funs_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/2018/08/16/conic-sections-con-ggplot/">&laquo; Visualizando secciones cónicas con ggplot</a>
+    
+    
+      <a class="basic-alignment left" href="/2018/08/17/visualizaciones/">Visualizaciones &raquo;</a>
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = '';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+  
+
+
+</body>
+</html>
+

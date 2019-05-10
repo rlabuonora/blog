@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Viz on rlabuonora</title>
+    <link>/tags/viz/</link>
+    <description>Recent content in Viz on rlabuonora</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es</language>
+    <lastBuildDate>Tue, 17 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/viz/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Un mapa de Montevideo con leaflet</title>
+      <link>/2018/07/17/mapas/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/17/mapas/</guid>
+      <description>R tiene abstracciones para trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas.
+La API de StreetView publica un mapa con bastante información del terreno como calles, ríos y lugares importantes obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps.</description>
+    </item>
+    
+  </channel>
+</rss>

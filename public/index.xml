@@ -17,9 +17,8 @@
       <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/</guid>
-      <description>En un post anterior hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE.
-En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos
-Para visualizar esta estructura, linkeo los datos de la Encuesta Continua de Hogares con un mapa de los segmentos censales del país.</description>
+      <description>Todas las ciudades tienen zonas ricas y zonas pobres. En Montevideo, las zonas costeras concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Malvín, Pocitos, etc.).
+En este post armo un mapa para visualizar cuáles son las zonas con mayores ingresos en las ciudades de Uruguay linkeando los mapas que publica el INE con las formas de los segmentos censales y los datos de ingresos de la Encuesta Continua de Hogares:</description>
     </item>
     
     <item>
@@ -93,7 +92,8 @@ El primer paso para analizar texto es estructurarlo para el análisis.</descript
       
       <guid>/2017/08/16/ggplot-geometria/</guid>
       <description>ggplot es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso ggplot para dibujar algunas formas geométricas.
-Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.</description>
+Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.
+geom_segment y scale_x_continuous permiten especificar la posición y etiqueta de las guías.</description>
     </item>
     
   </channel>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on rlabuonora</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on rlabuonora</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es</language>
+    <lastBuildDate>Sat, 13 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mapeando Ingresos en las Ciudades de Uruguay</title>
+      <link>/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/</link>
+      <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/13/mapeando-ingresos-en-las-ciudades-de-uruguay/</guid>
+      <description>En un post anterior hice un mapa de Montevideo combinando capas de Open Street View y Shapefiles publicados por el INE.
+En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos
+Para visualizar esta estructura, linkeo los datos de la Encuesta Continua de Hogares con un mapa de los segmentos censales del país.</description>
+    </item>
+    
+    <item>
+      <title>NBA Ratings</title>
+      <link>/2018/08/25/nba-ratings/</link>
+      <pubDate>Sat, 25 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/25/nba-ratings/</guid>
+      <description>Explorando los ratings de la NBA.
+TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.
+library(glue) library(tidyverse) library(rvest) get_ratings_data &amp;lt;- function(year) { base_url &amp;lt;- &amp;quot;https://www.basketball-reference.com/leagues/&amp;quot; ratings_template_url &amp;lt;- &amp;quot;NBA_{year}_ratings.html&amp;quot; df &amp;lt;- glue(base_url, ratings_template_url) %&amp;gt;% read_html %&amp;gt;% html_table %&amp;gt;% `[[`(1) colnames(df) &amp;lt;- df[1,] df &amp;lt;- df[-1,] df %&amp;gt;% mutate_at(vars(W:`NRtg/A`), as.numeric) %&amp;gt;% mutate_at(vars(Team, Conf, Div), factor) } rt.17 &amp;lt;- get_ratings_data(&amp;quot;2017&amp;quot;) fit &amp;lt;- lm(W~ORtg + DRtg, data = rt.17) g_off &amp;lt;- ggplot(rt.</description>
+    </item>
+    
+    <item>
+      <title>Visualizaciones</title>
+      <link>/2018/08/17/visualizaciones/</link>
+      <pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/17/visualizaciones/</guid>
+      <description> Visualizaciones interesantes. Borrador!
+Hay un montón de visualizaciones (sobre todo para datos cualitativos) que me interesaría explorar.
+Sunburst Sankey Networks </description>
+    </item>
+    
+    <item>
+      <title>Scraping NBA data with rvest and purrr</title>
+      <link>/2018/08/01/scraping-nba-data/</link>
+      <pubDate>Wed, 01 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/01/scraping-nba-data/</guid>
+      <description>The NBA does a great job releasing statistics on every aspect of the game. Most teams have analytics experts crunching those numbers for insights to get a competitive advantage.
+In this post I go through the process of scraping data from basketball-reference.com using the R package rvest. We also do some data munging with purrr and string interpolation with glue.
+NBA Reference This website has statistics on every aspect of the game for a long time.</description>
+    </item>
+    
+    <item>
+      <title>Un mapa de Montevideo con leaflet</title>
+      <link>/2018/07/17/mapas/</link>
+      <pubDate>Tue, 17 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/17/mapas/</guid>
+      <description>R tiene abstracciones para trabajar con información geográfica sin entender a fondo los detalles de cómo se hacen las proyecciones cartográficas y qué son los sistemas de coordenadas.
+La API de StreetView publica un mapa con bastante información del terreno como calles, ríos y lugares importantes obtenidos a partir de fotos satelitales. Este es el tipo de mapas que suelen usar aplicaciones como Uber o Google Maps.</description>
+    </item>
+    
+    <item>
+      <title>Mining Hamlet</title>
+      <link>/2018/01/20/hamlet/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/20/hamlet/</guid>
+      <description>A lot of Shakespeare’s tragic heores don’t dominate the first act of their plays. Instead, other characters speak about them, setting the scene for exploring their personalities as the play unfolds. This is the case of Julius Caesar, Macbeth and Othello (but not of King Lear).
+In this post I go over the text of Hamlet, Prince of Denmark, using the quantity of lines spoken by character to visualize the dynamic of the play.</description>
+    </item>
+    
+    <item>
+      <title>Tidy Vargas Llosa</title>
+      <link>/2017/12/20/tidy-vargas-llosa/</link>
+      <pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/20/tidy-vargas-llosa/</guid>
+      <description>## Loading required package: RColorBrewer Vargas Llosa Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [https://rlabuonora74.wordpress.com/]. En base al libro [https://www.tidytextmining.com/], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.
+ Sentiment Analysis Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.
+mvll_sentiment &amp;lt;- mvll_tidy %&amp;gt;% inner_join(get_sentiments(&amp;quot;bing&amp;quot;)) %&amp;gt;% count(title, index = line %/% 80 , sentiment) %&amp;gt;% spread(sentiment, n) %&amp;gt;% mutate(sentiment = positive - negative) ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + geom_col() + facet_wrap(~title, scales = &amp;quot;free_x&amp;quot;) + guides(fill=FALSE)  Wordcloud con Los cuadernos de Don Rigoberto s &amp;lt;- mvll_tidy %&amp;gt;% filter(title == &amp;quot;Notebooks of Don Rigoberto&amp;quot; ) %&amp;gt;% filter(!</description>
+    </item>
+    
+    <item>
+      <title>Geometría y ggplot</title>
+      <link>/2017/08/16/ggplot-geometria/</link>
+      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/16/ggplot-geometria/</guid>
+      <description>ggplot es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso ggplot para dibujar algunas formas geométricas.
+Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.
+geom_segment y scale_x_continuous permiten especificar la posición y etiqueta de las guías.</description>
+    </item>
+    
+  </channel>
+</rss>

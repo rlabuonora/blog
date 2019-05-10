@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Mi Blog">
+
+  <link rel="icon" type="image/png" href="/favicon-code-fork.ico">
+
+  <title>
+    
+    
+     Tidy Vargas Llosa 
+    
+  </title>
+  <link rel="canonical" href="/2017/12/20/tidy-vargas-llosa/">
+
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+</head>
+
+<body>
+<section id=nav>
+  <h1><a href="/"></a></h1>
+  <ul>
+    
+    <li><a href="/">Inicio</a></li>
+    
+    <li><a href="https://cv.rlabuonora.com/">CV</a></li>
+    
+    <li><a href="https://github.com/rlabuonora">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rlabuonora">Twitter</a></li>
+    
+    <li><a href="http://www.rlabuonora.com">Web</a></li>
+    
+  </ul>
+</section>
+
+
+<section id=content>
+  <h1> Tidy Vargas Llosa </h1>
+
+  <div id=sub-header>
+    Rafa · 2017/12/20 · 2 minute read
+  </div>
+
+  <div class="entry-content">
+    <pre><code>## Loading required package: RColorBrewer</code></pre>
+<div id="vargas-llosa" class="section level1">
+<h1>Vargas Llosa</h1>
+<p>Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí unos reviews: [<a href="https://rlabuonora74.wordpress.com/" class="uri">https://rlabuonora74.wordpress.com/</a>]. En base al libro [<a href="https://www.tidytextmining.com/" class="uri">https://www.tidytextmining.com/</a>], se me ocurrió analizar un poco el texto de las novelas a ver que encontraba y llegué a esto.</p>
+</div>
+<div id="sentiment-analysis" class="section level1">
+<h1>Sentiment Analysis</h1>
+<p>Sentiment Analysis implica estimar si el texto analizado es positivo o negativo.</p>
+<pre class="r"><code>mvll_sentiment &lt;- mvll_tidy %&gt;% 
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;% 
+  count(title, index = line %/% 80  , sentiment) %&gt;%
+  spread(sentiment, n) %&gt;%
+  mutate(sentiment = positive - negative)
+
+
+ggplot(mvll_sentiment, aes(index, sentiment, fill=title)) + 
+  geom_col() + 
+  facet_wrap(~title, scales = &quot;free_x&quot;) + 
+  guides(fill=FALSE)</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="wordcloud-con-los-cuadernos-de-don-rigoberto" class="section level1">
+<h1>Wordcloud con Los cuadernos de Don Rigoberto</h1>
+<pre class="r"><code>s &lt;- mvll_tidy %&gt;% 
+  filter(title == &quot;Notebooks of Don Rigoberto&quot; ) %&gt;%
+  filter(!str_detect(word, &quot;\u2019&quot;)) %&gt;% # remove didn&#39;t, they&#39;re, etc.
+  anti_join(stop_words) %&gt;%
+  count(word, sort = TRUE) %&gt;% 
+  with(wordcloud(word, n, max.words = 40))</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="palabras-positivas-y-negativas-mas-comunes" class="section level1">
+<h1>Palabras positivas y negativas más comunes</h1>
+<pre class="r"><code>word_counts &lt;- mvll_tidy %&gt;%
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;%
+  count(word, sentiment, sort = TRUE) %&gt;%
+  ungroup
+
+word_counts %&gt;%
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n, fill=sentiment)) +
+  geom_col(show_legend = FALSE)  +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;) + 
+  coord_flip()</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="palabras-caracteristicas-de-cada-libro" class="section level1">
+<h1>Palabras características de cada libro</h1>
+<pre class="r"><code>book_words &lt;- mvll_tidy %&gt;%
+  count(title, word, sort = TRUE) %&gt;%
+  ungroup %&gt;%
+  bind_tf_idf(word, title, n)
+
+plt &lt;- book_words %&gt;%
+  arrange(desc(tf_idf)) %&gt;%
+  mutate(word = factor(word, levels = rev(unique(word))))
+
+
+
+plt %&gt;%
+  filter(title %in% libros$title[10:13]) %&gt;%
+  group_by(title) %&gt;%
+  top_n(10) %&gt;%
+  ungroup %&gt;%
+  ggplot(aes(word, tf_idf, fill = title)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf-idf&quot;) + 
+  facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
+  coord_flip()</code></pre>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="/2017/08/16/ggplot-geometria/">&laquo; Geometría y ggplot</a>
+    
+    
+      <a class="basic-alignment left" href="/2018/01/20/hamlet/">Mining Hamlet &raquo;</a>
+    
+  </div>
+</section>
+
+<section id="comments">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+      
+      
+      if (window.location.hostname == "localhost")
+                return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'blog-mvbubivkga';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-136189174-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,50 @@
+baseurl = "/"
+languageCode = "es"
+title = "rlabuonora"
+theme = "hugo-tanka"
+googleAnalytics = "UA-136189174-1"
+disqusShortname = "blog-mvbubivkga"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+[[menu.main]]
+    name = "Inicio"
+    url = "/"
+    weight = -110
+    
+[[menu.main]]
+    name = "Web"
+    url = "http://www.rlabuonora.com"
+
+[[menu.main]]
+    name = "Twitter"
+    url = "https://twitter.com/rlabuonora"
+    
+[[menu.main]]
+    name = "GitHub"
+    url = "https://github.com/rlabuonora"
+    
+[[menu.main]]
+    name = "CV"
+    url = "https://cv.rlabuonora.com/"
+
+[params]
+    description = "Mi Blog"
+
+    # options for highlight.js (version, additional languages, and theme)
+    highlightjsVersion = "9.11.0"
+    highlightjsCDN = "//cdn.bootcss.com"
+    highlightjsLang = ["r", "yaml"]
+    highlightjsTheme = "github"
+
+    MathJaxCDN = "//cdn.bootcss.com"
+    MathJaxVersion = "2.7.1"
+
+    [params.logo]
+    url = "logo.png"
+    width = 50
+    height = 50
+    alt = "Logo"
+

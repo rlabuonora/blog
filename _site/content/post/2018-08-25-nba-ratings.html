@@ -1,0 +1,49 @@
+<p>Explorando los ratings de la NBA.</p>
+
+<p>TODO: Pasarlo a Plotly. Poner los dos graficos en un solo panel con gridExtra.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">glue</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">rvest</span><span class="p">)</span><span class="w">
+
+
+
+</span><span class="n">get_ratings_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">base_url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"https://www.basketball-reference.com/leagues/"</span><span class="w">
+  </span><span class="n">ratings_template_url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"NBA_{year}_ratings.html"</span><span class="w">
+  </span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glue</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span><span class="w"> </span><span class="n">ratings_template_url</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">read_html</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">html_table</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">`[[`</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w">
+  
+  </span><span class="n">colnames</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="m">1</span><span class="p">,]</span><span class="w">
+  </span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="m">-1</span><span class="p">,]</span><span class="w">
+  
+  </span><span class="n">df</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">mutate_at</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">W</span><span class="o">:</span><span class="n">`NRtg/A`</span><span class="p">),</span><span class="w"> </span><span class="n">as.numeric</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">mutate_at</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">Team</span><span class="p">,</span><span class="w"> </span><span class="n">Conf</span><span class="p">,</span><span class="w"> </span><span class="n">Div</span><span class="p">),</span><span class="w"> </span><span class="n">factor</span><span class="p">)</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">rt.17</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_ratings_data</span><span class="p">(</span><span class="s2">"2017"</span><span class="p">)</span><span class="w">
+</span><span class="n">fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">W</span><span class="o">~</span><span class="n">ORtg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DRtg</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rt.17</span><span class="p">)</span><span class="w">
+
+</span><span class="n">g_off</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">rt.17</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">ORtg</span><span class="p">,</span><span class="w"> </span><span class="n">W</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Conf</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ORtg</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">W</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Offensive Rating vs Wins"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">#ggplotly(g_off)</span><span class="w">
+</span><span class="n">g_off</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g_def</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">rt.17</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">DRtg</span><span class="p">,</span><span class="w"> </span><span class="n">W</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Conf</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="w"> </span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">DRtg</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">W</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Defensive Rating vs Wins"</span><span class="p">)</span><span class="w">
+ </span><span class="n">g_def</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="2018-08-25-nba-ratings_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+
