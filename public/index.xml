@@ -80,9 +80,9 @@ In this post I go over the text of Hamlet, Prince of Denmark, using the quantity
       <pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/12/20/tidy-vargas-llosa/</guid>
-      <description>## Loading required package: RColorBrewer Vargas Llosa Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí algunos reviews. En este post aplico algunas de las técnicas de este libro a las novelas.
- Datos Para este proyecto, conseguí todas las novelas de Vargas Llosa en Inglés en formato digital (epub, mobi) y las convertí a texto.
-El primer paso para analizar texto es estructurarlo para el análisis.</description>
+      <description>## Loading required package: RColorBrewer ## Registered S3 methods overwritten by &amp;#39;ggplot2&amp;#39;: ## method from ## [.quosures rlang ## c.quosures rlang ## print.quosures rlang Vargas Llosa Hola
+Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí algunos reviews. En este post aplico algunas de las técnicas de este libro a las novelas.
+ Datos Para este proyecto, conseguí todas las novelas de Vargas Llosa en Inglés en formato digital (epub, mobi) y las convertí a texto.</description>
     </item>
     
     <item>
@@ -92,8 +92,7 @@ El primer paso para analizar texto es estructurarlo para el análisis.</descript
       
       <guid>/2017/08/16/ggplot-geometria/</guid>
       <description>ggplot es el estándar para visualización de datos en R. Siempre quise explorar si podía servir para hacer diagramas más conceptuales. En este post uso ggplot para dibujar algunas formas geométricas.
-Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.
-geom_segment y scale_x_continuous permiten especificar la posición y etiqueta de las guías.</description>
+Para dibujar el gráfico de una función, podemos usar stat_function. En el primer gráfico, dibujo \(sin(x)\) y \(cos(x)\). Especifico aes(colour = &amp;quot;sin(x)&amp;quot;) para que el color de ese cada geom quede ligado al texto correcto en la leyenda.</description>
     </item>
     
   </channel>

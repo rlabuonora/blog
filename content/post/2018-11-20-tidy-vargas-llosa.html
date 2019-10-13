@@ -11,8 +11,14 @@ draft: false
 
 
 <pre><code>## Loading required package: RColorBrewer</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;ggplot2&#39;:
+##   method         from 
+##   [.quosures     rlang
+##   c.quosures     rlang
+##   print.quosures rlang</code></pre>
 <div id="vargas-llosa" class="section level1">
 <h1>Vargas Llosa</h1>
+<p>Hola</p>
 <p>Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí <a href="https://rlabuonora74.wordpress.com/">algunos reviews</a>. En este post aplico algunas de las técnicas de <a href="https://www.tidytextmining.com/">este libro</a> a las novelas.</p>
 </div>
 <div id="datos" class="section level1">
@@ -57,18 +63,19 @@ plt %&gt;%
   labs(x = NULL, y = &quot;tf-idf&quot;) + 
   facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
   coord_flip()</code></pre>
-<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" /> # Sentiment Analysis</p>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+# Sentiment Analysis</p>
 <p>El análisis de sentimiento busca crear métricas para que tan positivo o negativo es el texto que estamos analizando. Para eso, necesitamos un “léxico”, una base de datos con palabras y sus sentimientos correspondientes. Bing es uno de los léxicos disponibles, y para cada palabra define si es positivo o negativo:</p>
 <pre class="r"><code>head(get_sentiments(&quot;bing&quot;))</code></pre>
 <pre><code>## # A tibble: 6 x 2
 ##   word       sentiment
 ##   &lt;chr&gt;      &lt;chr&gt;    
-## 1 2-faced    negative 
-## 2 2-faces    negative 
-## 3 a+         positive 
-## 4 abnormal   negative 
-## 5 abolish    negative 
-## 6 abominable negative</code></pre>
+## 1 2-faces    negative 
+## 2 abnormal   negative 
+## 3 abolish    negative 
+## 4 abominable negative 
+## 5 abominably negative 
+## 6 abominate  negative</code></pre>
 <p>Para analizar el texto de las novelas, usamos el léxico para determinar si cada palabra es positiva o negativa. Después tomamos unidades de 80 líneas y calculamos <code>sentiment</code> como la diferencia entre la cantidad de palabras positivas y negativas. Esto nos da una métrica de que tan positivas son las palabras usadas en esa parte del texto.</p>
 <p>Una cosa importante a tener en cuenta al usar esta técnica es que analiza los tokens individualmente y no entiende la estructura del texto. Esto implica que la métrica no entiende que un texto como</p>
 <blockquote>
