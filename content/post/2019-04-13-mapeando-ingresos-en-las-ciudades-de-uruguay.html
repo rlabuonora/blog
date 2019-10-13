@@ -9,13 +9,14 @@ tags: []
 
 
 
-<p>Todas las ciudades tienen zonas ricas y zonas pobres. En Montevideo, las zonas costeras concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Malvín, Pocitos, etc.).</p>
+<p>Hola
+Todas las ciudades tienen zonas ricas y zonas pobres. En Montevideo, las zonas costeras concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Malvín, Pocitos, etc.).</p>
 <p>En este post armo un mapa para visualizar cuáles son las zonas con mayores ingresos en las ciudades de Uruguay linkeando los mapas que publica el INE con las formas de los segmentos censales y los datos de ingresos de la Encuesta Continua de Hogares:</p>
 <!-- En este post quiero visualizar la distribución del ingreso en las ciudades de Uruguay. En Montevideo sabemos que la zona costera es donde se concentran los hogares de mayores ingresos  -->
 <!-- Para visualizar esta estructura, linkeo los datos de la [Encuesta Continua de Hogares](http://ine.gub.uy/web/guest/encuesta-continua-de-hogares1) con un mapa de los segmentos censales del país. -->
 <!-- TODO: Refactor using chunk names -->
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/rafa/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
+## Source: &quot;/Users/rlabuonora/blog_data/mapas_vectoriales_ine&quot;, layer: &quot;ine_seg_11&quot;
 ## with 4313 features
 ## It has 13 fields</code></pre>
 <p><img src="/post/2019-04-13-mapeando-ingresos-en-las-ciudades-de-uruguay_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
@@ -28,7 +29,7 @@ tags: []
 
 # Cargar mapa
 ine_seg_11_sf &lt;- st_read(&#39;~/blog_data/mapas_vectoriales_ine/ine_seg_11.shp&#39;)</code></pre>
-<pre><code>## Reading layer `ine_seg_11&#39; from data source `/Users/rafa/blog_data/mapas_vectoriales_ine/ine_seg_11.shp&#39; using driver `ESRI Shapefile&#39;
+<pre><code>## Reading layer `ine_seg_11&#39; from data source `/Users/rlabuonora/blog_data/mapas_vectoriales_ine/ine_seg_11.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 4313 features and 13 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY

@@ -63,7 +63,7 @@ mapa_ingresos <- function(cod_loc, nom_loc, legend_pos = c("right","top")) {
 }
 ```
 
-
+Hola 
 Todas las ciudades tienen zonas ricas y zonas pobres. En Montevideo, las zonas costeras concentran los hogares de mayores ingresos (Carrasco, Punta Gorda, Malvín, Pocitos, etc.). 
 
 En este post armo un mapa para visualizar cuáles son las zonas con mayores ingresos en las ciudades de Uruguay linkeando los mapas que publica el INE con las formas de los segmentos censales y los datos de ingresos de la Encuesta Continua de Hogares:

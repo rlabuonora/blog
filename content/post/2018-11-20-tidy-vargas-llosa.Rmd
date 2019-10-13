@@ -113,6 +113,7 @@ plt %>%
   coord_flip()
 
 ```
+
 # Sentiment Analysis
 
 El análisis de sentimiento busca crear métricas para que tan positivo o negativo es el texto que estamos analizando.  Para eso, necesitamos un "léxico", una base de datos con palabras y sus sentimientos correspondientes. Bing es uno de los léxicos disponibles, y para cada palabra define si es positivo o negativo:

@@ -62,8 +62,10 @@ plt %&gt;%
   labs(x = NULL, y = &quot;tf-idf&quot;) + 
   facet_wrap(~title, ncol = 2, scales=&quot;free&quot;) + 
   coord_flip()</code></pre>
-<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-# Sentiment Analysis</p>
+<p><img src="/post/2018-11-20-tidy-vargas-llosa_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="sentiment-analysis" class="section level1">
+<h1>Sentiment Analysis</h1>
 <p>El análisis de sentimiento busca crear métricas para que tan positivo o negativo es el texto que estamos analizando. Para eso, necesitamos un “léxico”, una base de datos con palabras y sus sentimientos correspondientes. Bing es uno de los léxicos disponibles, y para cada palabra define si es positivo o negativo:</p>
 <pre class="r"><code>head(get_sentiments(&quot;bing&quot;))</code></pre>
 <pre><code>## # A tibble: 6 x 2
