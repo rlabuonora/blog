@@ -48,9 +48,6 @@ mvll_tidy <- readRDS('../../public/data/mvll_tidy.rds') %>%
 ```
 # Vargas Llosa
 
-
-Hola 
-
 Mario Vargas Llosa es uno de mis novelistas preferidos. El año pasado releí varios de sus libros y escribí [algunos reviews](https://rlabuonora74.wordpress.com/). En este post aplico algunas de las técnicas de [este libro](https://www.tidytextmining.com/) a las novelas.
 
 # Datos
